@@ -21,6 +21,8 @@ import {NodeMap} from "../components/Engine";
  */
 
 // TODO Bei einem Gateway gibt es nicht einfach EINEN Nachfolger, sondern ZWEI. Hier muss noch was geändert werden
+// next: könnte eine Liste aus allen matches sein und nicht nur dem ersten. Dann ist es allen Nodes selbst überlassen
+// wie sie das handlen
 
 export function transformDiagramToNodeMap(diagram: BpmnDiagram): NodeMap {
     const nodes = diagram.nodes

@@ -14,6 +14,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     return (
         <div style={{
+            marginBottom: 10,
             borderRadius: 10,
             padding: 16,
             background: "white",

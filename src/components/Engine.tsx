@@ -11,10 +11,14 @@ export interface EngineProps {
 
 export default function Engine(props: EngineProps) {
 
+    const nextNode = () => {
+        console.log("Next node")
+    }
+
     return (
         <div>
             { Object.values(props.nodeMap).map(({ node, next}) => {
-                return node.run()
+                return node.run(nextNode)
             }) }
         </div>
     )
