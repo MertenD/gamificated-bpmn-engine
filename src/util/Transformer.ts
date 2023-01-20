@@ -1,4 +1,4 @@
-import {BpmnDiagram} from "../model/Bpmn";
+import {BpmnDiagram, BpmnEdge, BpmnNode} from "../model/Bpmn";
 import {NodeType} from "../model/NodeType";
 import {BasicNode} from "../nodes/BasicNode";
 import {ActivityNodeData, ChallengeNodeData, GatewayNodeData, InfoNodeData, NodeData} from "../model/NodeData";
@@ -8,6 +8,7 @@ import {ChallengeNode} from "../nodes/ChallengeNode";
 import {InfoNode} from "../nodes/InfoNode";
 import {StartNode} from "../nodes/StartNode";
 import {EndNode} from "../nodes/EndNode";
+import {NodeMap} from "../components/Engine";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -19,35 +20,37 @@ import {EndNode} from "../nodes/EndNode";
  * }
  */
 
-export function transformDiagramToRunnableMap(diagram: BpmnDiagram): Map<string, {node: BasicNode, next: string | null}> {
+// TODO Bei einem Gateway gibt es nicht einfach EINEN Nachfolger, sondern ZWEI. Hier muss noch was geändert werden
+
+export function transformDiagramToNodeMap(diagram: BpmnDiagram): NodeMap {
     const nodes = diagram.nodes
     const edges = diagram.edges
-    const runnableMap = new Map<string, {node: any, next: string | null}>()
+    const runnableMap: NodeMap = {}
 
-    nodes.forEach((node) => {
+    nodes.forEach((node: BpmnNode) => {
         const { id, type, data } = node
-        runnableMap.set(id, {
-            node: getNodeFromType(type, data),
-            next: edges.find((edge) => edge.source === id)?.target || null
-        })
+        runnableMap[id] = {
+            node: getNodeFromType(type, id, data),
+            next: edges.find((edge: BpmnEdge) => edge.source === id)?.target || null
+        }
     })
 
     return runnableMap
 }
 
-function getNodeFromType(type: NodeType, data: NodeData | undefined): BasicNode {
+function getNodeFromType(type: NodeType, id: string, data: NodeData | undefined): BasicNode {
     switch (type) {
         case NodeType.ACTIVITY_NODE:
-            return new ActivityNode(data as ActivityNodeData)
+            return new ActivityNode(id, data as ActivityNodeData)
         case NodeType.GATEWAY_NODE:
-            return new GatewayNode(data as GatewayNodeData)
+            return new GatewayNode(id, data as GatewayNodeData)
         case NodeType.CHALLENGE_NODE:
-            return new ChallengeNode(data as ChallengeNodeData)
+            return new ChallengeNode(id, data as ChallengeNodeData)
         case NodeType.INFO_NODE:
-            return new InfoNode(data as InfoNodeData)
+            return new InfoNode(id, data as InfoNodeData)
         case NodeType.START_NODE:
-            return new StartNode()
+            return new StartNode(id)
         case NodeType.END_NODE:
-            return new EndNode()
+            return new EndNode(id)
     }
 }
