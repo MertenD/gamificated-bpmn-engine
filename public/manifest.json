@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "GBPMN Engine",
+  "name": "An engine to run gamificated BPMN processes",
   "icons": [
     {
       "src": "favicon.ico",
