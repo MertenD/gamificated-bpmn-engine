@@ -4,6 +4,7 @@ export interface MultipleChoiceActivityProps {
     task: string,
     choices: string,
     variableName: string,
+    onConfirm: () => void
 }
 
 export default function MultipleChoiceActivity(props: MultipleChoiceActivityProps) {
@@ -19,12 +20,13 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
     };
 
     useEffect(() => {
+        // TODO hier muss die Variable angespasst werden
         console.log("Task \"" + props.task + "\" updated", selected)
     }, [selected])
 
     return (
         <div style={{
-            marginBottom: 10,
+            margin: 10,
             borderRadius: 10,
             padding: 16,
             background: "white",
@@ -53,6 +55,9 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         </div>
                     ))}
             </div>
+            <button onClick={event => props.onConfirm()}>
+                Confirm
+            </button>
         </div>
     )
 }

@@ -4,6 +4,7 @@ export interface SingleChoiceActivityProps {
     task: string,
     choices: string,
     variableName: string,
+    onConfirm: () => void
 }
 
 export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
@@ -12,12 +13,13 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelected(event.target.value);
+        // TODO hier muss die Variable angespasst werden
         console.log("Task \"" + props.task + "\" updated", event.target.value)
     };
 
     return (
         <div style={{
-            marginBottom: 10,
+            margin: 10,
             borderRadius: 10,
             padding: 16,
             background: "white",
@@ -46,6 +48,9 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                         </div>
                     ))}
             </div>
+            <button onClick={event => props.onConfirm()}>
+                Confirm
+            </button>
         </div>
     )
 }

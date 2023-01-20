@@ -1,17 +1,20 @@
 import {BasicNode} from "./BasicNode";
 import {ActivityNodeData} from "../model/NodeData";
 import React from "react";
-import TextInputActivity from "../components/TextInputActivity";
+import TextInputActivity from "../components/activities/TextInputActivity";
 import {ActivityType} from "../model/ActivityType";
-import SingleChoiceActivity from "../components/SingleChoiceActivity";
-import MultipleChoiceActivity from "../components/MultipleChoiceActivity";
+import SingleChoiceActivity from "../components/activities/SingleChoiceActivity";
+import MultipleChoiceActivity from "../components/activities/MultipleChoiceActivity";
+import {NodeType} from "../model/NodeType";
 
 export class ActivityNode implements BasicNode {
-    id: string;
+    id: string
+    nodeType: NodeType
     private data: ActivityNodeData
 
     constructor(id: string, data: ActivityNodeData) {
         this.id = id
+        this.nodeType = NodeType.ACTIVITY_NODE
         this.data = data
     }
 
@@ -21,19 +24,22 @@ export class ActivityNode implements BasicNode {
                 return React.createElement(TextInputActivity, {
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
-                    variableName: this.data.variableName
+                    variableName: this.data.variableName,
+                    onConfirm: () => { nextNode() }
                 })
             case ActivityType.SINGLE_CHOICE:
                 return React.createElement(SingleChoiceActivity, {
                     task: this.data.task,
                     choices: this.data.choices,
-                    variableName: this.data.variableName
+                    variableName: this.data.variableName,
+                    onConfirm: () => { nextNode() }
                 })
             case ActivityType.MULTIPLE_CHOICE:
                 return React.createElement(MultipleChoiceActivity, {
                     task: this.data.task,
                     choices: this.data.choices,
-                    variableName: this.data.variableName
+                    variableName: this.data.variableName,
+                    onConfirm: () => { nextNode() }
                 })
         }
     }

@@ -4,17 +4,19 @@ export interface TextInputActivityProps {
     task: string,
     inputRegex: string,
     variableName: string,
+    onConfirm: () => void
 }
 
 export default function TextInputActivity(props: TextInputActivityProps) {
 
     const onValueChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // TODO hier muss die Variable angespasst werden
         console.log("Task \"" + props.task + "\" updated", event.target.value)
     }
 
     return (
         <div style={{
-            marginBottom: 10,
+            margin: 10,
             borderRadius: 10,
             padding: 16,
             background: "white",
@@ -45,6 +47,9 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                     }}
                 />
             </span>
+            <button onClick={event => props.onConfirm()}>
+                Confirm
+            </button>
         </div>
     )
 }

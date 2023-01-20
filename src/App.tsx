@@ -6,7 +6,7 @@ import {transformDiagramToNodeMap} from "./util/Transformer";
 
 function App() {
 
-    const [nodeMap, setNodeMap] = useState({})
+    const [nodeMap, setNodeMap] = useState(new Map())
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const bpmnDiagram = await loadBpmnDiagram(event)

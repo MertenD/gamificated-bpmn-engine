@@ -8,7 +8,6 @@ import {ChallengeNode} from "../nodes/ChallengeNode";
 import {InfoNode} from "../nodes/InfoNode";
 import {StartNode} from "../nodes/StartNode";
 import {EndNode} from "../nodes/EndNode";
-import {NodeMap} from "../components/Engine";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -24,17 +23,17 @@ import {NodeMap} from "../components/Engine";
 // next: könnte eine Liste aus allen matches sein und nicht nur dem ersten. Dann ist es allen Nodes selbst überlassen
 // wie sie das handlen
 
-export function transformDiagramToNodeMap(diagram: BpmnDiagram): NodeMap {
+export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: string | null }> {
     const nodes = diagram.nodes
     const edges = diagram.edges
-    const runnableMap: NodeMap = {}
+    const runnableMap = new Map<string, { node: BasicNode, next: string | null }>()
 
     nodes.forEach((node: BpmnNode) => {
         const { id, type, data } = node
-        runnableMap[id] = {
+        runnableMap.set(id, {
             node: getNodeFromType(type, id, data),
             next: edges.find((edge: BpmnEdge) => edge.source === id)?.target || null
-        }
+        })
     })
 
     return runnableMap
