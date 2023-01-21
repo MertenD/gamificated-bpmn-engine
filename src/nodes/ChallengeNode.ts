@@ -1,8 +1,9 @@
 import {BasicNode} from "./BasicNode";
 import {ChallengeNodeData} from "../model/NodeData";
-import React from "react";
 import {NodeType} from "../model/NodeType";
 import {RFState} from "../store";
+
+// TODO Die Challenge wird stand jetzt gar nicht berücksichtigt
 
 export class ChallengeNode implements BasicNode {
     id: string;
@@ -15,9 +16,8 @@ export class ChallengeNode implements BasicNode {
         this.data = data
     }
 
-    run(state: RFState, nextNode: () => void): React.ReactNode {
+    run(state: RFState, nextNode: () => void): void {
         console.log("Challenge")
         nextNode()
-        return undefined;
     }
 }

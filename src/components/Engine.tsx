@@ -41,7 +41,7 @@ export default function Engine(props: EngineProps) {
     return (
         <div>
             { currentNode !== undefined && (
-                currentNode.node.run(state, nextNode)
+                currentNode.node.run(state, nextNode) || <></>
             ) }
         </div>
     )

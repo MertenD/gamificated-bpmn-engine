@@ -12,9 +12,8 @@ export class EndNode implements BasicNode {
         this.nodeType = NodeType.END_NODE
     }
 
-    run(state: RFState, nextNode: () => void): React.ReactNode {
+    run(state: RFState, nextNode: () => void): void {
         console.log("End")
         nextNode()
-        return undefined;
     }
 }

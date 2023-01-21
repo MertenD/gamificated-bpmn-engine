@@ -16,7 +16,7 @@ export class GatewayNode implements BasicNode {
         this.data = data
     }
 
-    run(state: RFState, nextNode: (conditionResult: NextNodeKey) => void): React.ReactNode {
+    run(state: RFState, nextNode: (conditionResult: NextNodeKey) => void): void {
         const {
             variableName, comparison, valueToCompare
         } = this.data
@@ -26,6 +26,5 @@ export class GatewayNode implements BasicNode {
         } else {
             nextNode(NextNodeKey.FALSE)
         }
-        return undefined
     }
 }

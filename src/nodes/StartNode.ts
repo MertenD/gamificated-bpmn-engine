@@ -12,9 +12,8 @@ export class StartNode implements BasicNode {
         this.nodeType = NodeType.START_NODE
     }
 
-    run(state: RFState, nextNode: () => void): React.ReactNode {
+    run(state: RFState, nextNode: () => void): void {
         console.log("Start node")
         nextNode()
-        return undefined;
     }
 }
