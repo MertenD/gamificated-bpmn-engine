@@ -32,12 +32,17 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
             <div style={{ margin: 10 }}>
                 { props.task }
             </div>
-            <div>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start"
+            }}>
                 {props.choices
                     .split(",")
                     .map((choice => choice.trim()))
                     .map((option, index) => (
-                        <div style={{ margin: 5 }} key={index}>
+                        <div style={{ margin: 5, alignSelf: "flex-start" }} key={index}>
                             <input
                                 type="radio"
                                 id={option}
