@@ -20,9 +20,8 @@ import {NextNodeKey} from "../model/NextNodeKey";
  * }
  */
 
-// TODO Bei einem Gateway gibt es nicht einfach EINEN Nachfolger, sondern ZWEI. Hier muss noch was geändert werden
-// next: könnte eine Liste aus allen matches sein und nicht nur dem ersten. Dann ist es allen Nodes selbst überlassen
-// wie sie das handlen
+// TODO Die PointTypes und BadgeTypes sollen bereits beim laden ausgelesen werden und die passenden Variablen dazu
+// auf 0 bzw. false gesetzt werden
 
 export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
     const nodes = diagram.nodes

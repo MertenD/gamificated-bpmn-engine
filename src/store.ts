@@ -33,17 +33,26 @@ export const useStore = create<RFState>((set, get) => ({
             variables: {}
         })
     },
-    // TODO Evaluierung von Listen wie etwa bei Multiple Choice Fragen
     evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
         if (get().getVariable(variableName) === undefined) {
             return false
         }
+
         let condition
-        if (comparison === Comparison.EQUALS || comparison === Comparison.NOT_EQUALS) {
-            condition = "\"" + get().getVariable(variableName) + "\"" + comparison.valueOf() + "\"" + valueToCompare + "\""
+        // When the variable is an array both the variable and the valueToCompare converted to an array should be sorted
+        // before creating the condition
+        if (Array.isArray(get().getVariable(variableName))) {
+            const sortedVariable = get().getVariable(variableName).sort().toString()
+            const sortedValueToCompare = valueToCompare.split(",").map(value => value.trim()).sort().toString()
+            condition = "\"" + sortedVariable + "\"" + comparison.valueOf() + "\"" + sortedValueToCompare + "\""
         } else {
-            condition = get().getVariable(variableName) + comparison.valueOf() + valueToCompare
+            if (comparison === Comparison.EQUALS || comparison === Comparison.NOT_EQUALS) {
+                condition = "\"" + get().getVariable(variableName) + "\"" + comparison.valueOf() + "\"" + valueToCompare + "\""
+            } else {
+                condition = get().getVariable(variableName) + comparison.valueOf() + valueToCompare
+            }
         }
+
         console.log("Evaluating condition", condition)
         if (eval(condition)) {
             console.log("Condition is true")

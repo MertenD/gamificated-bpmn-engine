@@ -19,7 +19,9 @@ export default function InfoActivity(props: InfoActivityProps) {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            { props.infoText }
+            <div style={{ margin: 10 }}>
+                { props.infoText }
+            </div>
             <button onClick={_ => props.onConfirm()}>
                 Confirm
             </button>

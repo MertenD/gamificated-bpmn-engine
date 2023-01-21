@@ -36,13 +36,15 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            { props.task }
+            <div style={{ margin: 10 }}>
+                { props.task }
+            </div>
             <div>
                 {props.choices
                     .split(",")
                     .map((choice => choice.trim()))
                     .map((option, index) => (
-                        <div key={index}>
+                        <div style={{ margin: 5 }} key={index}>
                             <input
                                 type="checkbox"
                                 id={option}
@@ -55,7 +57,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         </div>
                     ))}
             </div>
-            <button onClick={_ => props.onConfirm(selected)}>
+            <button style={{ margin: 10 }} onClick={_ => props.onConfirm(selected)}>
                 Confirm
             </button>
         </div>
