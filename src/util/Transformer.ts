@@ -8,6 +8,7 @@ import {ChallengeNode} from "../nodes/ChallengeNode";
 import {InfoNode} from "../nodes/InfoNode";
 import {StartNode} from "../nodes/StartNode";
 import {EndNode} from "../nodes/EndNode";
+import {NextNodeKey} from "../model/NextNodeKey";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -23,16 +24,28 @@ import {EndNode} from "../nodes/EndNode";
 // next: könnte eine Liste aus allen matches sein und nicht nur dem ersten. Dann ist es allen Nodes selbst überlassen
 // wie sie das handlen
 
-export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: string | null }> {
+export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
     const nodes = diagram.nodes
     const edges = diagram.edges
-    const runnableMap = new Map<string, { node: BasicNode, next: string | null }>()
+    const runnableMap = new Map<string, { node: BasicNode, next: Record<string, string> | null }>()
 
     nodes.forEach((node: BpmnNode) => {
         const { id, type, data } = node
         runnableMap.set(id, {
             node: getNodeFromType(type, id, data),
-            next: edges.find((edge: BpmnEdge) => edge.source === id)?.target || null
+            next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce((accumulator: Record<string, string>, edge: BpmnEdge) => {
+                // sourceHandle is "True" or "False" when dealing with gateway nodes
+                if (type === NodeType.GATEWAY_NODE && edge.sourceHandle !== null) {
+                    if (edge.sourceHandle === "True") {
+                        accumulator[NextNodeKey.TRUE] = edge.target
+                    } else {
+                        accumulator[NextNodeKey.FALSE] = edge.target
+                    }
+                } else {
+                    accumulator[NextNodeKey.ONLY] = edge.target
+                }
+                return accumulator
+            }, {}) || null
         })
     })
 

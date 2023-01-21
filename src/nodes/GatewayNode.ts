@@ -2,6 +2,9 @@ import {BasicNode} from "./BasicNode";
 import {GatewayNodeData} from "../model/NodeData";
 import React from "react";
 import {NodeType} from "../model/NodeType";
+import GatewayActivity from "../components/activities/GatewayActivity";
+import {NextNodeKey} from "../model/NextNodeKey";
+import {RFState} from "../store";
 
 export class GatewayNode implements BasicNode {
     id: string;
@@ -14,10 +17,12 @@ export class GatewayNode implements BasicNode {
         this.data = data
     }
 
-    run(nextNode: () => void): React.ReactNode {
-        console.log("Gateway")
+    run(state: RFState, nextNode: (conditionResult: NextNodeKey) => void): React.ReactNode {
+        return React.createElement(GatewayActivity, {
+            infoText: state.getVariable(this.data.variableName) + " " + this.data.comparison + " " + this.data.valueToCompare,
+            onTrue: () => { nextNode(NextNodeKey.TRUE) },
+            onFalse: () => { nextNode(NextNodeKey.FALSE) }
+        })
         // TODO Hier soll entschieden werden welche der nextNodes aufgerufen werden soll
-        nextNode()
-        return undefined;
     }
 }

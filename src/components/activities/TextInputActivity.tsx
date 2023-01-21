@@ -1,17 +1,20 @@
-import React from "react"
+import React, {useState} from "react"
 
 export interface TextInputActivityProps {
     task: string,
     inputRegex: string,
     variableName: string,
-    onConfirm: () => void
+    onConfirm: (input: string) => void
 }
 
 export default function TextInputActivity(props: TextInputActivityProps) {
 
-    const onValueChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const [input, setInput] = useState("")
+
+    const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         // TODO hier muss die Variable angespasst werden
         console.log("Task \"" + props.task + "\" updated", event.target.value)
+        setInput(event.target.value)
     }
 
     return (
@@ -40,14 +43,14 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                         marginLeft: 10
                     }}
                     type="text"
-                    defaultValue={ "" }
+                    defaultValue={ input }
                     className="nodrag"
                     onChange={(event) => {
-                        onValueChanged(event)
+                        onInputChanged(event)
                     }}
                 />
             </span>
-            <button onClick={event => props.onConfirm()}>
+            <button onClick={ _ => props.onConfirm(input) }>
                 Confirm
             </button>
         </div>

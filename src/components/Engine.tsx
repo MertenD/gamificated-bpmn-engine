@@ -1,45 +1,43 @@
 import React, {useEffect, useState} from "react"
 import {BasicNode} from "../nodes/BasicNode";
 import {NodeType} from "../model/NodeType";
+import {NextNodeKey} from "../model/NextNodeKey";
+import {useStore} from "../store";
 
+// TODO Irgendwie will ich den Map Typen in einen eigenen type auslagern, weil ich den an mehreren Stellen (Engine, App, Transformer) benutze
 export interface EngineProps {
-    nodeMap: Map<string, { node: BasicNode, next: string | null }>
+    nodeMap: Map<string, { node: BasicNode, next: Record<string, string> | null }>
 }
 
 export default function Engine(props: EngineProps) {
 
-    const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: string | null }>(getFirstNode())
-
-    function getFirstNode(): { node: BasicNode, next: string | null } {
-        return Array.from(props.nodeMap).map(([id, { node, next }]) => {
-            return { node, next }
-        }).filter(({node, next}) => {
-            return node.nodeType === NodeType.START_NODE
-        })[0]
-    }
+    const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()
+    const state = useStore((state) => state)
 
     useEffect(() => {
-        setCurrentNode(getFirstNode())
+        const firstNode = Array.from(props.nodeMap.values()).find(({node}) =>
+            node.nodeType === NodeType.START_NODE
+        );
+        if (firstNode) {
+            setCurrentNode(firstNode)
+        }
     }, [props.nodeMap])
 
-    const nextNode = () => {
-        if (currentNode.next === null) {
+    const nextNode = (nextNodeKey: NextNodeKey = NextNodeKey.ONLY) => {
+        if (!currentNode || currentNode.next === null) {
             console.log("End")
             return
         }
-        const newNode = props.nodeMap.get(currentNode.next)
-        if (newNode !== undefined) {
+        const newNode = props.nodeMap.get(currentNode.next[nextNodeKey])
+        if (newNode) {
             setCurrentNode(newNode)
         }
     }
 
     return (
         <div>
-            {/* Array.from(props.nodeMap).map(([id, { node, next}]) => {
-                return node.run(nextNode)
-            }) */}
             { currentNode !== undefined && (
-                currentNode.node.run(nextNode)
+                currentNode.node.run(state, nextNode)
             ) }
         </div>
     )

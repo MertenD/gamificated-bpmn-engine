@@ -4,7 +4,7 @@ export interface MultipleChoiceActivityProps {
     task: string,
     choices: string,
     variableName: string,
-    onConfirm: () => void
+    onConfirm: (input: string[]) => void
 }
 
 export default function MultipleChoiceActivity(props: MultipleChoiceActivityProps) {
@@ -55,7 +55,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         </div>
                     ))}
             </div>
-            <button onClick={event => props.onConfirm()}>
+            <button onClick={_ => props.onConfirm(selected)}>
                 Confirm
             </button>
         </div>

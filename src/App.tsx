@@ -3,16 +3,19 @@ import './App.css';
 import {loadBpmnDiagram} from "./util/Importer";
 import Engine from "./components/Engine";
 import {transformDiagramToNodeMap} from "./util/Transformer";
+import {useStore} from "./store";
 
 function App() {
 
     const [nodeMap, setNodeMap] = useState(new Map())
+    const clearVariables = useStore((state) => state.clearVariables)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const bpmnDiagram = await loadBpmnDiagram(event)
         if (bpmnDiagram !== undefined) {
             const nodeMap = transformDiagramToNodeMap(bpmnDiagram)
             setNodeMap(nodeMap)
+            clearVariables()
         }
     }
 
