@@ -9,8 +9,9 @@ import {BpmnDiagram} from "./model/Bpmn";
 function App() {
 
     const [nodeMap, setNodeMap] = useState(new Map())
-    const clearVariables = useStore((state) => state.clearVariables)
+    const variables = useStore((state) => state.variables)
     const setVariable = useStore((state) => state.setVariable)
+    const clearVariables = useStore((state) => state.clearVariables)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const bpmnDiagram = await loadBpmnDiagram(event)
@@ -39,13 +40,31 @@ function App() {
 
     return (
         <div className="App">
-            <div style={{ height: "100vh"}}>
-                <input
-                    style={{ width: "100%", marginBottom: 10 }}
-                    type="file"
-                    onChange={event => onInputFileChanged((event))}
-                />
+            <div style={{ margin: 20, height: "100vh"}}>
+                <span style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                }}>
+                    Upload process:
+                    <input
+                        style={{ marginBottom: 10, marginLeft: 10 }}
+                        type="file"
+                        onChange={event => onInputFileChanged((event))}
+                    />
+                </span>
                 <Engine nodeMap={nodeMap}/>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "left"
+                }}>
+                    { Object.keys(variables).map((name) => {
+                        return <div style={{ marginTop: 10 }}>
+                            { name + ": " + variables[name] }
+                        </div>
+                    }) }
+                </div>
             </div>
         </div>
     );
