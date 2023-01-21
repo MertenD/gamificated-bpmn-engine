@@ -1,5 +1,5 @@
 export enum Comparison {
-    EQUALS = "=",
+    EQUALS = "==",
     NOT_EQUALS = "!=",
     GREATER = ">",
     GREATER_OR_EQUALS = ">=",

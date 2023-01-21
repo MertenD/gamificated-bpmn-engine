@@ -25,7 +25,7 @@ export default function Engine(props: EngineProps) {
 
     const nextNode = (nextNodeKey: NextNodeKey = NextNodeKey.ONLY) => {
         if (!currentNode || currentNode.next === null) {
-            console.log("End")
+            console.log("End of process")
             return
         }
         const newNode = props.nodeMap.get(currentNode.next[nextNodeKey])
@@ -33,6 +33,10 @@ export default function Engine(props: EngineProps) {
             setCurrentNode(newNode)
         }
     }
+
+    useEffect(() => {
+        console.log("Current Variables", state.variables)
+    }, [currentNode])
 
     return (
         <div>
