@@ -85,7 +85,8 @@ export function getPointTypes(diagram: BpmnDiagram): string[] {
             const gamificationOptions = nodeData.gamificationOptions as PointsGamificationOptions
             return gamificationOptions.pointType
         }
-    }).filter((pointType) => pointType !== null && pointType !== undefined) as string[]
+        return null
+    }).filter((pointType: string | null) => pointType !== null && pointType !== undefined) as string[]
 
     // Create set to remove duplicate pointTypes
     const pointTypesSet = new Set<string>(pointTypes)
@@ -110,7 +111,8 @@ export function getBadgeTypes(diagram: BpmnDiagram): string[] {
             const gamificationOptions = nodeData.gamificationOptions as BadgeGamificationOptions
             return gamificationOptions.badgeType
         }
-    }).filter((badgeType) => badgeType !== null && badgeType !== undefined) as string[]
+        return null
+    }).filter((badgeType: string | null) => badgeType !== null && badgeType !== undefined) as string[]
 
     // Create set to remove duplicate badgeTypes
     const badgeTypeSet = new Set<string>(badgeTypes)
