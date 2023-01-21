@@ -9,6 +9,8 @@ import {InfoNode} from "../nodes/InfoNode";
 import {StartNode} from "../nodes/StartNode";
 import {EndNode} from "../nodes/EndNode";
 import {NextNodeKey} from "../model/NextNodeKey";
+import {GamificationType} from "../model/GamificationType";
+import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -16,12 +18,9 @@ import {NextNodeKey} from "../model/NextNodeKey";
  * key: uuid des nodes
  * value: {
  *   node: node
- *   next: uuid des nächsten node
+ *   next: uuids der nächsten nodes
  * }
  */
-
-// TODO Die PointTypes und BadgeTypes sollen bereits beim laden ausgelesen werden und die passenden Variablen dazu
-// auf 0 bzw. false gesetzt werden
 
 export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
     const nodes = diagram.nodes
@@ -66,4 +65,54 @@ function getNodeFromType(type: NodeType, id: string, data: NodeData | undefined)
         case NodeType.END_NODE:
             return new EndNode(id)
     }
+}
+
+export function getPointTypes(diagram: BpmnDiagram): string[] {
+    const pointTypes = diagram.nodes.map((node: BpmnNode) => {
+        let nodeData = undefined
+        let gamificationType = undefined
+        if (node.type === NodeType.ACTIVITY_NODE) {
+            nodeData = node.data as ActivityNodeData
+            gamificationType = nodeData.gamificationType
+        } else if (node.type === NodeType.CHALLENGE_NODE) {
+            nodeData = node.data as ChallengeNodeData
+            gamificationType = nodeData.rewardType
+        }
+        if (nodeData === undefined || gamificationType === undefined) {
+            return null
+        }
+        if (gamificationType === GamificationType.POINTS) {
+            const gamificationOptions = nodeData.gamificationOptions as PointsGamificationOptions
+            return gamificationOptions.pointType
+        }
+    }).filter((pointType) => pointType !== null && pointType !== undefined) as string[]
+
+    // Create set to remove duplicate pointTypes
+    const pointTypesSet = new Set<string>(pointTypes)
+    return Array.from(pointTypesSet.values());
+}
+
+export function getBadgeTypes(diagram: BpmnDiagram): string[] {
+    const badgeTypes =  diagram.nodes.map((node: BpmnNode) => {
+        let nodeData = undefined
+        let gamificationType = undefined
+        if (node.type === NodeType.ACTIVITY_NODE) {
+            nodeData = node.data as ActivityNodeData
+            gamificationType = nodeData.gamificationType
+        } else if (node.type === NodeType.CHALLENGE_NODE) {
+            nodeData = node.data as ChallengeNodeData
+            gamificationType = nodeData.rewardType
+        }
+        if (nodeData === undefined || gamificationType === undefined) {
+            return null
+        }
+        if (gamificationType === GamificationType.BADGES) {
+            const gamificationOptions = nodeData.gamificationOptions as BadgeGamificationOptions
+            return gamificationOptions.badgeType
+        }
+    }).filter((badgeType) => badgeType !== null && badgeType !== undefined) as string[]
+
+    // Create set to remove duplicate badgeTypes
+    const badgeTypeSet = new Set<string>(badgeTypes)
+    return Array.from(badgeTypeSet.values());
 }
