@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 
 export interface MultipleChoiceActivityProps {
     task: string,
@@ -19,11 +19,6 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             setSelected(selected.filter(item => item !== event.target.value));
         }
     };
-
-    useEffect(() => {
-        // TODO hier muss die Variable angespasst werden
-        console.log("Task \"" + props.task + "\" updated", selected)
-    }, [selected])
 
     return (
         <div style={{

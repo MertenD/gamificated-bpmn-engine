@@ -14,8 +14,6 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelected(event.target.value);
-        // TODO hier muss die Variable angespasst werden
-        console.log("Task \"" + props.task + "\" updated", event.target.value)
     };
 
     return (

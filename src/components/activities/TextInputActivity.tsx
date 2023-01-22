@@ -13,8 +13,6 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     const [input, setInput] = useState("")
 
     const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // TODO hier muss die Variable angespasst werden
-        console.log("Task \"" + props.task + "\" updated", event.target.value)
         setInput(event.target.value)
     }
 

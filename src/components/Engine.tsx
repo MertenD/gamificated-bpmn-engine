@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import {BasicNode} from "../nodes/BasicNode";
-import {NodeType} from "../model/NodeType";
-import {NextNodeKey} from "../model/NextNodeKey";
-import {useChallengeStore} from "../stores/challengeStore";
 import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
@@ -12,47 +9,20 @@ export type NodeMapKey = string
 export type NodeMapValue = { node: BasicNode, next: NodeMapNext }
 export type NodeMap = Map<NodeMapKey, NodeMapValue>
 
-export interface EngineProps {
-    nodeMap: NodeMap
-}
-
 // TODO Reset Text field and choices after switching to next node
 
-export default function Engine(props: EngineProps) {
+export default function Engine() {
 
-    const [currentNode, setCurrentNode] = useState<NodeMapValue>()
     const variablesState = useVariablesStore((state) => state)
-    const challengeState = useChallengeStore((state) => state)
     const flowState = useFlowStore((state) => state)
-
-    useEffect(() => {
-        console.log("NodeMap", props.nodeMap)
-        const firstNode = Array.from(props.nodeMap.values()).find(({node}) =>
-            node.nodeType === NodeType.START_NODE
-        );
-        if (firstNode) {
-            setCurrentNode(firstNode)
-        }
-    }, [props.nodeMap])
-
-    const nextNode = (nextNodeKey: NextNodeKey = NextNodeKey.ONLY) => {
-        if (!currentNode || currentNode.next === null) {
-            console.log("End of process")
-            return
-        }
-        const newNode = props.nodeMap.get(currentNode.next[nextNodeKey])
-        if (newNode) {
-            setCurrentNode(newNode)
-            challengeState.handleChallengeStartAndStop(newNode.node.challenge, variablesState)
-        }
-    }
+    const currentNode = useFlowStore((state) => state.currentNode)
 
     return (
         <div>
             <ChallengeInfo />
             <div style={{ margin: 30 }}>
-                { currentNode !== undefined && (
-                    currentNode.node.run(variablesState, flowState, nextNode) || <></>
+                { currentNode !== null && (
+                    currentNode.node.run(variablesState, flowState) || <></>
                 ) }
             </div>
         </div>

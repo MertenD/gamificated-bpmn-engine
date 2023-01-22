@@ -19,8 +19,7 @@ export class ChallengeNode implements BasicNode {
         this.data = data
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): void {
-        console.log("Challenge")
-        nextNode()
+    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
+        flowState.nextNode()
     }
 }

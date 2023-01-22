@@ -19,11 +19,11 @@ export class InfoNode implements BasicNode {
         this.data = data
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): React.ReactNode {
+    run(variablesState: VariablesRFState, flowState: FlowRFState): React.ReactNode {
         const isChallenge = this.challenge !== undefined
         return React.createElement(InfoActivity, {
             infoText: this.data.infoText,
-            onConfirm: () => { nextNode() },
+            onConfirm: () => { flowState.nextNode() },
             isChallenge
         })
     }

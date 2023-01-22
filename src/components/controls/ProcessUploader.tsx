@@ -1,20 +1,17 @@
 import React from "react"
-import {NodeMap} from "../Engine";
 import {loadBpmnDiagramFromJson} from "../../util/Importer";
 import {getBadgeTypes, getNodeMap, getPointTypes} from "../../util/Transformer";
 import {BpmnDiagram} from "../../model/Bpmn";
 import {useVariablesStore} from "../../stores/variablesStore";
 import {useChallengeStore} from "../../stores/challengeStore";
+import {useFlowStore} from "../../stores/flowStore";
 
-export interface ProcessUploaderProps {
-    onProcessLoaded: (nodeMap: NodeMap) => void
-}
-
-export default function ProcessUploader(props: ProcessUploaderProps) {
+export default function ProcessUploader() {
 
     const setVariable = useVariablesStore((state) => state.setVariable)
     const clearVariables = useVariablesStore((state) => state.clearVariables)
     const challengeState = useChallengeStore((state) => state)
+    const flowState = useFlowStore((state) => state)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const bpmnDiagram = await loadBpmnDiagramFromJson(event)
@@ -22,7 +19,7 @@ export default function ProcessUploader(props: ProcessUploaderProps) {
             clearVariables()
             loadPointTypes(bpmnDiagram)
             loadBadgeTypes(bpmnDiagram)
-            props.onProcessLoaded(getNodeMap(bpmnDiagram, challengeState))
+            flowState.setNodeMap(getNodeMap(bpmnDiagram, challengeState))
         }
     }
 

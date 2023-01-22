@@ -8,14 +8,13 @@ export class StartNode implements BasicNode {
     nodeType: NodeType
     challenge: string | undefined
 
-    constructor(id: string, challenge: string | undefined) {
+    constructor(id: string, challenge: string | undefined = undefined) {
         this.id = id
         this.nodeType = NodeType.START_NODE
         this.challenge = challenge
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): void {
-        console.log("Start node")
-        nextNode()
+    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
+        flowState.nextNode()
     }
 }

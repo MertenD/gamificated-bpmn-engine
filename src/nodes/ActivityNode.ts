@@ -26,10 +26,10 @@ export class ActivityNode implements BasicNode {
         this.data = data
     }
 
-    onConfirm = (variablesState: VariablesRFState, flowState: FlowRFState, input: string | string[], nextNode: () => void) => {
+    onConfirm = (variablesState: VariablesRFState, flowState: FlowRFState, input: string | string[]) => {
         variablesState.setVariable(this.data.variableName, input)
         this.applyGamification(variablesState, flowState)
-        nextNode()
+        flowState.nextNode()
     }
 
     applyGamification = (variablesState: VariablesRFState, flowState: FlowRFState) => {
@@ -52,11 +52,9 @@ export class ActivityNode implements BasicNode {
 
         if (hasCondition as boolean) {
             if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
-                console.log("Earned " + pointsForSuccess + " Points", pointType)
                 variablesState.addToVariable(pointType, pointsForSuccess)
             }
         } else {
-            console.log("Earned " + pointsForSuccess + " Points", pointType)
             variablesState.addToVariable(pointType, pointsForSuccess)
         }
     }
@@ -68,16 +66,14 @@ export class ActivityNode implements BasicNode {
 
         if (hasCondition as boolean) {
             if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
-                console.log("Earned badge", badgeType)
                 variablesState.setVariable(badgeType, true)
             }
         } else {
-            console.log("Earned badge", badgeType)
             variablesState.setVariable(badgeType, true)
         }
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState,  nextNode: () => void): React.ReactNode {
+    run(variablesState: VariablesRFState, flowState: FlowRFState): React.ReactNode {
 
         const isChallenge = this.challenge !== undefined
 
@@ -87,7 +83,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input, nextNode) },
+                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
                     isChallenge
                 })
             case ActivityType.SINGLE_CHOICE:
@@ -95,7 +91,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input, nextNode) },
+                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
                     isChallenge
                 })
             case ActivityType.MULTIPLE_CHOICE:
@@ -103,7 +99,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input, nextNode) },
+                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
                     isChallenge
                 })
         }

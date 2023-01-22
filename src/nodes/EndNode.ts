@@ -14,8 +14,7 @@ export class EndNode implements BasicNode {
         this.challenge = challenge
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): void {
-        console.log("End")
-        nextNode()
+    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
+        flowState.nextNode()
     }
 }

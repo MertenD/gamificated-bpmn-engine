@@ -18,15 +18,15 @@ export class GatewayNode implements BasicNode {
         this.data = data
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: (conditionResult: NextNodeKey) => void): void {
+    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
         const {
             variableName, comparison, valueToCompare
         } = this.data
 
         if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
-            nextNode(NextNodeKey.TRUE)
+            flowState.nextNode(NextNodeKey.TRUE)
         } else {
-            nextNode(NextNodeKey.FALSE)
+            flowState.nextNode(NextNodeKey.FALSE)
         }
     }
 }
