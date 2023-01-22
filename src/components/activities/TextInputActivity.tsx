@@ -12,6 +12,8 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     const [input, setInput] = useState("")
 
+    console.log(input)
+
     const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInput(event.target.value)
     }

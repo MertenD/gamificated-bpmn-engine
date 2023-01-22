@@ -84,6 +84,7 @@ export class ActivityNode implements BasicNode {
         switch (this.data.activityType) {
             case ActivityType.TEXT_INPUT:
                 return React.createElement(TextInputActivity, {
+                    key: this.id,
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
                     variableName: this.data.variableName,
@@ -92,6 +93,7 @@ export class ActivityNode implements BasicNode {
                 })
             case ActivityType.SINGLE_CHOICE:
                 return React.createElement(SingleChoiceActivity, {
+                    key: this.id,
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
@@ -100,6 +102,7 @@ export class ActivityNode implements BasicNode {
                 })
             case ActivityType.MULTIPLE_CHOICE:
                 return React.createElement(MultipleChoiceActivity, {
+                    key: this.id,
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
