@@ -6,16 +6,20 @@ import {useChallengeStore} from "../stores/challengeStore";
 import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";
 
-// TODO Irgendwie will ich den Map Typen in einen eigenen type auslagern, weil ich den an mehreren Stellen (Engine, App, Transformer) benutze
+export type NodeMapNext = Record<string, string> | null
+export type NodeMapKey = string
+export type NodeMapValue = { node: BasicNode, next: NodeMapNext }
+export type NodeMap = Map<NodeMapKey, NodeMapValue>
+
 export interface EngineProps {
-    nodeMap: Map<string, { node: BasicNode, next: Record<string, string> | null }>
+    nodeMap: NodeMap
 }
 
 // TODO Reset Text field and choices after switching to next node
 
 export default function Engine(props: EngineProps) {
 
-    const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()
+    const [currentNode, setCurrentNode] = useState<NodeMapValue>()
     const variablesState = useVariablesStore((state) => state)
     const challengeState = useChallengeStore((state) => state)
     const flowState = useFlowStore((state) => state)
@@ -41,10 +45,6 @@ export default function Engine(props: EngineProps) {
             challengeState.handleChallengeStartAndStop(newNode.node.challenge, variablesState)
         }
     }
-
-    useEffect(() => {
-        console.log("Current Variables", variablesState.variables)
-    }, [currentNode])
 
     return (
         <div>

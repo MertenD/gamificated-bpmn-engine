@@ -12,6 +12,7 @@ import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {ChallengeRFState} from "../stores/challengeStore";
+import {NodeMapKey, NodeMapValue} from "../components/Engine";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -23,10 +24,10 @@ import {ChallengeRFState} from "../stores/challengeStore";
  * }
  */
 
-export function transformDiagramToNodeMap(diagram: BpmnDiagram, challengeState: ChallengeRFState): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
+export function getNodeMap(diagram: BpmnDiagram, challengeState: ChallengeRFState): Map<NodeMapKey, NodeMapValue> {
     const nodes = diagram.nodes
     const edges = diagram.edges
-    const runnableMap = new Map<string, { node: BasicNode, next: Record<string, string> | null }>()
+    const runnableMap = new Map<NodeMapKey, NodeMapValue>()
 
     nodes.forEach((node: BpmnNode) => {
         const { id, type, challenge, data } = node

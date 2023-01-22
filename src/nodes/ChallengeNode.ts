@@ -4,9 +4,7 @@ import {NodeType} from "../model/NodeType";
 import {VariablesRFState} from "../stores/variablesStore";
 import {FlowRFState} from "../stores/flowStore";
 
-// TODO Die Challenge wird stand jetzt gar nicht berücksichtigt
 // TODO Challenge ist eventuell sinnvoller woanders aufzubewahren als in der NodeMap als BasicNode. Dann kann ich auch startChallenge und
-// StopChallenge als Pflichtfunktionen bei BasicNode einbauen
 
 export class ChallengeNode implements BasicNode {
     id: string;

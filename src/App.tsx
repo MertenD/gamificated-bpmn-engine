@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {loadBpmnDiagramFromJson} from "./util/Importer";
 import Engine from "./components/Engine";
-import {getBadgeTypes, getPointTypes, transformDiagramToNodeMap} from "./util/Transformer";
+import {getBadgeTypes, getPointTypes, getNodeMap} from "./util/Transformer";
 import {BpmnDiagram} from "./model/Bpmn";
 import {useVariablesStore} from "./stores/variablesStore";
 import {useChallengeStore} from "./stores/challengeStore";
@@ -18,7 +18,7 @@ function App() {
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const bpmnDiagram = await loadBpmnDiagramFromJson(event)
         if (bpmnDiagram !== undefined) {
-            const nodeMap = transformDiagramToNodeMap(bpmnDiagram, challengeState)
+            const nodeMap = getNodeMap(bpmnDiagram, challengeState)
             setNodeMap(nodeMap)
             clearVariables()
             loadPointTypes(bpmnDiagram)
