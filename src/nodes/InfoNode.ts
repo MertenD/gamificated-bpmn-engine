@@ -3,7 +3,8 @@ import {InfoNodeData} from "../model/NodeData";
 import React from "react";
 import {NodeType} from "../model/NodeType";
 import InfoActivity from "../components/activities/InfoActivity";
-import {ChallengeRFState, RFState} from "../store";
+import {VariablesRFState} from "../stores/variablesStore";
+import {FlowRFState} from "../stores/flowStore";
 
 export class InfoNode implements BasicNode {
     id: string;
@@ -18,7 +19,7 @@ export class InfoNode implements BasicNode {
         this.data = data
     }
 
-    run(state: RFState, nextNode: () => void): React.ReactNode {
+    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): React.ReactNode {
         const isChallenge = this.challenge !== undefined
         return React.createElement(InfoActivity, {
             infoText: this.data.infoText,

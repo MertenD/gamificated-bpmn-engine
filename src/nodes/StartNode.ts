@@ -1,6 +1,7 @@
 import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
-import {ChallengeRFState, RFState} from "../store";
+import {VariablesRFState} from "../stores/variablesStore";
+import {FlowRFState} from "../stores/flowStore";
 
 export class StartNode implements BasicNode {
     id: string;
@@ -13,7 +14,7 @@ export class StartNode implements BasicNode {
         this.challenge = challenge
     }
 
-    run(state: RFState, nextNode: () => void): void {
+    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): void {
         console.log("Start node")
         nextNode()
     }

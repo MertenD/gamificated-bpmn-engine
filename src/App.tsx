@@ -3,15 +3,16 @@ import './App.css';
 import {loadBpmnDiagramFromJson} from "./util/Importer";
 import Engine from "./components/Engine";
 import {getBadgeTypes, getPointTypes, transformDiagramToNodeMap} from "./util/Transformer";
-import {useChallengeStore, useStore} from "./store";
 import {BpmnDiagram} from "./model/Bpmn";
+import {useVariablesStore} from "./stores/variablesStore";
+import {useChallengeStore} from "./stores/challengeStore";
 
 function App() {
 
     const [nodeMap, setNodeMap] = useState(new Map())
-    const variables = useStore((state) => state.variables)
-    const setVariable = useStore((state) => state.setVariable)
-    const clearVariables = useStore((state) => state.clearVariables)
+    const variables = useVariablesStore((state) => state.variables)
+    const setVariable = useVariablesStore((state) => state.setVariable)
+    const clearVariables = useVariablesStore((state) => state.clearVariables)
     const challengeState = useChallengeStore((state) => state)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {

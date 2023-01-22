@@ -2,7 +2,9 @@ import React, {useEffect, useState} from "react"
 import {BasicNode} from "../nodes/BasicNode";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
-import {useChallengeStore, useStore} from "../store";
+import {useChallengeStore} from "../stores/challengeStore";
+import {useVariablesStore} from "../stores/variablesStore";
+import {useFlowStore} from "../stores/flowStore";
 
 // TODO Irgendwie will ich den Map Typen in einen eigenen type auslagern, weil ich den an mehreren Stellen (Engine, App, Transformer) benutze
 export interface EngineProps {
@@ -14,8 +16,9 @@ export interface EngineProps {
 export default function Engine(props: EngineProps) {
 
     const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()
-    const state = useStore((state) => state)
+    const variablesState = useVariablesStore((state) => state)
     const challengeState = useChallengeStore((state) => state)
+    const flowState = useFlowStore((state) => state)
 
     useEffect(() => {
         console.log("NodeMap", props.nodeMap)
@@ -35,12 +38,12 @@ export default function Engine(props: EngineProps) {
         const newNode = props.nodeMap.get(currentNode.next[nextNodeKey])
         if (newNode) {
             setCurrentNode(newNode)
-            state.handleChallengeStartAndStop(newNode.node.challenge, challengeState)
+            challengeState.handleChallengeStartAndStop(newNode.node.challenge, variablesState)
         }
     }
 
     useEffect(() => {
-        console.log("Current Variables", state.variables)
+        console.log("Current Variables", variablesState.variables)
     }, [currentNode])
 
     return (
@@ -54,7 +57,7 @@ export default function Engine(props: EngineProps) {
             ) }
             <div style={{ margin: 30 }}>
             { currentNode !== undefined && (
-                currentNode.node.run(state, nextNode) || <></>
+                currentNode.node.run(variablesState, flowState, nextNode) || <></>
             ) }
             </div>
         </div>

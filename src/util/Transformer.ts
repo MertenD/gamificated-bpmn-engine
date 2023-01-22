@@ -11,7 +11,7 @@ import {EndNode} from "../nodes/EndNode";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
-import {ChallengeRFState} from "../store";
+import {ChallengeRFState} from "../stores/challengeStore";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:

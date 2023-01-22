@@ -1,7 +1,8 @@
 import {BasicNode} from "./BasicNode";
 import {ChallengeNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
-import {ChallengeRFState, RFState} from "../store";
+import {VariablesRFState} from "../stores/variablesStore";
+import {FlowRFState} from "../stores/flowStore";
 
 // TODO Die Challenge wird stand jetzt gar nicht berücksichtigt
 // TODO Challenge ist eventuell sinnvoller woanders aufzubewahren als in der NodeMap als BasicNode. Dann kann ich auch startChallenge und
@@ -20,7 +21,7 @@ export class ChallengeNode implements BasicNode {
         this.data = data
     }
 
-    run(state: RFState, nextNode: () => void): void {
+    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: () => void): void {
         console.log("Challenge")
         nextNode()
     }

@@ -2,7 +2,8 @@ import {BasicNode} from "./BasicNode";
 import {GatewayNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
-import {ChallengeRFState, RFState} from "../store";
+import {VariablesRFState} from "../stores/variablesStore";
+import {FlowRFState} from "../stores/flowStore";
 
 export class GatewayNode implements BasicNode {
     id: string;
@@ -17,12 +18,12 @@ export class GatewayNode implements BasicNode {
         this.data = data
     }
 
-    run(state: RFState, nextNode: (conditionResult: NextNodeKey) => void): void {
+    run(variablesState: VariablesRFState, flowState: FlowRFState, nextNode: (conditionResult: NextNodeKey) => void): void {
         const {
             variableName, comparison, valueToCompare
         } = this.data
 
-        if (state.evaluateCondition(variableName, comparison, valueToCompare)) {
+        if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
             nextNode(NextNodeKey.TRUE)
         } else {
             nextNode(NextNodeKey.FALSE)
