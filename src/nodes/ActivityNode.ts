@@ -26,7 +26,10 @@ export class ActivityNode implements BasicNode {
         this.data = data
     }
 
-    onConfirm = (variablesState: VariablesRFState, flowState: FlowRFState, input: string | string[]) => {
+    onConfirm = (input: string | string[]) => {
+        const variablesState = useVariablesStore.getState()
+        const flowState = useFlowStore.getState()
+
         variablesState.setVariable(this.data.variableName, input)
         this.applyGamification(variablesState, flowState)
         flowState.nextNode()
@@ -75,9 +78,6 @@ export class ActivityNode implements BasicNode {
 
     run(): React.ReactNode {
 
-        const variablesState = useVariablesStore.getState()
-        const flowState = useFlowStore.getState()
-
         const isChallenge = this.challenge !== undefined
 
         switch (this.data.activityType) {
@@ -86,7 +86,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
+                    onConfirm: (input: string) => { this.onConfirm(input) },
                     isChallenge
                 })
             case ActivityType.SINGLE_CHOICE:
@@ -94,7 +94,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
+                    onConfirm: (input: string) => { this.onConfirm(input) },
                     isChallenge
                 })
             case ActivityType.MULTIPLE_CHOICE:
@@ -102,7 +102,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(variablesState, flowState, input) },
+                    onConfirm: (input: string[]) => { this.onConfirm(input) },
                     isChallenge
                 })
         }
