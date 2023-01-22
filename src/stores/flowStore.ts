@@ -1,6 +1,6 @@
 import create from "zustand";
 import {Comparison} from "../model/Comparison";
-import {useVariablesStore, VariablesRFState} from "./variablesStore";
+import {useVariablesStore} from "./variablesStore";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {NodeMap, NodeMapValue} from "../components/Engine";
 import {useChallengeStore} from "./challengeStore";
@@ -13,7 +13,7 @@ export type FlowRFState = {
     getFirstNode: () => NodeMapValue | null
     setCurrentNode: (newNode: NodeMapValue | null) => void
     nextNode: (nextNodeKey?: NextNodeKey) => void
-    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string, variablesState: VariablesRFState) => boolean
+    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string) => boolean
 }
 
 export const useFlowStore = create<FlowRFState>((set, get) => ({
@@ -46,12 +46,16 @@ export const useFlowStore = create<FlowRFState>((set, get) => ({
             const newNode = get().nodeMap.get(nextNode[nextNodeKey])
             if (newNode) {
                 get().setCurrentNode(newNode)
-                useChallengeStore.getState().handleChallengeStartAndStop(newNode.node.challenge, useVariablesStore.getState())
+                // Everytime a new node is loaded the system will check if a challenge should start or end and will
+                // evaluate its results when it ended
+                useChallengeStore.getState().handleChallengeStartAndStop(newNode.node.challenge)
             }
         }
     },
     // TODO ignore case
-    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string, variablesState: VariablesRFState): boolean => {
+    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
+        const variablesState = useVariablesStore.getState()
+
         if (variablesState.getVariable(variableName) === undefined) {
             return false
         }

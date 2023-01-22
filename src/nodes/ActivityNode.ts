@@ -51,7 +51,7 @@ export class ActivityNode implements BasicNode {
         } = this.data.gamificationOptions as PointsGamificationOptions
 
         if (hasCondition as boolean) {
-            if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
+            if (flowState.evaluateCondition(variableName, comparison, valueToCompare)) {
                 variablesState.addToVariable(pointType, pointsForSuccess)
             }
         } else {
@@ -65,7 +65,7 @@ export class ActivityNode implements BasicNode {
         } = this.data.gamificationOptions as BadgeGamificationOptions
 
         if (hasCondition as boolean) {
-            if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
+            if (flowState.evaluateCondition(variableName, comparison, valueToCompare)) {
                 variablesState.setVariable(badgeType, true)
             }
         } else {

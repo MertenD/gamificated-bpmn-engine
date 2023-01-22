@@ -23,7 +23,7 @@ export class GatewayNode implements BasicNode {
             variableName, comparison, valueToCompare
         } = this.data
 
-        if (flowState.evaluateCondition(variableName, comparison, valueToCompare, variablesState)) {
+        if (flowState.evaluateCondition(variableName, comparison, valueToCompare)) {
             flowState.nextNode(NextNodeKey.TRUE)
         } else {
             flowState.nextNode(NextNodeKey.FALSE)

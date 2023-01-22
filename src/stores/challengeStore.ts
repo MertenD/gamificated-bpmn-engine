@@ -3,7 +3,7 @@ import {ChallengeNodeData} from "../model/NodeData";
 import create from "zustand";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
-import {VariablesRFState} from "./variablesStore";
+import {useVariablesStore} from "./variablesStore";
 
 export type ChallengeRFState = {
     challenges: BpmnNode[]
@@ -13,9 +13,9 @@ export type ChallengeRFState = {
     addChallenge: (challenge: BpmnNode) => void
     setChallenges: (challenges: BpmnNode[]) => void
     getChallengeData: (id: string) => ChallengeNodeData | null
-    handleChallengeStartAndStop: (challengeId: string | undefined, variablesState: VariablesRFState) => void
+    handleChallengeStartAndStop: (challengeId: string | undefined) => void
     startChallenge: (challengeId: string) => void
-    stopChallenge: (variablesState: VariablesRFState) => void
+    stopChallenge: () => void
 }
 
 export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
@@ -36,12 +36,12 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     getChallengeData: (id: string): ChallengeNodeData | null => {
         return get().challenges.find((challenge) => challenge.id === id)?.data as ChallengeNodeData || null
     },
-    handleChallengeStartAndStop: (challengeId: string | undefined, variablesState: VariablesRFState) => {
+    handleChallengeStartAndStop: (challengeId: string | undefined) => {
         const isChallenge = challengeId !== undefined
         if (challengeId !== undefined && !get().isChallengeRunning) {
             get().startChallenge(challengeId)
         } else if (!isChallenge && get().isChallengeRunning) {
-            get().stopChallenge(variablesState)
+            get().stopChallenge()
         }
     },
     startChallenge: (id: string) => {
@@ -51,7 +51,9 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             startMillis: Date.now()
         })
     },
-    stopChallenge: (variablesState: VariablesRFState) => {
+    stopChallenge: () => {
+        const variablesState = useVariablesStore.getState()
+
         const deltaTimeInSeconds = (Date.now() - (get().startMillis || 0)) / 1000
         const challengeData = get().runningChallengeData
 
