@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 
 export interface TextInputActivityProps {
     task: string,
@@ -11,8 +11,22 @@ export interface TextInputActivityProps {
 export default function TextInputActivity(props: TextInputActivityProps) {
 
     const [input, setInput] = useState("")
+    const [isInputNumber, setIsInputNumber] = useState(false)
 
-    console.log(input)
+    useEffect(() => {
+        setIsInputNumber(
+            props.inputRegex === "[0-9]" ||
+            props.inputRegex === "[0-9]+" ||
+            props.inputRegex === "[0-9]*" ||
+            props.inputRegex === "\d+" ||
+            props.inputRegex === "\d*" ||
+            props.inputRegex === "\d"
+        )
+    }, [props.inputRegex])
+
+    const checkRegex = (value: string): boolean => {
+        return new RegExp("^" + props.inputRegex + "$").test(value)
+    }
 
     const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInput(event.target.value)
@@ -43,15 +57,21 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                     style={{
                         marginLeft: 10
                     }}
-                    type="text"
-                    defaultValue={ input }
+                    type={isInputNumber ? "number" : "text"}
+                    value={ input }
                     className="nodrag"
                     onChange={(event) => {
                         onInputChanged(event)
                     }}
                 />
             </span>
-            <button onClick={ _ => props.onConfirm(input) }>
+            <button onClick={ _ => {
+                if (checkRegex(input)) {
+                    props.onConfirm(input)
+                } else {
+                    console.log("Wrong input format. Expected regex: " + props.inputRegex)
+                }
+            } }>
                 Confirm
             </button>
         </div>
