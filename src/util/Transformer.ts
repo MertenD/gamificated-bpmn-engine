@@ -11,7 +11,7 @@ import {EndNode} from "../nodes/EndNode";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
-import {ChallengeRFState} from "../stores/challengeStore";
+import {useChallengeStore} from "../stores/challengeStore";
 import {NodeMapKey, NodeMapValue} from "../components/Engine";
 
 /**
@@ -24,7 +24,8 @@ import {NodeMapKey, NodeMapValue} from "../components/Engine";
  * }
  */
 
-export function getNodeMap(diagram: BpmnDiagram, challengeState: ChallengeRFState): Map<NodeMapKey, NodeMapValue> {
+export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> {
+    const challengeState = useChallengeStore.getState()
     const nodes = diagram.nodes
     const edges = diagram.edges
     const runnableMap = new Map<NodeMapKey, NodeMapValue>()
