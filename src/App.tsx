@@ -1,60 +1,18 @@
 import React, {useState} from 'react';
 import './App.css';
-import {loadBpmnDiagramFromJson} from "./util/Importer";
-import Engine from "./components/Engine";
-import {getBadgeTypes, getPointTypes, getNodeMap} from "./util/Transformer";
-import {BpmnDiagram} from "./model/Bpmn";
+import Engine, {NodeMap} from "./components/Engine";
 import {useVariablesStore} from "./stores/variablesStore";
-import {useChallengeStore} from "./stores/challengeStore";
+import ProcessUploader from "./components/controls/ProcessUploader";
 
 function App() {
 
     const [nodeMap, setNodeMap] = useState(new Map())
     const variables = useVariablesStore((state) => state.variables)
-    const setVariable = useVariablesStore((state) => state.setVariable)
-    const clearVariables = useVariablesStore((state) => state.clearVariables)
-    const challengeState = useChallengeStore((state) => state)
-
-    const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const bpmnDiagram = await loadBpmnDiagramFromJson(event)
-        if (bpmnDiagram !== undefined) {
-            const nodeMap = getNodeMap(bpmnDiagram, challengeState)
-            setNodeMap(nodeMap)
-            clearVariables()
-            loadPointTypes(bpmnDiagram)
-            loadBadgeTypes(bpmnDiagram)
-        }
-    }
-
-    const loadPointTypes = (bpmnDiagram: BpmnDiagram) => {
-        const pointTypes = getPointTypes(bpmnDiagram)
-        pointTypes.forEach((pointType) => {
-            setVariable(pointType, 0)
-        })
-    }
-
-    const loadBadgeTypes = (bpmnDiagram: BpmnDiagram) => {
-        const badgeTypes = getBadgeTypes(bpmnDiagram)
-        badgeTypes.forEach((badgeType) => {
-            setVariable(badgeType, false)
-        })
-    }
 
     return (
         <div className="App">
             <div style={{ margin: 20, height: "100vh"}}>
-                <span style={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                }}>
-                    Upload process:
-                    <input
-                        style={{ marginBottom: 10, marginLeft: 10 }}
-                        type="file"
-                        onChange={event => onInputFileChanged((event))}
-                    />
-                </span>
+                <ProcessUploader onProcessLoaded={ (nodeMap: NodeMap) => setNodeMap(nodeMap )} />
                 <Engine nodeMap={nodeMap}/>
                 <div style={{
                     display: "flex",
