@@ -9,6 +9,8 @@ export interface EngineProps {
     nodeMap: Map<string, { node: BasicNode, next: Record<string, string> | null }>
 }
 
+// TODO Reset Text field and choices after switching to next node
+
 export default function Engine(props: EngineProps) {
 
     const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()

@@ -6,9 +6,11 @@ import {ActivityType} from "../model/ActivityType";
 import SingleChoiceActivity from "../components/activities/SingleChoiceActivity";
 import MultipleChoiceActivity from "../components/activities/MultipleChoiceActivity";
 import {NodeType} from "../model/NodeType";
-import {ChallengeRFState, RFState} from "../store";
+import {RFState} from "../store";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
+
+// TODO Nach Regex prüfen
 
 export class ActivityNode implements BasicNode {
     id: string

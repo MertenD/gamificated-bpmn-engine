@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {loadBpmnDiagram} from "./util/Importer";
+import {loadBpmnDiagramFromJson} from "./util/Importer";
 import Engine from "./components/Engine";
 import {getBadgeTypes, getPointTypes, transformDiagramToNodeMap} from "./util/Transformer";
 import {useChallengeStore, useStore} from "./store";
@@ -15,7 +15,7 @@ function App() {
     const challengeState = useChallengeStore((state) => state)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const bpmnDiagram = await loadBpmnDiagram(event)
+        const bpmnDiagram = await loadBpmnDiagramFromJson(event)
         if (bpmnDiagram !== undefined) {
             const nodeMap = transformDiagramToNodeMap(bpmnDiagram, challengeState)
             setNodeMap(nodeMap)

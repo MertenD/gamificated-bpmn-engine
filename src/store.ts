@@ -38,6 +38,7 @@ export const useStore = create<RFState>((set, get) => ({
             variables: {}
         })
     },
+    // TODO ignore case
     evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
         if (get().getVariable(variableName) === undefined) {
             return false
