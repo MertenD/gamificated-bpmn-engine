@@ -1,4 +1,3 @@
-// TODO ignore case
 import {Comparison} from "../model/Comparison";
 import {useVariablesStore} from "../stores/variablesStore";
 
@@ -24,5 +23,5 @@ export const evaluateCondition = (variableName: string, comparison: Comparison, 
         }
     }
 
-    return eval(condition)
+    return eval(condition.toLowerCase())
 }
