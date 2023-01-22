@@ -1,4 +1,5 @@
 import React, {useState} from "react"
+import {substituteVariables} from "../../util/Parser";
 
 export interface MultipleChoiceActivityProps {
     task: string,
@@ -33,7 +34,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             justifyContent: 'center',
         }}>
             <div style={{ margin: 10 }}>
-                { props.task }
+                { substituteVariables(props.task) }
             </div>
             <div style={{
                 display: "flex",
@@ -41,7 +42,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                 alignItems: "center",
                 justifyContent: "flex-start"
             }}>
-                {props.choices
+                { substituteVariables(props.choices)
                     .split(",")
                     .map((choice => choice.trim()))
                     .map((option, index) => (

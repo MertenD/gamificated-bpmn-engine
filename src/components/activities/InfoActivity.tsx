@@ -1,4 +1,5 @@
 import React from "react"
+import {substituteVariables} from "../../util/Parser";
 
 export interface InfoActivityProps {
     infoText: string,
@@ -21,7 +22,7 @@ export default function InfoActivity(props: InfoActivityProps) {
             justifyContent: 'center',
         }}>
             <div style={{ margin: 10 }}>
-                { props.infoText }
+                { substituteVariables(props.infoText) }
             </div>
             <button onClick={_ => props.onConfirm()}>
                 Confirm

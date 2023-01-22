@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react"
+import {substituteVariables} from "../../util/Parser";
 
 export interface TextInputActivityProps {
     task: string,
@@ -12,6 +13,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     const [input, setInput] = useState("")
     const [isInputNumber, setIsInputNumber] = useState(false)
+    const [showRegexHint, setShowRegexHint] = useState(false)
 
     useEffect(() => {
         setIsInputNumber(
@@ -52,7 +54,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                 justifyContent: "center",
                 marginBottom: 10
             }}>
-                { props.task + ":" }
+                { substituteVariables(props.task) + ":" }
                 <input
                     style={{
                         marginLeft: 10
@@ -65,11 +67,19 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                     }}
                 />
             </span>
+            { showRegexHint && (
+                <div style={{
+                    color: "tomato",
+                    marginBottom: 10
+                }}>
+                    { "Expected input format: " + props.inputRegex }
+                </div>
+            ) }
             <button onClick={ _ => {
                 if (checkRegex(input)) {
                     props.onConfirm(input)
                 } else {
-                    console.log("Wrong input format. Expected regex: " + props.inputRegex)
+                    setShowRegexHint(true)
                 }
             } }>
                 Confirm

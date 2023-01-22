@@ -5,6 +5,7 @@ import {GamificationType} from "../model/GamificationType";
 import {Comparison} from "../model/Comparison";
 import {ChallengeType} from "../model/ChallengeType";
 import {BadgeGamificationOptions, GamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
+import {useVariablesStore} from "../stores/variablesStore";
 
 export function parseNodeData(type: NodeType, data: any): NodeData {
     switch (type) {
@@ -87,4 +88,14 @@ export function parseBadgeGamificationOptions(options: any): BadgeGamificationOp
         comparison: options.comparison as Comparison,
         valueToCompare: options.valueToCompare
     } as BadgeGamificationOptions
+}
+
+// Substitute all {variableName} values in a string with their corresponding values from the variablesStore.
+// If there is no corresponding value in the store the {} will be removed, and it will substitute with just the variableName
+export function substituteVariables(value: string): string {
+    const regex = /\{(.+?)}/ig
+    const variablesState = useVariablesStore.getState()
+    return value.replaceAll(regex, (_: string, variableName: string) => {
+        return variablesState.getVariable(variableName) || variableName
+    })
 }

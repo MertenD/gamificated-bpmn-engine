@@ -1,5 +1,6 @@
 import {Comparison} from "../model/Comparison";
 import {useVariablesStore} from "../stores/variablesStore";
+import {substituteVariables} from "./Parser";
 
 export const evaluateCondition = (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
     const variablesState = useVariablesStore.getState()
@@ -32,5 +33,5 @@ export const evaluateCondition = (variableName: string, comparison: Comparison, 
         }
     }
 
-    return eval(condition.toLowerCase())
+    return eval(substituteVariables(condition).toLowerCase())
 }
