@@ -1,7 +1,6 @@
 import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
-import {VariablesRFState} from "../stores/variablesStore";
-import {FlowRFState} from "../stores/flowStore";
+import {useFlowStore} from "../stores/flowStore";
 
 export class EndNode implements BasicNode {
     id: string;
@@ -14,7 +13,7 @@ export class EndNode implements BasicNode {
         this.challenge = challenge
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
-        flowState.nextNode()
+    run(): void {
+        useFlowStore.getState().nextNode()
     }
 }

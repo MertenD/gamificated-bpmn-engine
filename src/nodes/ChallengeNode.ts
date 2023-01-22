@@ -1,8 +1,7 @@
 import {BasicNode} from "./BasicNode";
 import {ChallengeNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
-import {VariablesRFState} from "../stores/variablesStore";
-import {FlowRFState} from "../stores/flowStore";
+import {useFlowStore} from "../stores/flowStore";
 
 // TODO Challenge ist eventuell sinnvoller woanders aufzubewahren als in der NodeMap als BasicNode. Dann kann ich auch startChallenge und
 
@@ -19,7 +18,7 @@ export class ChallengeNode implements BasicNode {
         this.data = data
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
-        flowState.nextNode()
+    run(): void {
+        useFlowStore.getState().nextNode()
     }
 }

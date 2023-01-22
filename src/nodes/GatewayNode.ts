@@ -2,8 +2,7 @@ import {BasicNode} from "./BasicNode";
 import {GatewayNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
-import {VariablesRFState} from "../stores/variablesStore";
-import {FlowRFState} from "../stores/flowStore";
+import {useFlowStore} from "../stores/flowStore";
 
 export class GatewayNode implements BasicNode {
     id: string;
@@ -18,7 +17,8 @@ export class GatewayNode implements BasicNode {
         this.data = data
     }
 
-    run(variablesState: VariablesRFState, flowState: FlowRFState): void {
+    run(): void {
+        const flowState = useFlowStore.getState()
         const {
             variableName, comparison, valueToCompare
         } = this.data
