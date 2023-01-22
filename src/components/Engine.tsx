@@ -5,6 +5,7 @@ import {NextNodeKey} from "../model/NextNodeKey";
 import {useChallengeStore} from "../stores/challengeStore";
 import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";
+import ChallengeInfo from "./info/ChallengeInfo";
 
 export type NodeMapNext = Record<string, string> | null
 export type NodeMapKey = string
@@ -48,17 +49,11 @@ export default function Engine(props: EngineProps) {
 
     return (
         <div>
-            { challengeState.isChallengeRunning && (
-                <div style={{ marginTop: 30 }}>
-                    { "You are currently in a time Challenge. You have " +
-                        (challengeState.runningChallengeData?.secondsToComplete || 0)
-                        + " Seconds to complete the green Tasks" }
-                </div>
-            ) }
+            <ChallengeInfo />
             <div style={{ margin: 30 }}>
-            { currentNode !== undefined && (
-                currentNode.node.run(variablesState, flowState, nextNode) || <></>
-            ) }
+                { currentNode !== undefined && (
+                    currentNode.node.run(variablesState, flowState, nextNode) || <></>
+                ) }
             </div>
         </div>
     )
