@@ -3,6 +3,7 @@ import React from "react"
 export interface InfoActivityProps {
     infoText: string,
     onConfirm: () => void
+    isChallenge: boolean
 }
 
 export default function InfoActivity(props: InfoActivityProps) {
@@ -12,7 +13,7 @@ export default function InfoActivity(props: InfoActivityProps) {
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: "white",
+            background: props.isChallenge ? "rgba(200,255,200)" : "white",
             border: "1px solid black",
             display: "flex",
             flexDirection: "column",

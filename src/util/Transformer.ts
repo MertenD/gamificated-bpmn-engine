@@ -11,6 +11,7 @@ import {EndNode} from "../nodes/EndNode";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
+import {ChallengeRFState} from "../store";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -22,15 +23,19 @@ import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/Gami
  * }
  */
 
-export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
+export function transformDiagramToNodeMap(diagram: BpmnDiagram, challengeState: ChallengeRFState): Map<string, { node: BasicNode, next: Record<number, string> | null }> {
     const nodes = diagram.nodes
     const edges = diagram.edges
     const runnableMap = new Map<string, { node: BasicNode, next: Record<string, string> | null }>()
 
     nodes.forEach((node: BpmnNode) => {
-        const { id, type, data } = node
+        const { id, type, challenge, data } = node
+        // TODO permanentere Lösung für das hinzufügen von Challenges finden und Challenges aus der NodeMap entfernen
+        if (type === NodeType.CHALLENGE_NODE) {
+            challengeState.addChallenge(node)
+        }
         runnableMap.set(id, {
-            node: getNodeFromType(type, id, data),
+            node: getNodeFromType(type, id, challenge, data),
             next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce((accumulator: Record<string, string>, edge: BpmnEdge) => {
                 // sourceHandle is "True" or "False" when dealing with gateway nodes
                 if (type === NodeType.GATEWAY_NODE && edge.sourceHandle !== null) {
@@ -50,20 +55,20 @@ export function transformDiagramToNodeMap(diagram: BpmnDiagram): Map<string, { n
     return runnableMap
 }
 
-function getNodeFromType(type: NodeType, id: string, data: NodeData | undefined): BasicNode {
+function getNodeFromType(type: NodeType, id: string, challenge: string | undefined, data: NodeData | undefined): BasicNode {
     switch (type) {
         case NodeType.ACTIVITY_NODE:
-            return new ActivityNode(id, data as ActivityNodeData)
+            return new ActivityNode(id, challenge, data as ActivityNodeData)
         case NodeType.GATEWAY_NODE:
-            return new GatewayNode(id, data as GatewayNodeData)
+            return new GatewayNode(id, challenge, data as GatewayNodeData)
         case NodeType.CHALLENGE_NODE:
             return new ChallengeNode(id, data as ChallengeNodeData)
         case NodeType.INFO_NODE:
-            return new InfoNode(id, data as InfoNodeData)
+            return new InfoNode(id, challenge, data as InfoNodeData)
         case NodeType.START_NODE:
-            return new StartNode(id)
+            return new StartNode(id, challenge)
         case NodeType.END_NODE:
-            return new EndNode(id)
+            return new EndNode(id, challenge)
     }
 }
 

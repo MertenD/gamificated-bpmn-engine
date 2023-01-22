@@ -47,7 +47,8 @@ export function parseChallengeNodeData(data: any): ChallengeNodeData {
         challengeType: data.challengeType as ChallengeType,
         secondsToComplete: data.secondsToComplete,
         rewardType: data.rewardType as GamificationType,
-        gamificationOptions: parseGamificationOptions(data.rewardType, data.gamificationOptions)
+        gamificationOptions: parseGamificationOptions(data.rewardType, data.gamificationOptions),
+        children: data.children
     } as ChallengeNodeData
 }
 

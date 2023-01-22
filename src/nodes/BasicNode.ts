@@ -5,6 +5,7 @@ import {RFState} from "../store";
 
 export interface BasicNode {
     id: string
-    nodeType: NodeType
+    nodeType: NodeType,
+    challenge: string | undefined
     run: (state: RFState, nextNode: (conditionResult?: NextNodeKey) => void) => React.ReactNode | void
 }

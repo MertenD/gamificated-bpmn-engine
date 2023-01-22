@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import {BasicNode} from "../nodes/BasicNode";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
-import {useStore} from "../store";
+import {useChallengeStore, useStore} from "../store";
 
 // TODO Irgendwie will ich den Map Typen in einen eigenen type auslagern, weil ich den an mehreren Stellen (Engine, App, Transformer) benutze
 export interface EngineProps {
@@ -13,8 +13,11 @@ export default function Engine(props: EngineProps) {
 
     const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()
     const state = useStore((state) => state)
+    const challengeState = useChallengeStore((state) => state)
+    const [timeRemaining, setTimeRemaining] = useState(0)
 
     useEffect(() => {
+        console.log("NodeMap", props.nodeMap)
         const firstNode = Array.from(props.nodeMap.values()).find(({node}) =>
             node.nodeType === NodeType.START_NODE
         );
@@ -31,6 +34,7 @@ export default function Engine(props: EngineProps) {
         const newNode = props.nodeMap.get(currentNode.next[nextNodeKey])
         if (newNode) {
             setCurrentNode(newNode)
+            state.handleChallengeStartAndStop(newNode.node.challenge, challengeState)
         }
     }
 
@@ -40,9 +44,18 @@ export default function Engine(props: EngineProps) {
 
     return (
         <div>
+            { challengeState.isChallengeRunning && (
+                <div style={{ marginTop: 30 }}>
+                    { "You are currently in a time Challenge. You have " +
+                        ((challengeState.runningChallengeData?.secondsToComplete || 0) - (Date.now() - (challengeState.startMillis || 0)) / 1000)
+                        + " Seconds to complete the green Tasks" }
+                </div>
+            ) }
+            <div style={{ margin: 30 }}>
             { currentNode !== undefined && (
                 currentNode.node.run(state, nextNode) || <></>
             ) }
+            </div>
         </div>
     )
 }

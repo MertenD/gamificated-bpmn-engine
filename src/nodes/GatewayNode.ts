@@ -1,18 +1,19 @@
 import {BasicNode} from "./BasicNode";
 import {GatewayNodeData} from "../model/NodeData";
-import React from "react";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
-import {RFState} from "../store";
+import {ChallengeRFState, RFState} from "../store";
 
 export class GatewayNode implements BasicNode {
     id: string;
     nodeType: NodeType
+    challenge: string | undefined
     private data: GatewayNodeData
 
-    constructor(id: string, data: GatewayNodeData) {
+    constructor(id: string, challenge: string | undefined, data: GatewayNodeData) {
         this.id = id
         this.nodeType = NodeType.GATEWAY_NODE
+        this.challenge = challenge
         this.data = data
     }
 

@@ -1,18 +1,22 @@
 import {BasicNode} from "./BasicNode";
 import {ChallengeNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
-import {RFState} from "../store";
+import {ChallengeRFState, RFState} from "../store";
 
 // TODO Die Challenge wird stand jetzt gar nicht berücksichtigt
+// TODO Challenge ist eventuell sinnvoller woanders aufzubewahren als in der NodeMap als BasicNode. Dann kann ich auch startChallenge und
+// StopChallenge als Pflichtfunktionen bei BasicNode einbauen
 
 export class ChallengeNode implements BasicNode {
     id: string;
     nodeType: NodeType
+    challenge: undefined
     private data: ChallengeNodeData
 
     constructor(id: string, data: ChallengeNodeData) {
         this.id = id
         this.nodeType = NodeType.CHALLENGE_NODE
+        this.challenge = undefined
         this.data = data
     }
 

@@ -9,10 +9,11 @@ export const loadBpmnDiagram = (changeEvent: any): Promise<BpmnDiagram> => {
         fileReader.onload = progressEvent => {
             if (progressEvent.target !== null) {
                 const bpmnDto = JSON.parse(String(progressEvent.target.result)) as BpmnDto
-                const nodes: BpmnNode[] = bpmnDto.nodes.map(({ id, type, data }) => {
+                const nodes: BpmnNode[] = bpmnDto.nodes.map(({ id, type, parentNode, data }) => {
                     return {
                         id: id,
                         type: type as NodeType,
+                        challenge: parentNode,
                         data: parseNodeData(type as NodeType, data)
                     } as BpmnNode
                 })

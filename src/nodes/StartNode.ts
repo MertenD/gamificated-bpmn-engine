@@ -1,15 +1,16 @@
 import {BasicNode} from "./BasicNode";
-import React from "react";
 import {NodeType} from "../model/NodeType";
-import {RFState} from "../store";
+import {ChallengeRFState, RFState} from "../store";
 
 export class StartNode implements BasicNode {
     id: string;
     nodeType: NodeType
+    challenge: string | undefined
 
-    constructor(id: string) {
+    constructor(id: string, challenge: string | undefined) {
         this.id = id
         this.nodeType = NodeType.START_NODE
+        this.challenge = challenge
     }
 
     run(state: RFState, nextNode: () => void): void {

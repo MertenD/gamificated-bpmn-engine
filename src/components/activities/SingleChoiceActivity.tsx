@@ -5,6 +5,7 @@ export interface SingleChoiceActivityProps {
     choices: string,
     variableName: string,
     onConfirm: (input: string) => void
+    isChallenge: boolean
 }
 
 export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
@@ -22,7 +23,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: "white",
+            background: props.isChallenge ? "rgba(200,255,200)" : "white",
             border: "1px solid black",
             display: "flex",
             flexDirection: "column",

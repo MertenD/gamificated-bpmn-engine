@@ -6,18 +6,20 @@ import {ActivityType} from "../model/ActivityType";
 import SingleChoiceActivity from "../components/activities/SingleChoiceActivity";
 import MultipleChoiceActivity from "../components/activities/MultipleChoiceActivity";
 import {NodeType} from "../model/NodeType";
-import {RFState} from "../store";
+import {ChallengeRFState, RFState} from "../store";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 
 export class ActivityNode implements BasicNode {
     id: string
     nodeType: NodeType
+    challenge: string | undefined
     private data: ActivityNodeData
 
-    constructor(id: string, data: ActivityNodeData) {
+    constructor(id: string, challenge: string | undefined, data: ActivityNodeData) {
         this.id = id
         this.nodeType = NodeType.ACTIVITY_NODE
+        this.challenge = challenge
         this.data = data
     }
 
@@ -73,27 +75,33 @@ export class ActivityNode implements BasicNode {
     }
 
     run(state: RFState, nextNode: () => void): React.ReactNode {
+
+        const isChallenge = this.challenge !== undefined
+
         switch (this.data.activityType) {
             case ActivityType.TEXT_INPUT:
                 return React.createElement(TextInputActivity, {
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) }
+                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) },
+                    isChallenge
                 })
             case ActivityType.SINGLE_CHOICE:
                 return React.createElement(SingleChoiceActivity, {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) }
+                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) },
+                    isChallenge
                 })
             case ActivityType.MULTIPLE_CHOICE:
                 return React.createElement(MultipleChoiceActivity, {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) }
+                    onConfirm: (input) => { this.onConfirm(state, input, nextNode) },
+                    isChallenge
                 })
         }
     }

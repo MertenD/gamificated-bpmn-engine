@@ -5,6 +5,7 @@ export interface TextInputActivityProps {
     inputRegex: string,
     variableName: string,
     onConfirm: (input: string) => void
+    isChallenge: boolean
 }
 
 export default function TextInputActivity(props: TextInputActivityProps) {
@@ -22,7 +23,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: "white",
+            background: props.isChallenge ? "rgba(200,255,200)" : "white",
             border: "1px solid black",
             display: "flex",
             flexDirection: "column",

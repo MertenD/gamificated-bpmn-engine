@@ -20,5 +20,6 @@ export type BpmnEdge = {
 export type BpmnNode = {
     id: string,
     type: NodeType,
+    challenge: string | undefined
     data: NodeData
 }

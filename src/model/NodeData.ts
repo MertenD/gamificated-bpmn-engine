@@ -28,6 +28,7 @@ export interface ChallengeNodeData extends NodeData {
     secondsToComplete: number
     rewardType: GamificationType
     gamificationOptions: GamificationOptions
+    children: string[]
 }
 
 export interface InfoNodeData extends NodeData {
