@@ -1,6 +1,4 @@
 import create from "zustand";
-import {Comparison} from "../model/Comparison";
-import {useVariablesStore} from "./variablesStore";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {NodeMap, NodeMapValue} from "../components/Engine";
 import {useChallengeStore} from "./challengeStore";
@@ -13,7 +11,6 @@ export type FlowRFState = {
     getFirstNode: () => NodeMapValue | null
     setCurrentNode: (newNode: NodeMapValue | null) => void
     nextNode: (nextNodeKey?: NextNodeKey) => void
-    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string) => boolean
 }
 
 export const useFlowStore = create<FlowRFState>((set, get) => ({
@@ -51,29 +48,5 @@ export const useFlowStore = create<FlowRFState>((set, get) => ({
                 useChallengeStore.getState().handleChallengeStartAndStop(newNode.node.challenge)
             }
         }
-    },
-    // TODO ignore case
-    evaluateCondition: (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
-        const variablesState = useVariablesStore.getState()
-
-        if (variablesState.getVariable(variableName) === undefined) {
-            return false
-        }
-
-        let condition
-        // When the variable is an array both the variable and the valueToCompare converted to an array should be sorted
-        // before creating the condition
-        if (Array.isArray(variablesState.getVariable(variableName))) {
-            const sortedVariable = variablesState.getVariable(variableName).sort().toString()
-            const sortedValueToCompare = valueToCompare.split(",").map(value => value.trim()).sort().toString()
-            condition = "\"" + sortedVariable + "\"" + comparison.valueOf() + "\"" + sortedValueToCompare + "\""
-        } else {
-            if (comparison === Comparison.EQUALS || comparison === Comparison.NOT_EQUALS) {
-                condition = "\"" + variablesState.getVariable(variableName) + "\"" + comparison.valueOf() + "\"" + valueToCompare + "\""
-            } else {
-                condition = variablesState.getVariable(variableName) + comparison.valueOf() + valueToCompare
-            }
-        }
-        return eval(condition)
-    },
+    }
 }))

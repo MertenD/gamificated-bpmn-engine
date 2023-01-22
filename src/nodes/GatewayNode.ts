@@ -3,6 +3,7 @@ import {GatewayNodeData} from "../model/NodeData";
 import {NodeType} from "../model/NodeType";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {useFlowStore} from "../stores/flowStore";
+import {evaluateCondition} from "../util/ConditionHelper";
 
 export class GatewayNode implements BasicNode {
     id: string;
@@ -23,7 +24,7 @@ export class GatewayNode implements BasicNode {
             variableName, comparison, valueToCompare
         } = this.data
 
-        if (flowState.evaluateCondition(variableName, comparison, valueToCompare)) {
+        if (evaluateCondition(variableName, comparison, valueToCompare)) {
             flowState.nextNode(NextNodeKey.TRUE)
         } else {
             flowState.nextNode(NextNodeKey.FALSE)
