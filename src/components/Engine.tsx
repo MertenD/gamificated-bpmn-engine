@@ -14,7 +14,6 @@ export default function Engine(props: EngineProps) {
     const [currentNode, setCurrentNode] = useState<{ node: BasicNode, next: Record<string, string> | null }>()
     const state = useStore((state) => state)
     const challengeState = useChallengeStore((state) => state)
-    const [timeRemaining, setTimeRemaining] = useState(0)
 
     useEffect(() => {
         console.log("NodeMap", props.nodeMap)
@@ -47,7 +46,7 @@ export default function Engine(props: EngineProps) {
             { challengeState.isChallengeRunning && (
                 <div style={{ marginTop: 30 }}>
                     { "You are currently in a time Challenge. You have " +
-                        ((challengeState.runningChallengeData?.secondsToComplete || 0) - (Date.now() - (challengeState.startMillis || 0)) / 1000)
+                        (challengeState.runningChallengeData?.secondsToComplete || 0)
                         + " Seconds to complete the green Tasks" }
                 </div>
             ) }
