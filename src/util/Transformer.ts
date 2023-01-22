@@ -4,14 +4,12 @@ import {BasicNode} from "../nodes/BasicNode";
 import {ActivityNodeData, ChallengeNodeData, GatewayNodeData, InfoNodeData, NodeData} from "../model/NodeData";
 import {ActivityNode} from "../nodes/ActivityNode";
 import {GatewayNode} from "../nodes/GatewayNode";
-import {ChallengeNode} from "../nodes/ChallengeNode";
 import {InfoNode} from "../nodes/InfoNode";
 import {StartNode} from "../nodes/StartNode";
 import {EndNode} from "../nodes/EndNode";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
-import {useChallengeStore} from "../stores/challengeStore";
 import {NodeMapKey, NodeMapValue} from "../components/Engine";
 
 /**
@@ -25,19 +23,19 @@ import {NodeMapKey, NodeMapValue} from "../components/Engine";
  */
 
 export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> {
-    const challengeState = useChallengeStore.getState()
     const nodes = diagram.nodes
     const edges = diagram.edges
     const runnableMap = new Map<NodeMapKey, NodeMapValue>()
 
-    nodes.forEach((node: BpmnNode) => {
+    // Loop through all nodes except challenge nodes. They are handles separately in the getChallenges() method
+    nodes.filter((node: BpmnNode) => node.type !== NodeType.CHALLENGE_NODE).forEach((node: BpmnNode) => {
         const { id, type, challenge, data } = node
-        // TODO permanentere Lösung für das hinzufügen von Challenges finden und Challenges aus der NodeMap entfernen
-        if (type === NodeType.CHALLENGE_NODE) {
-            challengeState.addChallenge(node)
+        const basicNode = getNodeFromType(type, id, challenge, data)
+        if (basicNode === null) {
+            return
         }
         runnableMap.set(id, {
-            node: getNodeFromType(type, id, challenge, data),
+            node: basicNode,
             next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce((accumulator: Record<string, string>, edge: BpmnEdge) => {
                 // sourceHandle is "True" or "False" when dealing with gateway nodes
                 if (type === NodeType.GATEWAY_NODE && edge.sourceHandle !== null) {
@@ -57,20 +55,26 @@ export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> 
     return runnableMap
 }
 
-function getNodeFromType(type: NodeType, id: string, challenge: string | undefined, data: NodeData | undefined): BasicNode {
+export function getChallenges(diagram: BpmnDiagram): BpmnNode[] {
+    return diagram.nodes.filter((node: BpmnNode) => node.type === NodeType.CHALLENGE_NODE)
+}
+
+function getNodeFromType(type: NodeType, id: string, challenge: string | undefined, data: NodeData | undefined): BasicNode | null {
     switch (type) {
         case NodeType.ACTIVITY_NODE:
             return new ActivityNode(id, challenge, data as ActivityNodeData)
         case NodeType.GATEWAY_NODE:
             return new GatewayNode(id, challenge, data as GatewayNodeData)
-        case NodeType.CHALLENGE_NODE:
-            return new ChallengeNode(id, data as ChallengeNodeData)
         case NodeType.INFO_NODE:
             return new InfoNode(id, challenge, data as InfoNodeData)
         case NodeType.START_NODE:
             return new StartNode(id, challenge)
         case NodeType.END_NODE:
             return new EndNode(id, challenge)
+        case NodeType.CHALLENGE_NODE:
+            // Challenge node is handled separately in the challengeStore and is retrieved with the getChallenges() method
+            // It has no Class that implements BasicNode like the rest of the nodes
+            return null
     }
 }
 

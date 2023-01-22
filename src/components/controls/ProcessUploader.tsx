@@ -1,34 +1,47 @@
 import React from "react"
-import {loadBpmnDiagramFromJson} from "../../util/Importer";
-import {getBadgeTypes, getNodeMap, getPointTypes} from "../../util/Transformer";
+import {parseBpmnDiagramFromJson} from "../../util/Importer";
+import {getBadgeTypes, getChallenges, getNodeMap, getPointTypes} from "../../util/Transformer";
 import {BpmnDiagram} from "../../model/Bpmn";
 import {useVariablesStore} from "../../stores/variablesStore";
 import {useFlowStore} from "../../stores/flowStore";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export default function ProcessUploader() {
 
     const setVariable = useVariablesStore((state) => state.setVariable)
     const clearVariables = useVariablesStore((state) => state.clearVariables)
     const setNodeMap = useFlowStore((state) => state.setNodeMap)
+    const setChallenges = useChallengeStore((state) => state.setChallenges)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const bpmnDiagram = await loadBpmnDiagramFromJson(event)
+        const bpmnDiagram = await parseBpmnDiagramFromJson(event)
         if (bpmnDiagram !== undefined) {
             clearVariables()
-            loadPointTypes(bpmnDiagram)
-            loadBadgeTypes(bpmnDiagram)
-            setNodeMap(getNodeMap(bpmnDiagram))
+            loadNodeMapIntoStore(bpmnDiagram)
+            loadChallengesIntoStore(bpmnDiagram)
+            loadPointTypesIntoStore(bpmnDiagram)
+            loadBadgeTypesIntoStore(bpmnDiagram)
         }
     }
 
-    const loadPointTypes = (bpmnDiagram: BpmnDiagram) => {
+    const loadNodeMapIntoStore = (bpmnDiagram: BpmnDiagram) => {
+        const nodeMap = getNodeMap(bpmnDiagram)
+        setNodeMap(nodeMap)
+    }
+
+    const loadChallengesIntoStore = (bpmnDiagram: BpmnDiagram) => {
+        const challenges = getChallenges(bpmnDiagram)
+        setChallenges(challenges)
+    }
+
+    const loadPointTypesIntoStore = (bpmnDiagram: BpmnDiagram) => {
         const pointTypes = getPointTypes(bpmnDiagram)
         pointTypes.forEach((pointType) => {
             setVariable(pointType, 0)
         })
     }
 
-    const loadBadgeTypes = (bpmnDiagram: BpmnDiagram) => {
+    const loadBadgeTypesIntoStore = (bpmnDiagram: BpmnDiagram) => {
         const badgeTypes = getBadgeTypes(bpmnDiagram)
         badgeTypes.forEach((badgeType) => {
             setVariable(badgeType, false)

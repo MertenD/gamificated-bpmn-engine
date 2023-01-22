@@ -2,7 +2,7 @@ import {BpmnDiagram, BpmnDto, BpmnEdge, BpmnNode} from "../model/Bpmn";
 import {NodeType} from "../model/NodeType";
 import {parseNodeData} from "./Parser";
 
-export const loadBpmnDiagramFromJson = (changeEvent: any): Promise<BpmnDiagram> => {
+export const parseBpmnDiagramFromJson = (changeEvent: any): Promise<BpmnDiagram> => {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.readAsText(changeEvent.target.files[0], "UTF-8");
