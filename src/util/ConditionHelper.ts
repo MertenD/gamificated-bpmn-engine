@@ -2,36 +2,43 @@ import {Comparison} from "../model/Comparison";
 import {useVariablesStore} from "../stores/variablesStore";
 import {substituteVariables} from "./Parser";
 
-export const evaluateCondition = (variableName: string, comparison: Comparison, valueToCompare: string): boolean => {
-    const variablesState = useVariablesStore.getState()
-    const value = variablesState.getVariable(variableName)
+// TODO Test schreiben
+export const evaluateCondition = (value1: string, comparison: Comparison, value2: string): boolean => {
 
-    if (variablesState.getVariable(variableName) === undefined) {
-        return false
-    }
+    const variablesState = useVariablesStore.getState()
 
     let condition
-    // When the variable is an array both the variable and the valueToCompare converted to an array should be sorted
-    // before creating the condition
-    if (Array.isArray(value)) {
+    if (Array.isArray(variablesState.getVariable(value1)) || Array.isArray(variablesState.getVariable(value2))) {
 
-        const sortedVariable = value.sort().toString()
-        const sortedValueToCompare = valueToCompare.split(",").map(value => value.trim()).sort().toString()
+        let sortedValue1String
+        if (Array.isArray(variablesState.getVariable(value1))) {
+            sortedValue1String = variablesState.getVariable(value1).sort().toString()
+        } else {
+            sortedValue1String = value1.split(",").map(value => value.trim()).sort().toString()
+        }
 
-        condition = "\"" + sortedVariable + "\"" + comparison.valueOf() + "\"" + sortedValueToCompare + "\""
+        let sortedValue2String
+        if (Array.isArray(variablesState.getVariable(value2))) {
+            sortedValue2String = variablesState.getVariable(value2).sort().toString()
+        } else {
+            sortedValue2String = value2.split(",").map(value => value.trim()).sort().toString()
+        }
+
+        condition = "\"" + sortedValue1String + "\"" + comparison.valueOf() + "\"" + sortedValue2String + "\""
+
     } else {
 
-        // Return false for >,<,>=,<= when one of the inputs is empty
-        if (comparison !== Comparison.EQUALS && comparison !== Comparison.NOT_EQUALS && (value === "" || valueToCompare == "")) {
+        if (comparison !== Comparison.EQUALS && comparison !== Comparison.NOT_EQUALS && (value1 === "" || value2 == "")) {
             return false
         }
 
         if (comparison === Comparison.EQUALS || comparison === Comparison.NOT_EQUALS) {
-            condition = "\"" + value + "\"" + comparison.valueOf() + "\"" + valueToCompare + "\""
+            condition = "\"" + value1 + "\"" + comparison.valueOf() + "\"" + value2 + "\""
         } else {
-            condition = value + comparison.valueOf() + valueToCompare
+            condition = value1 + comparison.valueOf() + value2
         }
+
     }
 
-    return eval(substituteVariables(condition).toLowerCase())
+    return eval(substituteVariables(condition))
 }

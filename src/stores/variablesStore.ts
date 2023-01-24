@@ -14,6 +14,7 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
         return get().variables[name]
     },
     setVariable: (name: string, value: any) => {
+        name = name.replaceAll("{", "").replaceAll("}", "")
         const oldVariables = get().variables
         const newVariables = {
             ...oldVariables,
