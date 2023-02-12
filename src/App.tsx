@@ -19,7 +19,7 @@ function App() {
                     textAlign: "left"
                 }}>
                     { Object.keys(variables).map((name) => {
-                        return <div key={name} style={{ marginTop: 10 }}>
+                        return <div key={name} style={{ marginTop: 10, color: "white" }}>
                             { name + ": " + variables[name] }
                         </div>
                     }) }

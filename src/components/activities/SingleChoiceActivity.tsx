@@ -22,21 +22,21 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "rgba(200,255,200)" : "white",
-            border: "1px solid black",
+            background: props.isChallenge ? "rgba(200,255,200)" : "#363638",
+            border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <div style={{ margin: 10 }}>
+            <div style={{ margin: 20, color: "white", fontSize: 30 }}>
                 { substituteVariables(props.task) }
             </div>
             <div style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "flex-start"
+                alignItems: "stretch",
+                justifyContent: "flex-start",
             }}>
                 { Array.from(new Set(
                     substituteVariables(props.choices)
@@ -44,7 +44,17 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                         .map((choice => choice.trim()))
                     ))
                     .map((option, index) => (
-                        <div style={{ margin: 5, alignSelf: "flex-start" }} key={index}>
+                        <div style={{
+                            margin: 5,
+                            paddingLeft: 10,
+                            paddingRight: 100,
+                            paddingTop: 15,
+                            paddingBottom: 15,
+                            borderRadius: 10,
+                            backgroundColor: "#22935B",
+                            display: "flex",
+                            flexDirection: "row"
+                        }} key={index}>
                             <input
                                 type="radio"
                                 id={option}
@@ -52,12 +62,27 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                                 value={option}
                                 checked={selected === option}
                                 onChange={handleOptionChange}
+                                style={{
+                                    marginRight: 70
+                                }}
                             />
-                            <label htmlFor={option}>{option}</label>
+                            <label htmlFor={option} style={{
+                                color: "white"
+                            }} >
+                                {option}
+                            </label>
                         </div>
                     ))}
-            </div>
-            <button style={{ margin: 10 }} onClick={_ => props.onConfirm(selected)}>
+                </div>
+            <button style={{
+                margin: 20,
+                paddingLeft: 60,
+                paddingRight: 60,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderRadius: 10,
+                borderColor: "transparent"
+            }} onClick={_ => props.onConfirm(selected)}>
                 Confirm
             </button>
         </div>

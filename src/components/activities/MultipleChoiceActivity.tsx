@@ -26,14 +26,14 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "rgba(200,255,200)" : "white",
-            border: "1px solid black",
+            background: props.isChallenge ? "rgba(200,255,200)" : "#363638",
+            border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <div style={{ margin: 10 }}>
+            <div style={{ margin: 10, color: "white" }}>
                 { substituteVariables(props.task) }
             </div>
             <div style={{
@@ -61,7 +61,15 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         </div>
                     ))}
             </div>
-            <button style={{ margin: 10 }} onClick={_ => props.onConfirm(selected)}>
+            <button style={{
+                margin: 20,
+                paddingLeft: 60,
+                paddingRight: 60,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderRadius: 10,
+                borderColor: "transparent"
+            }} onClick={_ => props.onConfirm(selected)}>
                 Confirm
             </button>
         </div>

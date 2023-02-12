@@ -53,6 +53,7 @@ export default function ProcessUploader() {
             width: "100%",
             display: "flex",
             flexDirection: "row",
+            color: "white"
         }}>
             Upload process:
             <input
