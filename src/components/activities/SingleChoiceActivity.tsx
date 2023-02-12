@@ -38,9 +38,11 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                 alignItems: "center",
                 justifyContent: "flex-start"
             }}>
-                { substituteVariables(props.choices)
-                    .split(",")
-                    .map((choice => choice.trim()))
+                { Array.from(new Set(
+                    substituteVariables(props.choices)
+                        .split(",")
+                        .map((choice => choice.trim()))
+                    ))
                     .map((option, index) => (
                         <div style={{ margin: 5, alignSelf: "flex-start" }} key={index}>
                             <input
