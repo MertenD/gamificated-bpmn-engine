@@ -21,6 +21,15 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
         }
     };
 
+    const handleClick = (event: any) => {
+        const target = event.currentTarget.querySelector("input");
+        if (!target.checked) {
+            setSelected([...selected, target.value]);
+        } else {
+            setSelected(selected.filter(item => item !== target.value));
+        }
+    };
+
     return (
         <div style={{
             margin: 10,
@@ -39,7 +48,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             <div style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
+                alignItems: "stretch",
                 justifyContent: "flex-start"
             }}>
                 { Array.from(new Set(
@@ -48,16 +57,34 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         .map((choice => choice.trim()))
                     ))
                     .map((option, index) => (
-                        <div style={{ margin: 5, alignSelf: "flex-start" }} key={index}>
+                        <div style={{
+                            margin: 5,
+                            paddingLeft: 10,
+                            paddingRight: 100,
+                            paddingTop: 15,
+                            paddingBottom: 15,
+                            borderRadius: 10,
+                            backgroundColor: "#22935B",
+                            display: "flex",
+                            flexDirection: "row",
+                        }} key={index} onClick={ handleClick }>
                             <input
                                 type="checkbox"
                                 id={option}
                                 name={option}
                                 value={option}
                                 checked={selected.includes(option)}
-                                onChange={handleOptionChange}
+                                onChange={ handleOptionChange }
+                                style={{
+                                    marginRight: 70,
+                                    color: "black"
+                                }}
                             />
-                            <label htmlFor={option}>{option}</label>
+                            <label htmlFor={option} style={{
+                                color: "white"
+                            }}>
+                                {option}
+                            </label>
                         </div>
                     ))}
             </div>

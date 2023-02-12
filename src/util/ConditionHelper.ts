@@ -16,9 +16,8 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
 
         let array1: string[]
         if (Array.isArray(variablesState.getVariable(value1))) {
-            console.log("Value1 ist array")
             array1 = variablesState.getVariable(value1).map((value: string) => {
-                substituteVariables(value)
+                return substituteVariables(value)
             }).sort()
         } else {
             array1 = substituteVariables(value1)
@@ -31,9 +30,8 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
 
         let array2: string[]
         if (Array.isArray(variablesState.getVariable(value2))) {
-            console.log("Value1 ist array")
             array2 = variablesState.getVariable(value2).map((value: string) => {
-                substituteVariables(value)
+                return substituteVariables(value)
             }).sort()
         } else {
             array2 = substituteVariables(value2)
