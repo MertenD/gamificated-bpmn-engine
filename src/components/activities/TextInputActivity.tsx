@@ -27,6 +27,9 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     }, [props.inputRegex])
 
     const checkRegex = (value: string): boolean => {
+        if (props.inputRegex === "") {
+            return true
+        }
         return new RegExp("^" + props.inputRegex + "$").test(value)
     }
 
