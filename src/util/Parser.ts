@@ -37,9 +37,9 @@ export function parseActivityNodeData(data: any): ActivityNodeData {
 
 export function parseGatewayNodeData(data: any): GatewayNodeData {
     return {
-        variableName: data.variableName,
+        value1: data.value1,
         comparison: data.comparison as Comparison,
-        valueToCompare: data.valueToCompare
+        value2: data.value2
     } as GatewayNodeData
 }
 
@@ -74,9 +74,9 @@ export function parsePointsGamificationOptions(options: any): PointsGamification
         pointType: options.pointType,
         pointsForSuccess: options.pointsForSuccess,
         hasCondition: options.hasCondition,
-        variableName: options.variableName,
+        value1: options.variableName,
         comparison: options.comparison as Comparison,
-        valueToCompare: options.valueToCompare
+        value2: options.valueToCompare
     } as PointsGamificationOptions
 }
 
@@ -84,9 +84,9 @@ export function parseBadgeGamificationOptions(options: any): BadgeGamificationOp
     return {
         badgeType: options.badgeType,
         hasCondition: options.hasCondition,
-        variableName: options.variableName,
+        value1: options.variableName,
         comparison: options.comparison as Comparison,
-        valueToCompare: options.valueToCompare
+        value2: options.valueToCompare
     } as BadgeGamificationOptions
 }
 

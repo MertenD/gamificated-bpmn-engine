@@ -18,9 +18,9 @@ export interface ActivityNodeData extends NodeData {
 }
 
 export interface GatewayNodeData extends NodeData {
-    variableName: string,
+    value1: string,
     comparison: Comparison,
-    valueToCompare: string
+    value2: string
 }
 
 export interface ChallengeNodeData extends NodeData {

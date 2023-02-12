@@ -10,21 +10,44 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
     let condition
     if (Array.isArray(variablesState.getVariable(value1)) || Array.isArray(variablesState.getVariable(value2))) {
 
-        let sortedValue1String
+        if (comparison !== Comparison.EQUALS && comparison !== Comparison.NOT_EQUALS) {
+            return false
+        }
+
+        let array1: string[]
         if (Array.isArray(variablesState.getVariable(value1))) {
-            sortedValue1String = variablesState.getVariable(value1).sort().toString()
+            console.log("Value1 ist array")
+            array1 = variablesState.getVariable(value1).map((value: string) => {
+                substituteVariables(value)
+            }).sort()
         } else {
-            sortedValue1String = value1.split(",").map(value => value.trim()).sort().toString()
+            array1 = substituteVariables(value1)
+                .replaceAll("[", "")
+                .replaceAll("]", "")
+                .split(",")
+                .map(value => value.trim())
+                .sort()
         }
 
-        let sortedValue2String
+        let array2: string[]
         if (Array.isArray(variablesState.getVariable(value2))) {
-            sortedValue2String = variablesState.getVariable(value2).sort().toString()
+            console.log("Value1 ist array")
+            array2 = variablesState.getVariable(value2).map((value: string) => {
+                substituteVariables(value)
+            }).sort()
         } else {
-            sortedValue2String = value2.split(",").map(value => value.trim()).sort().toString()
+            array2 = substituteVariables(value2)
+                .replaceAll("[", "")
+                .replaceAll("]", "")
+                .split(",")
+                .map(value => value.trim())
+                .sort()
         }
 
-        condition = "\"" + sortedValue1String + "\"" + comparison.valueOf() + "\"" + sortedValue2String + "\""
+        const isArray1InArray2 =  array1.every(a => array2.some(b => a === b))
+        const isArray2InArray1 =  array2.every(b => array1.some(a => b === a))
+
+        return isArray1InArray2 && isArray2InArray1
 
     } else {
 
@@ -40,5 +63,6 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
 
     }
 
+    console.log("Condition", substituteVariables(condition))
     return eval(substituteVariables(condition))
 }

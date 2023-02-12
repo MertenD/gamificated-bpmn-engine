@@ -31,6 +31,7 @@ export class ActivityNode implements BasicNode {
         const variablesState = useVariablesStore.getState()
         const flowState = useFlowStore.getState()
 
+        console.log("Input", input)
         variablesState.setVariable(this.data.variableName, input)
         this.applyGamification(variablesState)
         flowState.nextNode()
@@ -51,11 +52,11 @@ export class ActivityNode implements BasicNode {
 
     applyPointsGamification = (variablesState: VariablesRFState) => {
         const {
-            pointType, pointsForSuccess, hasCondition, variableName, comparison, valueToCompare
+            pointType, pointsForSuccess, hasCondition, value1, comparison, value2
         } = this.data.gamificationOptions as PointsGamificationOptions
 
         if (hasCondition as boolean) {
-            if (evaluateCondition(variableName, comparison, valueToCompare)) {
+            if (evaluateCondition(value1, comparison, value2)) {
                 variablesState.addToVariable(pointType, pointsForSuccess)
             }
         } else {
@@ -65,11 +66,11 @@ export class ActivityNode implements BasicNode {
 
     applyBadgeGamification = (variablesState: VariablesRFState) => {
         const {
-            badgeType, hasCondition, variableName, comparison, valueToCompare
+            badgeType, hasCondition, value1, comparison, value2
         } = this.data.gamificationOptions as BadgeGamificationOptions
 
         if (hasCondition as boolean) {
-            if (evaluateCondition(variableName, comparison, valueToCompare)) {
+            if (evaluateCondition(value1, comparison, value2)) {
                 variablesState.setVariable(badgeType, true)
             }
         } else {

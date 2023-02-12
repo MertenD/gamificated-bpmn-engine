@@ -19,12 +19,13 @@ export class GatewayNode implements BasicNode {
     }
 
     run(): void {
+        console.log("Gateway data", this.data)
         const flowState = useFlowStore.getState()
         const {
-            variableName, comparison, valueToCompare
+            value1, comparison, value2
         } = this.data
 
-        if (evaluateCondition(variableName, comparison, valueToCompare)) {
+        if (evaluateCondition(value1, comparison, value2)) {
             flowState.nextNode(NextNodeKey.TRUE)
         } else {
             flowState.nextNode(NextNodeKey.FALSE)
