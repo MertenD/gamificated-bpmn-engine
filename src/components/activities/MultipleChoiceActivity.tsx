@@ -23,7 +23,8 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
 
     const handleClick = (event: any) => {
         const target = event.currentTarget.querySelector("input");
-        if (!target.checked) {
+        console.log("Target", target)
+        if (!selected.includes(target.value)) {
             setSelected([...selected, target.value]);
         } else {
             setSelected(selected.filter(item => item !== target.value));
@@ -42,7 +43,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <div style={{ margin: 10, color: "white" }}>
+            <div style={{ margin: 20, color: "white", fontSize: 30 }}>
                 { substituteVariables(props.task) }
             </div>
             <div style={{
@@ -82,7 +83,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                             />
                             <label htmlFor={option} style={{
                                 color: "white"
-                            }}>
+                            }} onClick={ event => event.stopPropagation() }>
                                 {option}
                             </label>
                         </div>
