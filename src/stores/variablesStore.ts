@@ -11,6 +11,7 @@ export type VariablesRFState = {
 export const useVariablesStore = create<VariablesRFState>((set, get) => ({
     variables: {},
     getVariable: (name: string) => {
+        name = name.replaceAll("{", "").replaceAll("}", "")
         return get().variables[name]
     },
     setVariable: (name: string, value: any) => {
