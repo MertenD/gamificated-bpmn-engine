@@ -13,8 +13,14 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
 
     const [selected, setSelected] = useState('');
 
-    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelected(event.target.value);
+    const handleClick = (event: any) => {
+        const input = event.currentTarget.querySelector("input");
+        input.checked = !input.checked;
+        if (input.checked) {
+            setSelected(input.value)
+        } else {
+            setSelected("")
+        }
     };
 
     return (
@@ -53,27 +59,28 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                             borderRadius: 10,
                             backgroundColor: "#22935B",
                             display: "flex",
-                            flexDirection: "row"
-                        }} key={index}>
+                            flexDirection: "row",
+                        }} key={index} onClick={handleClick}>
                             <input
                                 type="radio"
                                 id={option}
                                 name="options"
                                 value={option}
                                 checked={selected === option}
-                                onChange={handleOptionChange}
+                                onChange={ event => setSelected(event.target.value)}
                                 style={{
-                                    marginRight: 70
+                                    marginRight: 70,
                                 }}
                             />
                             <label htmlFor={option} style={{
-                                color: "white"
+                                color: "white",
                             }} >
                                 {option}
                             </label>
                         </div>
-                    ))}
-                </div>
+                    ))
+                }
+            </div>
             <button style={{
                 margin: 20,
                 paddingLeft: 60,
@@ -82,7 +89,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                 paddingBottom: 10,
                 borderRadius: 10,
                 borderColor: "transparent"
-            }} onClick={_ => props.onConfirm(selected)}>
+            }} onClick={_ => props.onConfirm(selected) } disabled={selected === "" || selected === undefined || selected === null} >
                 Confirm
             </button>
         </div>
