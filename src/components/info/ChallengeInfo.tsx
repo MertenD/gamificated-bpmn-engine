@@ -8,7 +8,7 @@ export default function ChallengeInfo() {
     return (
         <div>
             { challengeState.isChallengeRunning && (
-                <div style={{ marginTop: 30 }}>
+                <div style={{ marginTop: 30, color: "#22935B", fontWeight: "bold" }}>
                     { "You are currently in a time Challenge. You have " +
                         (challengeState.runningChallengeData?.secondsToComplete || 0)
                         + " Seconds to complete the green Tasks" }

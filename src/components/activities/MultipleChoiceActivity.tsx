@@ -36,7 +36,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "rgba(200,255,200)" : "#363638",
+            background: props.isChallenge ? "#22935B44" : "#363638",
             border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",
