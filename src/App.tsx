@@ -3,6 +3,7 @@ import './App.css';
 import Engine from "./components/Engine";
 import {useVariablesStore} from "./stores/variablesStore";
 import ProcessUploader from "./components/controls/ProcessUploader";
+import {LevelProgressBar} from "./components/info/LevelProgressBar";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <div className="App">
             <div style={{ margin: 20, height: "100vh"}}>
                 <ProcessUploader />
+                <LevelProgressBar color={"tomato"} />
                 <Engine />
                 <div style={{
                     display: "flex",
