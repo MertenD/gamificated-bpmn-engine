@@ -10,12 +10,15 @@ export type ChallengeRFState = {
     isChallengeRunning: boolean
     runningChallengeData: ChallengeNodeData | null
     startMillis: number | null
+    remainingSeconds: number | null
+    isChallengeFailed: boolean
     addChallenge: (challenge: BpmnNode) => void
     setChallenges: (challenges: BpmnNode[]) => void
     getChallengeData: (id: string) => ChallengeNodeData | null
     handleChallengeStartAndStop: (challengeId: string | undefined) => void
     startChallenge: (challengeId: string) => void
     stopChallenge: () => void
+    startUpdateChallengeStateInterval: () => void
 }
 
 export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
@@ -23,6 +26,8 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     isChallengeRunning: false,
     runningChallengeData: null,
     startMillis: null,
+    remainingSeconds: null,
+    isChallengeFailed: false,
     addChallenge: (challenge: BpmnNode) => {
         set({
             challenges: [...get().challenges, challenge]
@@ -50,14 +55,13 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             runningChallengeData: get().getChallengeData(id),
             startMillis: Date.now()
         })
+        get().startUpdateChallengeStateInterval()
     },
     stopChallenge: () => {
         const variablesState = useVariablesStore.getState()
-
-        const deltaTimeInSeconds = (Date.now() - (get().startMillis || 0)) / 1000
         const challengeData = get().runningChallengeData
 
-        if (challengeData !== null && deltaTimeInSeconds <= challengeData.secondsToComplete) {
+        if (challengeData !== null && !get().isChallengeFailed) {
             if (get().runningChallengeData?.rewardType === GamificationType.POINTS) {
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as PointsGamificationOptions
                 variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
@@ -73,5 +77,17 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             runningChallengeData: null,
             startMillis: null
         })
+    },
+    startUpdateChallengeStateInterval: () => {
+        setInterval(() => {
+            const secondsToComplete = get().runningChallengeData?.secondsToComplete || 0
+            const millisecondsToComplete = secondsToComplete * 1000
+            const deltaTimeInMilliseconds = (Date.now() - (get().startMillis || 0))
+            const remainingSeconds = (millisecondsToComplete - deltaTimeInMilliseconds) / 1000
+            set({
+                remainingSeconds: remainingSeconds,
+                isChallengeFailed: get().isChallengeRunning && remainingSeconds < 0
+            })
+        }, 100)
     }
 }))
