@@ -12,12 +12,13 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
     const getVariable = useVariablesStore((state) => state.getVariable)
 
     const [experience, setExperience] = useState(getVariable("Experience"))
-    const [level, setLevel] = useState(0)
+    const [level, setLevel] = useState(1)
     const [disableEasing, setDisableEasing] = useState(false)
 
     useEffect(() => {
         const newExperience = getVariable("Experience")
-        if ((experience % 100) + (newExperience - experience) >= 100) {
+        const deltaExperience = (experience % 100) + (newExperience - experience)
+        if (deltaExperience >= 100) {
             setExperience(100)
             setTimeout(() => {
                 setDisableEasing(true)
