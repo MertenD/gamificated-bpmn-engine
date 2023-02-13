@@ -77,7 +77,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                             <label htmlFor={option} style={{
                                 color: "white",
                                 cursor: "pointer"
-                            }} >
+                            }} onClick={ event => event.stopPropagation() }>
                                 {option}
                             </label>
                         </div>
