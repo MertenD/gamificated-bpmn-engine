@@ -61,6 +61,5 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
 
     }
 
-    console.log("Condition", substituteVariables(condition))
     return eval(substituteVariables(condition))
 }

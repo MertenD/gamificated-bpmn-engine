@@ -8,8 +8,6 @@ export type NodeMapKey = string
 export type NodeMapValue = { node: BasicNode, next: NodeMapNext }
 export type NodeMap = Map<NodeMapKey, NodeMapValue>
 
-// TODO Reset Text field and choices after switching to next node
-
 export default function Engine() {
 
     const currentNode = useFlowStore((state) => state.currentNode)
