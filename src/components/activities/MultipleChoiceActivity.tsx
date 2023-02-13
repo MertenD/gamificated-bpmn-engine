@@ -68,6 +68,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                             backgroundColor: "#22935B",
                             display: "flex",
                             flexDirection: "row",
+                            cursor: "pointer"
                         }} key={index} onClick={ handleClick }>
                             <input
                                 type="checkbox"
@@ -78,11 +79,13 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                                 onChange={ handleOptionChange }
                                 style={{
                                     marginRight: 70,
-                                    color: "black"
+                                    color: "black",
+                                    cursor: "pointer"
                                 }}
                             />
                             <label htmlFor={option} style={{
-                                color: "white"
+                                color: "white",
+                                cursor: "pointer"
                             }} onClick={ event => event.stopPropagation() }>
                                 {option}
                             </label>
@@ -96,7 +99,8 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderRadius: 10,
-                borderColor: "transparent"
+                borderColor: "transparent",
+                cursor: "pointer"
             }} onClick={_ => props.onConfirm(selected)}>
                 Confirm
             </button>

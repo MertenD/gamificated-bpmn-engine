@@ -92,7 +92,8 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderRadius: 10,
-                borderColor: "transparent"
+                borderColor: "transparent",
+                cursor: "pointer"
             }}>
                 Confirm
             </button>

@@ -31,7 +31,8 @@ export default function InfoActivity(props: InfoActivityProps) {
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderRadius: 10,
-                borderColor: "transparent"
+                borderColor: "transparent",
+                cursor: "pointer"
             }}>
                 Confirm
             </button>

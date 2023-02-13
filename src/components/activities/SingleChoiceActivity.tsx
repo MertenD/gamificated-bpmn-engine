@@ -60,6 +60,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                             backgroundColor: "#22935B",
                             display: "flex",
                             flexDirection: "row",
+                            cursor: "pointer"
                         }} key={index} onClick={handleClick}>
                             <input
                                 type="radio"
@@ -70,10 +71,12 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                                 onChange={ event => setSelected(event.target.value)}
                                 style={{
                                     marginRight: 70,
+                                    cursor: "pointer"
                                 }}
                             />
                             <label htmlFor={option} style={{
                                 color: "white",
+                                cursor: "pointer"
                             }} >
                                 {option}
                             </label>
@@ -88,7 +91,8 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                 paddingTop: 10,
                 paddingBottom: 10,
                 borderRadius: 10,
-                borderColor: "transparent"
+                borderColor: "transparent",
+                cursor: "pointer"
             }} onClick={_ => props.onConfirm(selected) } disabled={selected === "" || selected === undefined || selected === null} >
                 Confirm
             </button>
