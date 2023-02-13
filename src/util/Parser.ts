@@ -96,6 +96,11 @@ export function substituteVariables(value: string): string {
     const regex = /\{(.+?)}/ig
     const variablesState = useVariablesStore.getState()
     return value.replaceAll(regex, (_: string, variableName: string) => {
-        return variablesState.getVariable(variableName) || variableName
+        const variableValue = variablesState.getVariable(variableName)
+        console.log("variableValue", variableValue)
+        if (variableValue === undefined) {
+            return variableName
+        }
+        return variableValue
     })
 }
