@@ -79,7 +79,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
         })
     },
     startUpdateChallengeStateInterval: () => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             const secondsToComplete = get().runningChallengeData?.secondsToComplete || 0
             const millisecondsToComplete = secondsToComplete * 1000
             const deltaTimeInMilliseconds = (Date.now() - (get().startMillis || 0))
@@ -88,6 +88,9 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
                 remainingSeconds: remainingSeconds,
                 isChallengeFailed: get().isChallengeRunning && remainingSeconds < 0
             })
+            if (!get().isChallengeRunning || get().isChallengeFailed) {
+                clearInterval(interval)
+            }
         }, 100)
     }
 }))
