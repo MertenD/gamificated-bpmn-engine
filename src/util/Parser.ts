@@ -74,9 +74,9 @@ export function parsePointsGamificationOptions(options: any): PointsGamification
         pointType: options.pointType,
         pointsForSuccess: options.pointsForSuccess,
         hasCondition: options.hasCondition,
-        value1: options.variableName,
+        value1: options.value1,
         comparison: options.comparison as Comparison,
-        value2: options.valueToCompare
+        value2: options.value2
     } as PointsGamificationOptions
 }
 
@@ -84,9 +84,9 @@ export function parseBadgeGamificationOptions(options: any): BadgeGamificationOp
     return {
         badgeType: options.badgeType,
         hasCondition: options.hasCondition,
-        value1: options.variableName,
+        value1: options.value1,
         comparison: options.comparison as Comparison,
-        value2: options.valueToCompare
+        value2: options.value2
     } as BadgeGamificationOptions
 }
 
