@@ -1,17 +1,19 @@
 import React, {useState} from "react"
 import {substituteVariables} from "../../util/Parser";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export interface MultipleChoiceActivityProps {
     task: string,
     choices: string,
     variableName: string,
     onConfirm: (input: string[]) => void
-    isChallenge: boolean
 }
 
 export default function MultipleChoiceActivity(props: MultipleChoiceActivityProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
+    const isChallenge = useChallengeStore((state) => state.isChallengeRunning)
+    const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -36,7 +38,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "#22935B44" : "#363638",
+            background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
             border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",

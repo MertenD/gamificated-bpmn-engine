@@ -12,8 +12,6 @@ import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/Gami
 import {useFlowStore} from "../stores/flowStore";
 import {evaluateCondition} from "../util/ConditionHelper";
 
-// TODO Nach Regex prüfen
-
 export class ActivityNode implements BasicNode {
     id: string
     nodeType: NodeType
@@ -82,8 +80,6 @@ export class ActivityNode implements BasicNode {
 
     run(): React.ReactNode {
 
-        const isChallenge = this.challenge !== undefined
-
         switch (this.data.activityType) {
             case ActivityType.TEXT_INPUT:
                 return React.createElement(TextInputActivity, {
@@ -91,8 +87,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     inputRegex: this.data.inputRegex,
                     variableName: this.data.variableName,
-                    onConfirm: (input: string) => { this.onConfirm(input) },
-                    isChallenge
+                    onConfirm: (input: string) => { this.onConfirm(input) }
                 })
             case ActivityType.SINGLE_CHOICE:
                 return React.createElement(SingleChoiceActivity, {
@@ -100,8 +95,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input: string) => { this.onConfirm(input) },
-                    isChallenge
+                    onConfirm: (input: string) => { this.onConfirm(input) }
                 })
             case ActivityType.MULTIPLE_CHOICE:
                 return React.createElement(MultipleChoiceActivity, {
@@ -109,8 +103,7 @@ export class ActivityNode implements BasicNode {
                     task: this.data.task,
                     choices: this.data.choices,
                     variableName: this.data.variableName,
-                    onConfirm: (input: string[]) => { this.onConfirm(input) },
-                    isChallenge
+                    onConfirm: (input: string[]) => { this.onConfirm(input) }
                 })
         }
     }

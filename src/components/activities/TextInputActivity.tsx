@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react"
 import {substituteVariables} from "../../util/Parser";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export interface TextInputActivityProps {
     task: string,
     inputRegex: string,
     variableName: string,
     onConfirm: (input: string) => void
-    isChallenge: boolean
 }
 
 export default function TextInputActivity(props: TextInputActivityProps) {
@@ -14,6 +14,8 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     const [input, setInput] = useState("")
     const [isInputNumber, setIsInputNumber] = useState(false)
     const [showRegexHint, setShowRegexHint] = useState(false)
+    const isChallenge = useChallengeStore((state) => state.isChallengeRunning)
+    const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     useEffect(() => {
         setIsInputNumber(
@@ -42,7 +44,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "#22935B44" : "#363638",
+            background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
             border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",

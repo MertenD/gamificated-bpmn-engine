@@ -18,8 +18,7 @@ export class EndNode implements BasicNode {
     run(): React.ReactNode {
         return React.createElement(InfoActivity, {
             infoText: "This is the end of the process",
-            onConfirm: () => useFlowStore.getState().nextNode(),
-            isChallenge: false
+            onConfirm: () => useFlowStore.getState().nextNode()
         })
     }
 }

@@ -1,20 +1,23 @@
 import React from "react"
 import {substituteVariables} from "../../util/Parser";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export interface InfoActivityProps {
     infoText: string,
     onConfirm: () => void
-    isChallenge: boolean
 }
 
 export default function InfoActivity(props: InfoActivityProps) {
+
+    const isChallenge = useChallengeStore((state) => state.isChallengeRunning)
+    const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     return (
         <div style={{
             margin: 10,
             borderRadius: 10,
             padding: 16,
-            background: props.isChallenge ? "#22935B44" : "#363638",
+            background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
             border: "3px solid #616163",
             display: "flex",
             flexDirection: "column",
