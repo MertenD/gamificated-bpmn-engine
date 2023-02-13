@@ -27,7 +27,7 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
             setTimeout(() => {
                 setDisableEasing(false)
                 setExperience(newExperience)
-                setLevel((oldLevel) => oldLevel + 1)
+                setLevel((Math.floor(newExperience / 100) || 0) + 1)
             }, 1100)
         } else {
             setExperience(newExperience)
