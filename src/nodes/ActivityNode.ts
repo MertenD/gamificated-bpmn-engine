@@ -31,8 +31,10 @@ export class ActivityNode implements BasicNode {
         const variablesState = useVariablesStore.getState()
         const flowState = useFlowStore.getState()
 
-        console.log("Input", input)
-        variablesState.setVariable(this.data.variableName, input)
+        if (this.data.variableName !== undefined && this.data.variableName !== "") {
+            variablesState.setVariable(this.data.variableName, input)
+        }
+
         this.applyGamification(variablesState)
         flowState.nextNode()
     }
