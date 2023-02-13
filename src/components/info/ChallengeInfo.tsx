@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {useChallengeStore} from "../../stores/challengeStore";
+import {GamificationType} from "../../model/GamificationType";
+import {BadgeGamificationOptions, PointsGamificationOptions} from "../../model/GamificationOptions";
 
 export default function ChallengeInfo() {
 
@@ -8,11 +10,21 @@ export default function ChallengeInfo() {
     return (
         <div>
             { challengeState.isChallengeRunning && (
-                <div style={{ marginTop: 30, color: challengeState.isChallengeFailed ? "tomato" : "#22935B", fontWeight: "bold" }}>
-                    { "You are currently in a time Challenge. You have " +
-                        challengeState.remainingSeconds?.toFixed(2)
-                        + " Seconds to complete the green Tasks" }
-                </div>
+                (() => {
+                    if (challengeState.isChallengeFailed) {
+                        return <div style={{ marginTop: 30, color: "tomato", fontWeight: "bold" }}>
+                            Challenge failed
+                        </div>
+                    } else {
+                        return <div style={{ marginTop: 30, color: "#22935B", fontWeight: "bold" }}>
+                            You are currently in a time challenge. You have { challengeState.remainingSeconds?.toFixed(2) } seconds to complete the green tasks to earn
+                            { (challengeState.runningChallengeData?.rewardType === GamificationType.POINTS ?
+                                " " + (challengeState.runningChallengeData.gamificationOptions as PointsGamificationOptions).pointsForSuccess + " " + (challengeState.runningChallengeData.gamificationOptions as PointsGamificationOptions).pointType
+                                : " a " +  (challengeState.runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
+                            }
+                        </div>
+                    }
+                })()
             ) }
         </div>
      )
