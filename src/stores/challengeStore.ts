@@ -67,6 +67,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
                 variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
             } else if (get().runningChallengeData?.rewardType === GamificationType.BADGES) {
                 variablesState.setVariable((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType, true)
+                //variablesState.openBadgeDialog()
             }
         } else {
             console.log("Challenge failed")
