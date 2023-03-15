@@ -71,12 +71,10 @@ export class ActivityNode implements BasicNode {
 
         if (hasCondition as boolean) {
             if (evaluateCondition(value1, comparison, value2)) {
-                variablesState.setVariable(badgeType, true)
-                //variablesState.openBadgeDialog()
+                variablesState.unlockBadge(badgeType)
             }
         } else {
-            variablesState.setVariable(badgeType, true)
-            //variablesState.openBadgeDialog()
+            variablesState.unlockBadge(badgeType)
         }
     }
 

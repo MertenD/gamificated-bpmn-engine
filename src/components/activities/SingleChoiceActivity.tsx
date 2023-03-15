@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
+import ConfirmButton from "../controls/ConfirmButton";
 
 export interface SingleChoiceActivityProps {
     task: string,
@@ -86,18 +87,9 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                     ))
                 }
             </div>
-            <button style={{
-                margin: 20,
-                paddingLeft: 60,
-                paddingRight: 60,
-                paddingTop: 10,
-                paddingBottom: 10,
-                borderRadius: 10,
-                borderColor: "transparent",
-                cursor: "pointer"
-            }} onClick={_ => props.onConfirm(selected) } disabled={selected === "" || selected === undefined || selected === null} >
-                Confirm
-            </button>
+            <ConfirmButton onConfirm={() => {
+                props.onConfirm(selected)
+            }} disabled={selected === "" || selected === undefined || selected === null}/>
         </div>
     )
 }

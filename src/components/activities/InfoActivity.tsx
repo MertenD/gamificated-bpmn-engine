@@ -1,6 +1,7 @@
 import React from "react"
 import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
+import ConfirmButton from "../controls/ConfirmButton";
 
 export interface InfoActivityProps {
     infoText: string,
@@ -27,18 +28,7 @@ export default function InfoActivity(props: InfoActivityProps) {
             <div style={{ margin: 10, color: "white" }}>
                 { substituteVariables(props.infoText) }
             </div>
-            <button onClick={_ => props.onConfirm()} style={{
-                margin: 20,
-                paddingLeft: 60,
-                paddingRight: 60,
-                paddingTop: 10,
-                paddingBottom: 10,
-                borderRadius: 10,
-                borderColor: "transparent",
-                cursor: "pointer"
-            }}>
-                Confirm
-            </button>
+            <ConfirmButton onConfirm={() => props.onConfirm()} />
         </div>
     )
 }

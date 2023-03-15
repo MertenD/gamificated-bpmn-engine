@@ -17,6 +17,7 @@ function App() {
                     <ProcessUploader />
                     <LevelProgressBar color={"tomato"} />
                     <Engine />
+                    <BadgeDialog />
                     <div style={{
                         display: "flex",
                         flexDirection: "column",

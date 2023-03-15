@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
+import ConfirmButton from "../controls/ConfirmButton";
 
 export interface TextInputActivityProps {
     task: string,
@@ -81,24 +82,13 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                     { "Expected input format: " + props.inputRegex }
                 </div>
             ) }
-            <button onClick={ _ => {
+            <ConfirmButton onConfirm={() => {
                 if (checkRegex(input)) {
                     props.onConfirm(input)
                 } else {
                     setShowRegexHint(true)
                 }
-            } } style={{
-                margin: 20,
-                paddingLeft: 60,
-                paddingRight: 60,
-                paddingTop: 10,
-                paddingBottom: 10,
-                borderRadius: 10,
-                borderColor: "transparent",
-                cursor: "pointer"
-            }}>
-                Confirm
-            </button>
+            }} />
         </div>
     )
 }
