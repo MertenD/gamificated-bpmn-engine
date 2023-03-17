@@ -1,4 +1,5 @@
 import create from 'zustand';
+import {useChallengeStore} from "./challengeStore";
 
 export type VariablesRFState = {
     variables: Record<string, any>
@@ -41,21 +42,24 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
         })
     },
     unlockBadge: (name: string) => {
-        if (get().getVariable(name) !== undefined) {
+        if (get().getVariable(name) !== undefined && get().getVariable(name) !== true) {
             get().setVariable(name, true)
+            set({
+                unlockedBadgeName: name
+            })
             get().openBadgeDialog(name)
         }
     },
-    openBadgeDialog: (unlockedBadgeName: string) => {
+    openBadgeDialog: () => {
         set({
-            isBadgeDialogOpen: true,
-            unlockedBadgeName: unlockedBadgeName
+            isBadgeDialogOpen: true
         })
+        useChallengeStore.getState().pauseChallenge()
     },
     closeBadgeDialog: () => {
         set({
-            isBadgeDialogOpen: false,
-            unlockedBadgeName: undefined
+            isBadgeDialogOpen: false
         })
+        useChallengeStore.getState().resumeChallenge()
     }
 }))
