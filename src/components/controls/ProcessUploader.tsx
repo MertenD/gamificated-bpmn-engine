@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {parseBpmnDiagramFromJson} from "../../util/Importer";
 import {getBadgeTypes, getChallenges, getNodeMap, getPointTypes} from "../../util/Transformer";
 import {BpmnDiagram} from "../../model/Bpmn";
@@ -8,17 +8,23 @@ import {useChallengeStore} from "../../stores/challengeStore";
 
 export default function ProcessUploader() {
 
+    const resetChallengeStore = useChallengeStore((state) => state.resetStoreValues)
+    const resetFlowStore = useFlowStore((state) => state.resetStoreValues)
+    const resetVariableStore = useVariablesStore((state) => state.resetStoreValues)
     const setIsProcessUploaded = useFlowStore((state) => state.setIsProcessReady)
     const setVariable = useVariablesStore((state) => state.setVariable)
-    const clearVariables = useVariablesStore((state) => state.clearVariables)
     const setNodeMap = useFlowStore((state) => state.setNodeMap)
     const setChallenges = useChallengeStore((state) => state.setChallenges)
+
+    const [lastUploadEvent, setLastUploadEvent] = useState<React.ChangeEvent<HTMLInputElement> | undefined>(undefined)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsProcessUploaded(false)
         const bpmnDiagram = await parseBpmnDiagramFromJson(event)
         if (bpmnDiagram !== undefined) {
-            clearVariables()
+            resetChallengeStore()
+            resetFlowStore()
+            resetVariableStore()
             loadNodeMapIntoStore(bpmnDiagram)
             loadChallengesIntoStore(bpmnDiagram)
             loadPointTypesIntoStore(bpmnDiagram)
@@ -64,8 +70,24 @@ export default function ProcessUploader() {
             <input
                 style={{ marginBottom: 10, marginLeft: 10 }}
                 type="file"
-                onChange={event => onInputFileChanged((event))}
+                onChange={event => {
+                    setLastUploadEvent(event)
+                    onInputFileChanged((event))
+                }}
             />
+            <button
+                style={{
+                    marginBottom: 10,
+                    marginLeft: 10
+                }}
+                onClick={() => {
+                    if (lastUploadEvent !== undefined) {
+                        onInputFileChanged(lastUploadEvent)
+                    }
+                }}
+            >
+                Restart Process
+            </button>
         </span>
     )
 }

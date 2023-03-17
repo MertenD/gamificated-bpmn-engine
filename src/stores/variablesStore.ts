@@ -5,10 +5,10 @@ export type VariablesRFState = {
     variables: Record<string, any>
     isBadgeDialogOpen: boolean
     unlockedBadgeName: string | undefined
+    resetStoreValues: () => void
     getVariable: (name: string) => any
     setVariable: (name: string, value: any) => void
     addToVariable: (name: string, value: number) => void
-    clearVariables: () => void
     unlockBadge: (name: string) => void
     openBadgeDialog: (unlockedBadgeName: string) => void
     closeBadgeDialog: () => void
@@ -18,6 +18,13 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
     variables: {},
     isBadgeDialogOpen: false,
     unlockedBadgeName: undefined,
+    resetStoreValues: () => {
+        set({
+            variables: {},
+            isBadgeDialogOpen: false,
+            unlockedBadgeName: undefined
+        })
+    },
     getVariable: (name: string) => {
         name = name.replaceAll("{", "").replaceAll("}", "")
         return get().variables[name]
@@ -35,11 +42,6 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
     },
     addToVariable: (name: string, value: number) => {
         get().setVariable(name, (get().getVariable(name) || 0) + value)
-    },
-    clearVariables: () => {
-        set({
-            variables: {}
-        })
     },
     unlockBadge: (name: string) => {
         if (get().getVariable(name) !== undefined && get().getVariable(name) !== true) {

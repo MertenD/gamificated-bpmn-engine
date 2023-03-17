@@ -9,6 +9,7 @@ export type FlowRFState = {
     isProcessReady: boolean
     nodeMap: NodeMap
     currentNode: NodeMapValue | null
+    resetStoreValues: () => void
     setIsProcessReady: (isReady: boolean) => void
     setNodeMap: (nodeMap: NodeMap) => void
     getFirstNode: () => NodeMapValue | null
@@ -20,6 +21,12 @@ export const useFlowStore = create<FlowRFState>((set, get) => ({
     isProcessReady: false,
     nodeMap: new Map(),
     currentNode: null,
+    resetStoreValues: () => {
+        set({
+            nodeMap: new Map(),
+            currentNode: null,
+        })
+    },
     setIsProcessReady: (isReady: boolean) => {
         set({
             isProcessReady: isReady

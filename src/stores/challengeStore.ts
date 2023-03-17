@@ -16,7 +16,7 @@ export type ChallengeRFState = {
     isChallengeFailed: boolean
     isChallengePaused: boolean
     totalPausedMillis: number
-    addChallenge: (challenge: BpmnNode) => void
+    resetStoreValues: () => void
     setChallenges: (challenges: BpmnNode[]) => void
     getChallengeData: (id: string) => ChallengeNodeData | null
     handleChallengeStartAndStop: (challengeId: string | undefined) => void
@@ -36,9 +36,16 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     isChallengeFailed: false,
     isChallengePaused: false,
     totalPausedMillis: 0,
-    addChallenge: (challenge: BpmnNode) => {
+    resetStoreValues: () => {
         set({
-            challenges: [...get().challenges, challenge]
+            challenges: [],
+            isChallengeRunning: false,
+            runningChallengeData: null,
+            startMillis: null,
+            remainingSeconds: null,
+            isChallengeFailed: false,
+            isChallengePaused: false,
+            totalPausedMillis: 0,
         })
     },
     setChallenges: (challenges: BpmnNode[]) => {
