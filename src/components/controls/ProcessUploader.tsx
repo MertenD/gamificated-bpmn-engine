@@ -8,12 +8,14 @@ import {useChallengeStore} from "../../stores/challengeStore";
 
 export default function ProcessUploader() {
 
+    const setIsProcessUploaded = useFlowStore((state) => state.setIsProcessReady)
     const setVariable = useVariablesStore((state) => state.setVariable)
     const clearVariables = useVariablesStore((state) => state.clearVariables)
     const setNodeMap = useFlowStore((state) => state.setNodeMap)
     const setChallenges = useChallengeStore((state) => state.setChallenges)
 
     const onInputFileChanged = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsProcessUploaded(false)
         const bpmnDiagram = await parseBpmnDiagramFromJson(event)
         if (bpmnDiagram !== undefined) {
             clearVariables()
@@ -21,6 +23,9 @@ export default function ProcessUploader() {
             loadChallengesIntoStore(bpmnDiagram)
             loadPointTypesIntoStore(bpmnDiagram)
             loadBadgeTypesIntoStore(bpmnDiagram)
+            setIsProcessUploaded(true)
+        } else {
+            // TODO Meldung ausgeben
         }
     }
 

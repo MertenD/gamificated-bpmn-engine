@@ -10,13 +10,14 @@ export type NodeMap = Map<NodeMapKey, NodeMapValue>
 
 export default function Engine() {
 
+    const isProcessReady = useFlowStore((state) => state.isProcessReady)
     const currentNode = useFlowStore((state) => state.currentNode)
 
     return (
         <div>
             <ChallengeInfo />
             <div style={{ margin: 30 }}>
-                { currentNode !== null && (
+                { currentNode !== null && isProcessReady && (
                     currentNode.node.run() || <></>
                 ) }
             </div>

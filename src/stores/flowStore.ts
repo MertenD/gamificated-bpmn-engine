@@ -5,8 +5,10 @@ import {useChallengeStore} from "./challengeStore";
 import {NodeType} from "../model/NodeType";
 
 export type FlowRFState = {
+    isProcessReady: boolean
     nodeMap: NodeMap
-    currentNode: NodeMapValue | null,
+    currentNode: NodeMapValue | null
+    setIsProcessReady: (isReady: boolean) => void
     setNodeMap: (nodeMap: NodeMap) => void
     getFirstNode: () => NodeMapValue | null
     setCurrentNode: (newNode: NodeMapValue | null) => void
@@ -14,8 +16,14 @@ export type FlowRFState = {
 }
 
 export const useFlowStore = create<FlowRFState>((set, get) => ({
+    isProcessReady: false,
     nodeMap: new Map(),
     currentNode: null,
+    setIsProcessReady: (isReady: boolean) => {
+        set({
+            isProcessReady: isReady
+        })
+    },
     // Sets the node map and the currentNode as the first node in the nodeMap
     setNodeMap: (nodeMap: NodeMap) => {
         set({
