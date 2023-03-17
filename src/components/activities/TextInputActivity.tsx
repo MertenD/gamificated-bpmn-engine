@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
+import {Slide} from "@mui/material";
 
 export interface TextInputActivityProps {
     task: string,
@@ -41,54 +42,56 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     }
 
     return (
-        <div style={{
-            margin: 10,
-            borderRadius: 10,
-            padding: 16,
-            background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
-            border: "3px solid #616163",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: "white"
-        }}>
-            <span style={{
-                flexWrap: "wrap",
-                width: "100%",
+        <Slide direction={"left"} in mountOnEnter unmountOnExit >
+            <div style={{
+                margin: 10,
+                borderRadius: 10,
+                padding: 16,
+                background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
+                border: "3px solid #616163",
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 10
+                flexDirection: "column",
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: "white"
             }}>
-                { substituteVariables(props.task) + ":" }
-                <input
-                    style={{
-                        marginLeft: 10
-                    }}
-                    type={isInputNumber ? "number" : "text"}
-                    value={ input }
-                    className="nodrag"
-                    onChange={(event) => {
-                        onInputChanged(event)
-                    }}
-                />
-            </span>
-            { showRegexHint && (
-                <div style={{
-                    color: "tomato",
+                <span style={{
+                    flexWrap: "wrap",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
                     marginBottom: 10
                 }}>
-                    { "Expected input format: " + props.inputRegex }
-                </div>
-            ) }
-            <ConfirmButton onConfirm={() => {
-                if (checkRegex(input)) {
-                    props.onConfirm(input)
-                } else {
-                    setShowRegexHint(true)
-                }
-            }} />
-        </div>
+                    { substituteVariables(props.task) + ":" }
+                    <input
+                        style={{
+                            marginLeft: 10
+                        }}
+                        type={isInputNumber ? "number" : "text"}
+                        value={ input }
+                        className="nodrag"
+                        onChange={(event) => {
+                            onInputChanged(event)
+                        }}
+                    />
+                </span>
+                { showRegexHint && (
+                    <div style={{
+                        color: "tomato",
+                        marginBottom: 10
+                    }}>
+                        { "Expected input format: " + props.inputRegex }
+                    </div>
+                ) }
+                <ConfirmButton onConfirm={() => {
+                    if (checkRegex(input)) {
+                        props.onConfirm(input)
+                    } else {
+                        setShowRegexHint(true)
+                    }
+                }} />
+            </div>
+        </Slide>
     )
 }
