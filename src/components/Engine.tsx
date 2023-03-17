@@ -19,12 +19,12 @@ export default function Engine() {
             { isProcessReady && (
                 <div>
                     <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
-                    <ChallengeInfo />
                     <div style={{ margin: 30 }}>
                         { currentNode !== null && (
                             currentNode.node.run() || <></>
                         ) }
                     </div>
+                    <ChallengeInfo />
                 </div>
             ) }
         </>

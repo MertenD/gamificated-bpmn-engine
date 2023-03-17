@@ -74,7 +74,6 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as PointsGamificationOptions
                 variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
             } else if (get().runningChallengeData?.rewardType === GamificationType.BADGES) {
-                //variablesState.setVariable((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType, true)
                 variablesState.unlockBadge((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
             }
         } else {
