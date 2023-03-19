@@ -127,6 +127,9 @@ export function getBadgeTypes(diagram: BpmnDiagram): string[] {
         } else if (node.type === NodeType.CHALLENGE_NODE) {
             nodeData = node.data as ChallengeNodeData
             gamificationType = nodeData.rewardType
+        } else if (node.type === NodeType.GAMIFICATION_EVENT_NODE) {
+            nodeData = node.data as GamificationEventNodeData
+            gamificationType = nodeData.gamificationType
         }
         if (nodeData === undefined || gamificationType === undefined) {
             return null
