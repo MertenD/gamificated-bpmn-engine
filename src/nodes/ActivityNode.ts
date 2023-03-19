@@ -6,11 +6,9 @@ import {ActivityType} from "../model/ActivityType";
 import SingleChoiceActivity from "../components/activities/SingleChoiceActivity";
 import MultipleChoiceActivity from "../components/activities/MultipleChoiceActivity";
 import {NodeType} from "../model/NodeType";
-import {useVariablesStore, VariablesRFState} from "../stores/variablesStore";
-import {GamificationType} from "../model/GamificationType";
-import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
+import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";
-import {evaluateCondition} from "../util/ConditionHelper";
+import {applyGamification} from "./util/ApplyGamificationHelper";
 
 export class ActivityNode implements BasicNode {
     id: string
@@ -33,49 +31,8 @@ export class ActivityNode implements BasicNode {
             variablesState.setVariable(this.data.variableName, input)
         }
 
-        this.applyGamification(variablesState)
+        applyGamification(this.data.gamificationType, this.data.gamificationOptions)
         flowState.nextNode()
-    }
-
-    applyGamification = (variablesState: VariablesRFState) => {
-        switch (this.data.gamificationType) {
-            case GamificationType.NONE:
-                break
-            case GamificationType.POINTS:
-                this.applyPointsGamification(variablesState)
-                break
-            case GamificationType.BADGES:
-                this.applyBadgeGamification(variablesState)
-                break
-        }
-    }
-
-    applyPointsGamification = (variablesState: VariablesRFState) => {
-        const {
-            pointType, pointsForSuccess, hasCondition, value1, comparison, value2
-        } = this.data.gamificationOptions as PointsGamificationOptions
-
-        if (hasCondition as boolean) {
-            if (evaluateCondition(value1, comparison, value2)) {
-                variablesState.addToVariable(pointType, pointsForSuccess)
-            }
-        } else {
-            variablesState.addToVariable(pointType, pointsForSuccess)
-        }
-    }
-
-    applyBadgeGamification = (variablesState: VariablesRFState) => {
-        const {
-            badgeType, hasCondition, value1, comparison, value2
-        } = this.data.gamificationOptions as BadgeGamificationOptions
-
-        if (hasCondition as boolean) {
-            if (evaluateCondition(value1, comparison, value2)) {
-                variablesState.unlockBadge(badgeType)
-            }
-        } else {
-            variablesState.unlockBadge(badgeType)
-        }
     }
 
     run(): React.ReactNode {
