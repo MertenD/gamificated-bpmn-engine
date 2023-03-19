@@ -1,7 +1,14 @@
 import {BpmnDiagram, BpmnEdge, BpmnNode} from "../model/Bpmn";
 import {NodeType} from "../model/NodeType";
 import {BasicNode} from "../nodes/BasicNode";
-import {ActivityNodeData, ChallengeNodeData, GatewayNodeData, InfoNodeData, NodeData} from "../model/NodeData";
+import {
+    ActivityNodeData,
+    ChallengeNodeData,
+    GamificationEventNodeData,
+    GatewayNodeData,
+    InfoNodeData,
+    NodeData
+} from "../model/NodeData";
 import {ActivityNode} from "../nodes/ActivityNode";
 import {GatewayNode} from "../nodes/GatewayNode";
 import {InfoNode} from "../nodes/InfoNode";
@@ -11,6 +18,7 @@ import {NextNodeKey} from "../model/NextNodeKey";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {NodeMapKey, NodeMapValue} from "../components/Engine";
+import {GamificationEventNode} from "../nodes/GamificationEventNode";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -67,6 +75,8 @@ function getNodeFromType(type: NodeType, id: string, challenge: string | undefin
             return new GatewayNode(id, challenge, data as GatewayNodeData)
         case NodeType.INFO_NODE:
             return new InfoNode(id, challenge, data as InfoNodeData)
+        case NodeType.GAMIFICATION_EVENT_NODE:
+            return new GamificationEventNode(id, challenge, data as GamificationEventNodeData)
         case NodeType.START_NODE:
             return new StartNode(id, challenge)
         case NodeType.END_NODE:
@@ -88,6 +98,9 @@ export function getPointTypes(diagram: BpmnDiagram): string[] {
         } else if (node.type === NodeType.CHALLENGE_NODE) {
             nodeData = node.data as ChallengeNodeData
             gamificationType = nodeData.rewardType
+        } else if (node.type === NodeType.GAMIFICATION_EVENT_NODE) {
+            nodeData = node.data as GamificationEventNodeData
+            gamificationType = nodeData.gamificationType
         }
         if (nodeData === undefined || gamificationType === undefined) {
             return null

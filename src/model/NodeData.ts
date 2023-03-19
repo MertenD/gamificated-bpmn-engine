@@ -33,3 +33,8 @@ export interface ChallengeNodeData extends NodeData {
 export interface InfoNodeData extends NodeData {
     infoText: string
 }
+
+export interface GamificationEventNodeData extends NodeData {
+    gamificationType: GamificationType
+    gamificationOptions: GamificationOptions
+}

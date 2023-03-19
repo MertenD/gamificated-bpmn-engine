@@ -19,7 +19,6 @@ export class GatewayNode implements BasicNode {
     }
 
     run(): void {
-        console.log("Gateway data", this.data)
         const flowState = useFlowStore.getState()
         const {
             value1, comparison, value2

@@ -1,5 +1,11 @@
 import {NodeType} from "../model/NodeType";
-import {ActivityNodeData, ChallengeNodeData, GatewayNodeData, NodeData} from "../model/NodeData";
+import {
+    ActivityNodeData,
+    ChallengeNodeData,
+    GamificationEventNodeData,
+    GatewayNodeData,
+    NodeData
+} from "../model/NodeData";
 import {ActivityType} from "../model/ActivityType";
 import {GamificationType} from "../model/GamificationType";
 import {Comparison} from "../model/Comparison";
@@ -17,6 +23,8 @@ export function parseNodeData(type: NodeType, data: any): NodeData {
             return parseChallengeNodeData(data)
         case NodeType.INFO_NODE:
             return parseInfoNodeData(data)
+        case NodeType.GAMIFICATION_EVENT_NODE:
+            return parseGamificationEventNodeData(data)
         case NodeType.START_NODE:
         case NodeType.END_NODE:
             return {}
@@ -56,6 +64,13 @@ export function parseInfoNodeData(data: any) {
     return {
         infoText: data.infoText
     }
+}
+
+export function parseGamificationEventNodeData(data: any): GamificationEventNodeData {
+    return {
+        gamificationType: data.gamificationType as GamificationType,
+        gamificationOptions: parseGamificationOptions(data.gamificationType, data.gamificationOptions)
+    } as GamificationEventNodeData
 }
 
 export function parseGamificationOptions(type: GamificationType, options: any): GamificationOptions {
