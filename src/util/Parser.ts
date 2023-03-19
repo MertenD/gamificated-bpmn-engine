@@ -87,6 +87,7 @@ export function parseGamificationOptions(type: GamificationType, options: any): 
 export function parsePointsGamificationOptions(options: any): PointsGamificationOptions {
     return {
         pointType: options.pointType,
+        pointsApplicationMethod: options.pointsApplicationMethod,
         pointsForSuccess: options.pointsForSuccess,
         hasCondition: options.hasCondition,
         value1: options.value1,
