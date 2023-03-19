@@ -4,6 +4,7 @@ import create from "zustand";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {useVariablesStore} from "./variablesStore";
+import {evaluateCondition} from "../util/ConditionHelper";
 
 // TODO Condition für Challenge
 
@@ -77,11 +78,19 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
         const challengeData = get().runningChallengeData
 
         if (challengeData !== null && !get().isChallengeFailed) {
+
             if (get().runningChallengeData?.rewardType === GamificationType.POINTS) {
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as PointsGamificationOptions
-                variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
+
+                if (!gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
+                    variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
+                }
             } else if (get().runningChallengeData?.rewardType === GamificationType.BADGES) {
-                variablesState.unlockBadge((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
+                const gamificationOptions = get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions
+
+                if (!gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
+                    variablesState.unlockBadge((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
+                }
             }
         } else {
             console.log("Challenge failed")
