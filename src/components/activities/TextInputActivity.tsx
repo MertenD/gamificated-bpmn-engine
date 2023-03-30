@@ -3,11 +3,11 @@ import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
+import {ActivityNodeData} from "../../model/NodeData";
+import RewardHint from "../info/RewardHint";
 
 export interface TextInputActivityProps {
-    task: string,
-    inputRegex: string,
-    variableName: string,
+    data: ActivityNodeData,
     onConfirm: (input: string) => void
 }
 
@@ -21,20 +21,20 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     useEffect(() => {
         setIsInputNumber(
-            props.inputRegex === "[0-9]" ||
-            props.inputRegex === "[0-9]+" ||
-            props.inputRegex === "[0-9]*" ||
-            props.inputRegex === "\d+" ||
-            props.inputRegex === "\d*" ||
-            props.inputRegex === "\d"
+            props.data.inputRegex === "[0-9]" ||
+            props.data.inputRegex === "[0-9]+" ||
+            props.data.inputRegex === "[0-9]*" ||
+            props.data.inputRegex === "\d+" ||
+            props.data.inputRegex === "\d*" ||
+            props.data.inputRegex === "\d"
         )
-    }, [props.inputRegex])
+    }, [props.data.inputRegex])
 
     const checkRegex = (value: string): boolean => {
-        if (props.inputRegex === "") {
+        if (props.data.inputRegex === "") {
             return true
         }
-        return new RegExp("^" + props.inputRegex + "$").test(value)
+        return new RegExp("^" + props.data.inputRegex + "$").test(value)
     }
 
     const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +63,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                     justifyContent: "center",
                     marginBottom: 10
                 }}>
-                    { substituteVariables(props.task) + ":" }
+                    { substituteVariables(props.data.task) + ":" }
                     <input
                         style={{
                             marginLeft: 10
@@ -81,7 +81,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                         color: "tomato",
                         marginBottom: 10
                     }}>
-                        { "Expected input format: " + props.inputRegex }
+                        { "Expected input format: " + props.data.inputRegex }
                     </div>
                 ) }
                 <ConfirmButton onConfirm={() => {
@@ -91,6 +91,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                         setShowRegexHint(true)
                     }
                 }} />
+                <RewardHint gamificationType={props.data.gamificationType} gamificationOptions={props.data.gamificationOptions}/>
             </div>
         </Slide>
     )

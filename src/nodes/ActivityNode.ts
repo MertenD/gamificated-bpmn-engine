@@ -14,7 +14,7 @@ export class ActivityNode implements BasicNode {
     id: string
     nodeType: NodeType
     challenge: string | undefined
-    private data: ActivityNodeData
+    private readonly data: ActivityNodeData
 
     constructor(id: string, challenge: string | undefined, data: ActivityNodeData) {
         this.id = id
@@ -41,9 +41,7 @@ export class ActivityNode implements BasicNode {
             case ActivityType.TEXT_INPUT:
                 return React.createElement(TextInputActivity, {
                     key: this.id,
-                    task: this.data.task,
-                    inputRegex: this.data.inputRegex,
-                    variableName: this.data.variableName,
+                    data: this.data,
                     onConfirm: (input: string) => { this.onConfirm(input) }
                 })
             case ActivityType.SINGLE_CHOICE:
