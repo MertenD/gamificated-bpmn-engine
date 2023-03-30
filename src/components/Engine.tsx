@@ -2,7 +2,7 @@ import React from "react"
 import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
-import {LevelProgressBar} from "./info/LevelProgressBar";
+import PointsInfo from "./info/PointsInfo";
 
 export type NodeMapNext = Record<string, string> | null
 export type NodeMapKey = string
@@ -18,7 +18,7 @@ export default function Engine() {
         <>
             { isProcessReady && (
                 <div>
-                    <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
+                    <PointsInfo />
                     <div style={{ margin: 30 }}>
                         { currentNode !== null && (
                             currentNode.node.run() || <></>

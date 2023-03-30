@@ -1,6 +1,8 @@
 import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
 import {useFlowStore} from "../stores/flowStore";
+import React from "react";
+import InfoActivity from "../components/activities/InfoActivity";
 
 export class StartNode implements BasicNode {
     id: string;
@@ -13,7 +15,10 @@ export class StartNode implements BasicNode {
         this.challenge = challenge
     }
 
-    run(): void {
-        useFlowStore.getState().nextNode()
+    run(): React.ReactNode {
+        return React.createElement(InfoActivity, {
+            infoText: "This is the start of the process",
+            onConfirm: () => useFlowStore.getState().nextNode()
+        })
     }
 }

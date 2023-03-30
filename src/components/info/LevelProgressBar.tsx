@@ -17,21 +17,24 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
     const [disableEasing, setDisableEasing] = useState(false)
 
     useEffect(() => {
-        const newExperience = getVariable(variableName)
-        const deltaExperience = (experience % 100) + (newExperience - experience)
-        if (deltaExperience >= 100) {
-            setExperience(100)
-            setTimeout(() => {
-                setDisableEasing(true)
-                setExperience(0)
-            }, 1000)
-            setTimeout(() => {
-                setDisableEasing(false)
+        if (experience !== undefined) {
+            const newExperience = getVariable(variableName).toFixed(2)
+            const deltaExperience = (experience % 100) + (newExperience - experience)
+            if (deltaExperience >= 100) {
+                // TODO Irgendeine Animation bei einem Level Up
+                setExperience(100)
+                setTimeout(() => {
+                    setDisableEasing(true)
+                    setExperience(0)
+                }, 1000)
+                setTimeout(() => {
+                    setDisableEasing(false)
+                    setExperience(newExperience)
+                    setLevel((Math.floor(newExperience / 100) || 0) + 1)
+                }, 1100)
+            } else {
                 setExperience(newExperience)
-                setLevel((Math.floor(newExperience / 100) || 0) + 1)
-            }, 1100)
-        } else {
-            setExperience(newExperience)
+            }
         }
     }, [variables])
 
