@@ -7,6 +7,7 @@ import {
 } from "../../model/GamificationOptions";
 import {evaluateCondition} from "../../util/ConditionHelper";
 import {PointsApplicationMethod} from "../../model/PointsApplicationMethod";
+import {substituteVariables} from "../../util/Parser";
 
 export const applyGamification = (gamificationType: GamificationType, gamificationOptions: GamificationOptions) => {
     switch (gamificationType) {
@@ -29,11 +30,14 @@ const applyPointsGamification = (gamificationOptions: GamificationOptions) => {
 
     const addPoints = () => {
         switch (pointsApplicationMethod) {
-            case PointsApplicationMethod.CHANGE_BY:
-                variablesState.addToVariable(pointType, pointsForSuccess)
+            case PointsApplicationMethod.INCREMENT_BY:
+                variablesState.addToVariable(pointType, Number(substituteVariables(pointsForSuccess)))
                 break
             case PointsApplicationMethod.SET_TO:
-                variablesState.setVariable(pointType, pointsForSuccess)
+                variablesState.setVariable(pointType, Number(substituteVariables(pointsForSuccess)))
+                break
+            case PointsApplicationMethod.DECREMENT_BY:
+                variablesState.addToVariable(pointType, Number(substituteVariables(pointsForSuccess)) * -1)
         }
     }
 

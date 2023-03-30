@@ -14,6 +14,8 @@ export type VariablesRFState = {
     closeBadgeDialog: () => void
 }
 
+// TODO Das susbtitute Variables nur in den get/set und add variable Methoden ausführen
+
 export const useVariablesStore = create<VariablesRFState>((set, get) => ({
     variables: {},
     isBadgeDialogOpen: false,

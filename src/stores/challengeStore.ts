@@ -5,6 +5,7 @@ import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {useVariablesStore} from "./variablesStore";
 import {evaluateCondition} from "../util/ConditionHelper";
+import {substituteVariables} from "../util/Parser";
 
 // TODO Condition für Challenge
 
@@ -83,7 +84,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as PointsGamificationOptions
 
                 if (!gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
-                    variablesState.addToVariable(gamificationOptions.pointType, gamificationOptions.pointsForSuccess)
+                    variablesState.addToVariable(gamificationOptions.pointType, Number(substituteVariables(gamificationOptions.pointsForSuccess)))
                 }
             } else if (get().runningChallengeData?.rewardType === GamificationType.BADGES) {
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions
