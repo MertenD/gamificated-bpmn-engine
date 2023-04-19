@@ -20,7 +20,7 @@ export function getPossibleRewardHint(gamificationType: GamificationType, gamifi
                     }
                 case PointsApplicationMethod.DECREMENT_BY:
                     if (pointsGamificationOptions.hasCondition) {
-                       return "Possible point change under condition: " + pointsGamificationOptions.pointType + " - " + pointsGamificationOptions.pointsForSuccess
+                        return "Possible point change under condition: " + pointsGamificationOptions.pointType + " - " + pointsGamificationOptions.pointsForSuccess
                     } else {
                         return "Point change after completion: " + pointsGamificationOptions.pointType + " - " + pointsGamificationOptions.pointsForSuccess
                     }

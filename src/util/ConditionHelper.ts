@@ -3,6 +3,7 @@ import {useVariablesStore} from "../stores/variablesStore";
 import {substituteVariables} from "./Parser";
 
 // TODO Test schreiben
+// TODO Hier nochmal prüfen, ob bei Array Vergleich der != Operator korrekt funktioniert
 export const evaluateCondition = (value1: string, comparison: Comparison, value2: string): boolean => {
 
     const variablesState = useVariablesStore.getState()
@@ -61,5 +62,6 @@ export const evaluateCondition = (value1: string, comparison: Comparison, value2
 
     }
 
+    console.log("Eval condition", substituteVariables(condition))
     return eval(substituteVariables(condition))
 }

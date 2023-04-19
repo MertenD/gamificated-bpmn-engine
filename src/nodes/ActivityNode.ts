@@ -47,17 +47,13 @@ export class ActivityNode implements BasicNode {
             case ActivityType.SINGLE_CHOICE:
                 return React.createElement(SingleChoiceActivity, {
                     key: this.id,
-                    task: this.data.task,
-                    choices: this.data.choices,
-                    variableName: this.data.variableName,
+                    data: this.data,
                     onConfirm: (input: string) => { this.onConfirm(input) }
                 })
             case ActivityType.MULTIPLE_CHOICE:
                 return React.createElement(MultipleChoiceActivity, {
                     key: this.id,
-                    task: this.data.task,
-                    choices: this.data.choices,
-                    variableName: this.data.variableName,
+                    data: this.data,
                     onConfirm: (input: string[]) => { this.onConfirm(input) }
                 })
         }

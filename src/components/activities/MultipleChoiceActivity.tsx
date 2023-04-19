@@ -3,11 +3,11 @@ import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
+import RewardHint from "../info/RewardHint";
+import {ActivityNodeData} from "../../model/NodeData";
 
 export interface MultipleChoiceActivityProps {
-    task: string,
-    choices: string,
-    variableName: string,
+    data: ActivityNodeData
     onConfirm: (input: string[]) => void
 }
 
@@ -49,7 +49,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                 justifyContent: 'center',
             }}>
                 <div style={{ margin: 20, color: "white", fontSize: 30 }}>
-                    { substituteVariables(props.task) }
+                    { substituteVariables(props.data.task) }
                 </div>
                 <div style={{
                     display: "flex",
@@ -58,7 +58,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                     justifyContent: "flex-start"
                 }}>
                     { Array.from(new Set(
-                        substituteVariables(props.choices)
+                        substituteVariables(props.data.choices)
                             .split(",")
                             .map((choice => choice.trim()))
                         ))
@@ -98,6 +98,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         ))}
                 </div>
                 <ConfirmButton onConfirm={() => props.onConfirm(selected)} />
+                <RewardHint gamificationType={props.data.gamificationType} gamificationOptions={props.data.gamificationOptions}/>
             </div>
         </Slide>
     )
