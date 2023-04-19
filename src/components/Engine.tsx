@@ -3,6 +3,7 @@ import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
 import PointsInfo from "./info/PointsInfo";
+import ProcessMap from "./info/ProcessMap";
 
 export type NodeMapNext = Record<string, string> | null
 export type NodeMapKey = string
@@ -19,10 +20,16 @@ export default function Engine() {
             { isProcessReady && (
                 <div>
                     <PointsInfo />
-                    <div style={{ margin: 30 }}>
-                        { currentNode !== null && (
-                            currentNode.node.run() || <></>
-                        ) }
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row"
+                    }}>
+                        <ProcessMap />
+                        <div style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>
+                            { currentNode !== null && (
+                                currentNode.node.run() || <></>
+                            ) }
+                        </div>
                     </div>
                     <ChallengeInfo />
                 </div>
