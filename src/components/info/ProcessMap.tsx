@@ -71,7 +71,7 @@ export default function ProcessMap() {
             alignItems: "center",
             width: 370,
             height: 200,
-            overflowX: "auto",
+            overflowX: "hidden",
             border: "3px solid #616163",
             borderRadius: 10,
             padding: 30,

@@ -28,7 +28,7 @@ export default function Engine() {
                         }}>
                             <ProcessMap />
                         </div>
-                        <div style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>
+                        <div style={{ zIndex: 10, marginLeft: 30, marginRight: 30, flex: 1 }}>
                             <PointsInfo />
                             { currentNode !== null && (
                                 currentNode.node.run() || <></>
