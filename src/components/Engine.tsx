@@ -19,19 +19,23 @@ export default function Engine() {
         <>
             { isProcessReady && (
                 <div>
-                    <PointsInfo />
                     <div style={{
                         display: "flex",
                         flexDirection: "row"
                     }}>
-                        <ProcessMap />
+                        <div style={{
+                            marginTop: 126
+                        }}>
+                            <ProcessMap />
+                        </div>
                         <div style={{ marginLeft: 30, marginRight: 30, flex: 1 }}>
+                            <PointsInfo />
                             { currentNode !== null && (
                                 currentNode.node.run() || <></>
                             ) }
+                            <ChallengeInfo />
                         </div>
                     </div>
-                    <ChallengeInfo />
                 </div>
             ) }
         </>

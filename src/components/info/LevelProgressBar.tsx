@@ -45,7 +45,6 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
                 flexDirection: "row",
                 justifyContent: "start",
                 alignItems: "center",
-                margin: 50
             }}>
                 <div style={{
                     marginRight: 10,

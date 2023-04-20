@@ -21,7 +21,6 @@ export default function CoinsInfo() {
             flexDirection: "row",
             justifyContent: "flex-start",
             alignItems: "center",
-            margin: 50
         }}>
             <div style={{
                 ...textStyle,

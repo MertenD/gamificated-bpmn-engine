@@ -7,7 +7,11 @@ export default function PointsInfo() {
          <div style={{
              display: "flex",
              flexDirection: "row",
-             justifyContent: "space-between"
+             justifyContent: "space-between",
+             marginLeft: 30,
+             marginRight: 30,
+             marginTop: 50,
+             marginBottom: 50
          }}>
              <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
              <CoinsInfo />

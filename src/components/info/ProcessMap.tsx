@@ -2,15 +2,13 @@ import {useFlowStore} from "../../stores/flowStore";
 import {useEffect, useState} from "react";
 import {NodeMapValue} from "../Engine";
 import {NodeType} from "../../model/NodeType";
+import Xarrow from "react-xarrows";
 
-export interface ProcessMapProps {
-
-}
-
-export default function ProcessMap(props: ProcessMapProps) {
+export default function ProcessMap() {
 
     const nodeMap = useFlowStore((state) => state.nodeMap)
     const currentNode = useFlowStore((state) => state.currentNode)
+
     const [visitedNodes, setVisitedNodes] = useState<NodeMapValue[]>([])
     const [prevNodes, setPrevNodes] = useState<NodeMapValue[]>([])
     const [currentNodes, setCurrentNodes] = useState<NodeMapValue[]>([])
@@ -60,108 +58,125 @@ export default function ProcessMap(props: ProcessMapProps) {
         backgroundColor: "gray",
         color: "white",
         borderRadius: 10,
-        margin: 10
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 50
     }
 
     return (
-        <div style={{
+        <div id={"border"} style={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "top",
             alignItems: "center",
             width: 370,
-            overflowX: "auto"
+            height: 200,
+            overflowX: "auto",
+            border: "3px solid #616163",
+            borderRadius: 10,
+            padding: 30,
+            backgroundColor: "#363638"
         }}>
-            { prevNodes.length === 0 && <div style={{
-                height: 30,
-                width: 100,
-                margin: 10
-            }} />}
-            { prevNodes.length !== 0 && prevNodes.length === 1 ? (
-                <div style={{ ...mapPointStyle, backgroundColor: "green" }}>{ prevNodes[0].node.nodeType }</div>
-            ) : (
+            { prevNodes.length === 0 && visitedNodes.length > 0 && (
+                <Xarrow
+                    start={"border"}
+                    end={visitedNodes[0].node.id}
+                    startAnchor={"top"}
+                    endAnchor={"top"}
+                    curveness={0.5}
+                    color={"gray"}
+                    headSize={4}
+                />
+            ) }
+            { prevNodes.length !== 0 && (
                 <>
-                    { prevNodes.length !== 0 && (
-                        <>
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-evenly"
-                            }}>
-                                { prevNodes.map((node) => {
-                                    console.log("visited", visitedNodes)
-                                    console.log("prev", node)
-                                    if (visitedNodes.includes(node)) {
-                                        return <div style={{ ...mapPointStyle, backgroundColor: "green" }}>{node.node.nodeType}</div>
-                                    } else {
-                                        return <div style={mapPointStyle}>{node.node.nodeType}</div>
-                                    }
-                                }) }
-                            </div>
-                        </>
-                    ) }
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly"
+                    }}>
+                        { prevNodes.map((node) => {
+                            return <>
+                                <div id={node.node.id} style={{
+                                    ...mapPointStyle,
+                                    backgroundColor: visitedNodes.includes(node) ? "green" : "gray",
+                                }}>{node.node.nodeType}</div>
+                                <Xarrow
+                                    start={"border"}
+                                    end={node.node.id}
+                                    startAnchor={"top"}
+                                    endAnchor={"top"}
+                                    curveness={0.5}
+                                    color={"gray"}
+                                    headSize={4}
+                                />
+                            </>
+                        }) }
+                    </div>
                 </>
-            )}
-            { currentNodes.length === 1 ? (
-                <div style={{ ...mapPointStyle, backgroundColor: "green", border: "4px solid black"}}>{ currentNodes[0].node.nodeType }</div>
-            ) : (
+            ) }
+            { currentNodes.length > 0 && (
                 <>
-                    { currentNodes.length > 0 && (
-                        <>
-                            <div style={{
-                                width: 20,
-                                height: 20,
-                                transform: "rotateY(0deg) rotate(45deg)",
-                                backgroundColor: "green",
-                                borderRadius: 2,
-                                margin: 10,
-                            }}/>
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-evenly"
-                            }}>
-                                { currentNodes.map((node) => {
-                                    if (visitedNodes.includes(node)) {
-                                        return <div style={{ ...mapPointStyle, backgroundColor: "green", border: "3px solid black"}}>
-                                            { node.node.nodeType }
-                                        </div>
-                                    } else {
-                                        return <div style={mapPointStyle}>{node.node.nodeType}</div>
-                                    }
-                                }) }
-                            </div>
-                        </>
-                    ) }
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly"
+                    }}>
+                        { currentNodes.map((node) => {
+                            const isNodeCurrent = node.node.id === currentNode?.node.id
+                            return <>
+                                <div id={node.node.id} style={{
+                                    ...mapPointStyle,
+                                    backgroundColor: visitedNodes.includes(node) ? "green" : "gray",
+                                    border: isNodeCurrent ? "4px solid black" : undefined
+                                }}>{ node.node.nodeType }</div>
+                                {visitedNodes.length > 1 && isNodeCurrent &&
+                                    <Xarrow
+                                        start={visitedNodes[1].node.id}
+                                        end={node.node.id}
+                                        startAnchor={"bottom"}
+                                        endAnchor={"top"}
+                                        curveness={0.5}
+                                        color={"gray"}
+                                        headSize={4}
+                                    />
+                                }
+                            </>
+                        }) }
+                    </div>
                 </>
-            )}
-            { nextNodes.length === 1 ? (
-                <div style={{ ...mapPointStyle, backgroundColor: visitedNodes.includes(nextNodes[0]) ? "green" : "gray" }}>{ nextNodes[0].node.nodeType }</div>
-            ) : (
+            ) }
+            { nextNodes.length > 0 && (
                 <>
-                    { nextNodes.length > 0 && (
-                        <>
-                            <div style={{
-                                width: 20,
-                                height: 20,
-                                transform: "rotateY(0deg) rotate(45deg)",
-                                backgroundColor: "gray",
-                                borderRadius: 2,
-                                margin: 10
-                            }}/>
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-evenly"
-                            }}>
-                                { nextNodes.map((nextNode) => {
-                                    return <div style={mapPointStyle}>{ nextNode.node.nodeType }</div>
-                                }) }
-                            </div>
-                        </>
-                    ) }
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly"
+                    }}>
+                        { nextNodes.map((node) => {
+                            return <>
+                                <div id={node.node.id} style={{
+                                    ...mapPointStyle,
+                                    backgroundColor: visitedNodes.includes(node) ? "green" : "gray",
+                                    marginBottom: 0
+                                }}>{ node.node.nodeType }</div>
+                                { currentNode !== null &&
+                                    <Xarrow
+                                      start={visitedNodes[0].node.id}
+                                      end={node.node.id}
+                                      startAnchor={"bottom"}
+                                      endAnchor={"top"}
+                                      curveness={0.5}
+                                      color={"gray"}
+                                      headSize={4}
+                                      dashness={true}
+                                    />
+                                }
+                            </>
+                        }) }
+                    </div>
                 </>
-            )}
+            ) }
         </div>
     )
 }
