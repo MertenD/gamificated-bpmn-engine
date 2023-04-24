@@ -12,7 +12,7 @@ export class GamificationEventNode implements BasicNode {
 
     constructor(id: string, challenge: string | undefined, data: GamificationEventNodeData) {
         this.id = id
-        this.nodeType = NodeType.GATEWAY_NODE
+        this.nodeType = NodeType.GAMIFICATION_EVENT_NODE
         this.challenge = challenge
         this.data = data
     }
