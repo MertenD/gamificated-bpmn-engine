@@ -49,7 +49,7 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
         borderRadius: "10px",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>
-        { "Activity" + (!isNodeCurrent && hasGamification ? " (G)" : "") }
+        { "Activity" + ((!isNodeCurrent && hasGamification) || (isNodeCurrent && hasGamificationEventNext) ? " (G)" : "") }
         { hasOwnGamification && isNodeCurrent && <RewardHint
             gamificationType={(node.node.data as ActivityNodeData).gamificationType}
             gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}

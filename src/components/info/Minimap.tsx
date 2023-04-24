@@ -18,7 +18,6 @@ export default function Minimap() {
     useEffect(() => {
         if (currentNode !== null) {
             addStep([currentNode])
-            addVisitedNode(currentNode)
         }
     }, [])
 
@@ -38,6 +37,16 @@ export default function Minimap() {
         }
     }, [steps])
 
+    function addVisitedNode(newVisitedNode: NodeMapValue) {
+        setVisitedNodes(prevVisitedNodes => [...prevVisitedNodes, newVisitedNode])
+    }
+
+    function addStep(newStep: NodeMapValue[]) {
+        setSteps(steps => {
+            return [...steps, newStep]
+        })
+    }
+
     function smoothScrollToBottom(element: HTMLElement, target: number, duration: number) {
         const startTime = Date.now()
         const start = element.scrollTop
@@ -55,16 +64,6 @@ export default function Minimap() {
         };
 
         requestAnimationFrame(animationStep)
-    }
-
-    function addVisitedNode(newVisitedNode: NodeMapValue) {
-        setVisitedNodes(prevVisitedNodes => [...prevVisitedNodes, newVisitedNode])
-    }
-
-    function addStep(newStep: NodeMapValue[]) {
-        setSteps(steps => {
-            return [...steps, newStep]
-        })
     }
 
     function getNextActivityNodes(node: NodeMapValue): NodeMapValue[] {
@@ -116,35 +115,18 @@ export default function Minimap() {
                                 return <>
                                     { getMapPoint(node, index, isNodeCurrent, visitedNodes.includes(node)) }
                                     { index !== 0 && (
-                                        index === steps.length - 1 ? (
-                                            step.map((node) => {
-                                                if (currentNode !== null) {
-                                                    return <Xarrow
-                                                        start={currentNode?.node.id + (index-1)}
-                                                        end={node.node.id + index}
-                                                        startAnchor={"bottom"}
-                                                        endAnchor={"top"}
-                                                        curveness={0.5}
-                                                        color={"gray"}
-                                                        headSize={4}
-                                                        dashness={true}
-                                                    />
-                                                }
-                                            })
-                                        ) : (
-                                            steps[index-1].filter(node => visitedNodes.includes(node)).map((visitedNode) => {
-                                                return <Xarrow
-                                                    start={visitedNode.node.id + (index-1)}
-                                                    end={node.node.id + index}
-                                                    startAnchor={"bottom"}
-                                                    endAnchor={"top"}
-                                                    curveness={0.5}
-                                                    color={visitedNodes.includes(node) ? "green" : "gray"}
-                                                    headSize={4}
-                                                    dashness={!visitedNodes.includes(node)}
-                                                />
-                                            })
-                                        )
+                                        step.map((node) => {
+                                            return <Xarrow
+                                                start={visitedNodes[index-1].node.id + (index-1)}
+                                                end={node.node.id + index}
+                                                startAnchor={"bottom"}
+                                                endAnchor={"top"}
+                                                curveness={0.5}
+                                                color={visitedNodes.includes(node) ? "green" : "gray"}
+                                                headSize={4}
+                                                dashness={visitedNodes[index] !== node}
+                                            />
+                                        })
                                     )}
                                 </>
                             }) }

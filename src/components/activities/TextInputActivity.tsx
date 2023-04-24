@@ -4,7 +4,6 @@ import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
-import RewardHint from "../info/RewardHint";
 
 export interface TextInputActivityProps {
     data: ActivityNodeData,
@@ -91,7 +90,6 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                         setShowRegexHint(true)
                     }
                 }} />
-                <RewardHint gamificationType={props.data.gamificationType} gamificationOptions={props.data.gamificationOptions}/>
             </div>
         </Slide>
     )

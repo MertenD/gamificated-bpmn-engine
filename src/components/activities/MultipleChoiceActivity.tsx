@@ -3,7 +3,6 @@ import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
-import RewardHint from "../info/RewardHint";
 import {ActivityNodeData} from "../../model/NodeData";
 
 export interface MultipleChoiceActivityProps {
@@ -98,7 +97,6 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                         ))}
                 </div>
                 <ConfirmButton onConfirm={() => props.onConfirm(selected)} />
-                <RewardHint gamificationType={props.data.gamificationType} gamificationOptions={props.data.gamificationOptions}/>
             </div>
         </Slide>
     )

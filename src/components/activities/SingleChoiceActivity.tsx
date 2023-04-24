@@ -3,7 +3,6 @@ import {substituteVariables} from "../../util/Parser";
 import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
-import RewardHint from "../info/RewardHint";
 import {ActivityNodeData} from "../../model/NodeData";
 
 export interface SingleChoiceActivityProps {
@@ -92,7 +91,6 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                 <ConfirmButton onConfirm={() => {
                     props.onConfirm(selected)
                 }} disabled={selected === "" || selected === undefined || selected === null}/>
-                <RewardHint gamificationType={props.data.gamificationType} gamificationOptions={props.data.gamificationOptions}/>
             </div>
         </Slide>
     )
