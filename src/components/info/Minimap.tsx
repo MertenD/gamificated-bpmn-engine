@@ -3,8 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {NodeMapValue} from "../Engine";
 import {NodeType} from "../../model/NodeType";
 import Xarrow, {useXarrow, Xwrapper} from "react-xarrows";
-import {ActivityNodeData} from "../../model/NodeData";
-import {GamificationType} from "../../model/GamificationType";
+import {getMapPoint} from "./util/MinimapHelper";
 
 export default function Minimap() {
 
@@ -84,67 +83,6 @@ export default function Minimap() {
         }))]
     }
 
-    const activityMapPointStyle = {
-        height: 30,
-        width: 100,
-        borderRadius: "10px",
-    }
-
-    const startEndMapPointStyle = {
-        height: 40,
-        width: 40,
-        borderRadius: "50%",
-    }
-
-    const gamificationEventMapPointStyle = {
-        height: 30,
-        width: 100,
-        borderRadius: "0px",
-    }
-
-    function getMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean): JSX.Element {
-        // TODO Hier je nach Nodetyp und Gamifizierung das Aussehen anpassen
-        let style = {}
-        let text = ""
-        switch (node.node.nodeType) {
-            case NodeType.INFO_NODE:
-                text = "Info"
-                style = activityMapPointStyle
-                break
-            case NodeType.ACTIVITY_NODE:
-                text = "Activity" +
-                    ((node.node.data as ActivityNodeData).gamificationType !== GamificationType.NONE
-                    // @ts-ignore
-                    || Object.values(node.next).map(next => nodeMap.get(next).node.nodeType).includes(NodeType.GAMIFICATION_EVENT_NODE)
-                        ? " (G)" : "")
-                style = activityMapPointStyle
-                break
-            case NodeType.START_NODE:
-                text = "S"
-                style = startEndMapPointStyle
-                break
-            case NodeType.END_NODE:
-                text = "E"
-                style = startEndMapPointStyle
-                break
-            case NodeType.GAMIFICATION_EVENT_NODE:
-                text = "Reward"
-                style = gamificationEventMapPointStyle
-        }
-        return <div id={node.node.id + index} style={{
-            ...style,
-            display: "flex",
-            color: "white",
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 10,
-            marginRight: 10,
-            marginBottom: 50,
-            border: isNodeCurrent ? "4px solid black" : undefined,
-            backgroundColor: visitedNodes.includes(node) ? "green" : "gray",
-        }}>{ text }</div>
-    }
-
     return (
         <div onScroll={updateXArrow} ref={minimapDivRef} id={"border2"} style={{
             display: "flex",
@@ -176,7 +114,7 @@ export default function Minimap() {
                             { step.map((node: NodeMapValue) => {
                                 const isNodeCurrent = index === steps.length - 2 && visitedNodes[visitedNodes.length - 1] === node
                                 return <>
-                                    { getMapPoint(node, index, isNodeCurrent) }
+                                    { getMapPoint(node, index, isNodeCurrent, visitedNodes.includes(node)) }
                                     { index !== 0 && (
                                         index === steps.length - 1 ? (
                                             step.map((node) => {
@@ -201,8 +139,9 @@ export default function Minimap() {
                                                     startAnchor={"bottom"}
                                                     endAnchor={"top"}
                                                     curveness={0.5}
-                                                    color={"gray"}
+                                                    color={visitedNodes.includes(node) ? "green" : "gray"}
                                                     headSize={4}
+                                                    dashness={!visitedNodes.includes(node)}
                                                 />
                                             })
                                         )
