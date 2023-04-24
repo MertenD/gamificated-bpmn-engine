@@ -15,7 +15,8 @@ const commonMapPointStyle = (isNodeCurrent: boolean, isNodeVisited: boolean) => 
         alignItems: "center",
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 50,
+        marginBottom: 25,
+        marginTop: 25,
         border: isNodeCurrent ? "4px solid black" : undefined,
         backgroundColor: isNodeVisited ? "green" : "gray"
     } as React.CSSProperties
@@ -42,18 +43,28 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
     // @ts-ignore
     const hasGamificationEventNext = Object.values(node.next).map(next => nodeMap.get(next).node.nodeType).includes(NodeType.GAMIFICATION_EVENT_NODE)
     const hasGamification = hasOwnGamification || hasGamificationEventNext
+    const isPartOfChallenge = node.node.challenge !== undefined
 
-    return <div id={node.node.id + index} style={{
-        height: isNodeCurrent ? 110: 30,
-        width: isNodeCurrent ? 130 : 100,
-        borderRadius: "10px",
-        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
-    }}>
-        { "Activity" + ((!isNodeCurrent && hasGamification) || (isNodeCurrent && hasGamificationEventNext) ? " (G)" : "") }
-        { hasOwnGamification && isNodeCurrent && <RewardHint
-            gamificationType={(node.node.data as ActivityNodeData).gamificationType}
-            gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}
-        /> }
+    return <div
+        style={{
+            width: "100%",
+            backgroundColor: isPartOfChallenge ? "tomato" : "transparent",
+            display: "flex",
+            justifyContent: "center"
+        }}
+    >
+        <div id={node.node.id + index} style={{
+            height: isNodeCurrent ? 110: 30,
+            width: isNodeCurrent ? 130 : 100,
+            borderRadius: "10px",
+            ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+        }}>
+            { "Activity" + ((!isNodeCurrent && hasGamification) || (isNodeCurrent && hasGamificationEventNext) ? " (G)" : "") }
+            { hasOwnGamification && isNodeCurrent && <RewardHint
+                gamificationType={(node.node.data as ActivityNodeData).gamificationType}
+                gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}
+            /> }
+        </div>
     </div>
 }
 

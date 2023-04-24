@@ -125,6 +125,7 @@ export default function Minimap() {
                                                 color={visitedNodes.includes(node) ? "green" : "gray"}
                                                 headSize={4}
                                                 dashness={visitedNodes[index] !== node}
+                                                zIndex={visitedNodes[index] !== node ? 0 : 1}
                                             />
                                         })
                                     )}
