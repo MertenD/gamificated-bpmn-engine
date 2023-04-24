@@ -9,7 +9,7 @@ export class GatewayNode implements BasicNode {
     id: string;
     nodeType: NodeType
     challenge: string | undefined
-    private data: GatewayNodeData
+    data: GatewayNodeData
 
     constructor(id: string, challenge: string | undefined, data: GatewayNodeData) {
         this.id = id

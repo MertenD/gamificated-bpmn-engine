@@ -9,7 +9,7 @@ export class InfoNode implements BasicNode {
     id: string;
     nodeType: NodeType
     challenge: string | undefined
-    private data: InfoNodeData
+    data: InfoNodeData
 
     constructor(id: string, challenge: string | undefined, data: InfoNodeData) {
         this.id = id

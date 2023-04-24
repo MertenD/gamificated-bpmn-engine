@@ -3,7 +3,7 @@ import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
 import PointsInfo from "./info/PointsInfo";
-import ProcessMap from "./info/ProcessMap";
+import Minimap from "./info/Minimap";
 
 export type NodeMapNext = Record<string, string> | null
 export type NodeMapKey = string
@@ -24,9 +24,9 @@ export default function Engine() {
                         flexDirection: "row"
                     }}>
                         <div style={{
-                            marginTop: 126
+                            marginTop: 142
                         }}>
-                            <ProcessMap />
+                            <Minimap />
                         </div>
                         <div style={{ zIndex: 10, marginLeft: 30, marginRight: 30, flex: 1 }}>
                             <PointsInfo />

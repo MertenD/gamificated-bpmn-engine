@@ -14,7 +14,7 @@ export class ActivityNode implements BasicNode {
     id: string
     nodeType: NodeType
     challenge: string | undefined
-    private readonly data: ActivityNodeData
+    data: ActivityNodeData
 
     constructor(id: string, challenge: string | undefined, data: ActivityNodeData) {
         this.id = id
