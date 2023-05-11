@@ -10,6 +10,7 @@ export type VariablesRFState = {
     setVariable: (name: string, value: any) => void
     addToVariable: (name: string, value: number) => void
     unlockBadge: (name: string) => void
+    getAllBadges: () => {name: string, isUnlocked: boolean}[]
     openBadgeDialog: (unlockedBadgeName: string) => void
     closeBadgeDialog: () => void
 }
@@ -53,6 +54,11 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
             })
             get().openBadgeDialog(name)
         }
+    },
+    getAllBadges: (): {name: string, isUnlocked: boolean}[] => {
+        return Object.entries(get().variables)
+            .filter(([, value]) => typeof value === "boolean")
+            .map(([name, value]) => ({name: name, isUnlocked: value}))
     },
     openBadgeDialog: () => {
         set({

@@ -4,6 +4,7 @@ import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
 import PointsInfo from "./info/PointsInfo";
 import Minimap from "./info/Minimap";
+import BadgesInfo from "./info/BadgeInfo";
 
 export type NodeMapNext = Record<string, string> | null
 export type NodeMapKey = string
@@ -30,6 +31,7 @@ export default function Engine() {
                         </div>
                         <div style={{ zIndex: 10, marginLeft: 30, marginRight: 30, flex: 1 }}>
                             <PointsInfo />
+                            <BadgesInfo />
                             { currentNode !== null && (
                                 currentNode.node.run() || <></>
                             ) }
