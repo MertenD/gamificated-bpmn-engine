@@ -41,7 +41,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     }
 
     return (
-        <Slide direction={"left"} in mountOnEnter unmountOnExit >
+        <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
             <div style={{
                 margin: 10,
                 borderRadius: 10,

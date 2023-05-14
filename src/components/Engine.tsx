@@ -5,11 +5,12 @@ import ChallengeInfo from "./info/ChallengeInfo";
 import PointsInfo from "./info/PointsInfo";
 import Minimap from "./info/Minimap";
 import BadgesInfo from "./info/BadgeInfo";
+import {NextNodeKey} from "../model/NextNodeKey";
 
-export type NodeMapNext = Record<string, string> | null
-export type NodeMapKey = string
-export type NodeMapValue = { node: BasicNode, next: NodeMapNext }
 export type NodeMap = Map<NodeMapKey, NodeMapValue>
+export type NodeMapKey = string // Id of flow element
+export type NodeMapValue = { node: BasicNode, next: NodeMapNext }
+export type NodeMapNext = Record<NextNodeKey, NodeMapKey> | null
 
 export default function Engine() {
 

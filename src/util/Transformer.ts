@@ -44,19 +44,19 @@ export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> 
         }
         runnableMap.set(id, {
             node: basicNode,
-            next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce((accumulator: Record<string, string>, edge: BpmnEdge) => {
+            next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce<Record<NextNodeKey, NodeMapKey>>((accumulator, edge: BpmnEdge) => {
                 // sourceHandle is "True" or "False" when dealing with gateway nodes
                 if (type === NodeType.GATEWAY_NODE && edge.sourceHandle !== null) {
                     if (edge.sourceHandle === "True") {
-                        accumulator[NextNodeKey.TRUE] = edge.target
+                        accumulator[NextNodeKey.TRUE] = edge.target as NodeMapKey
                     } else {
-                        accumulator[NextNodeKey.FALSE] = edge.target
+                        accumulator[NextNodeKey.FALSE] = edge.target as NodeMapKey
                     }
                 } else {
-                    accumulator[NextNodeKey.ONLY] = edge.target
+                    accumulator[NextNodeKey.ONLY] = edge.target as NodeMapKey
                 }
                 return accumulator
-            }, {}) || null
+            }, {} as Record<NextNodeKey, NodeMapKey>) || null
         })
     })
 

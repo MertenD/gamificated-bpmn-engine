@@ -15,7 +15,7 @@ export default function InfoActivity(props: InfoActivityProps) {
     const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     return (
-        <Slide direction={"left"}  in mountOnEnter unmountOnExit >
+        <Slide direction={"up"}  in mountOnEnter unmountOnExit timeout={0}>
             <div style={{
                 margin: 10,
                 borderRadius: 10,
