@@ -1,6 +1,6 @@
 import {NodeMapValue} from "../../Engine";
 import {NodeType} from "../../../model/NodeType";
-import {ActivityNodeData} from "../../../model/NodeData";
+import {ActivityNodeData, ChallengeNodeData} from "../../../model/NodeData";
 import {GamificationType} from "../../../model/GamificationType";
 import {useFlowStore} from "../../../stores/flowStore";
 import React from "react";
@@ -32,6 +32,10 @@ export function getMapPoint(node: NodeMapValue, index: number, isNodeCurrent: bo
             return getEndMapPoint(node, index, isNodeCurrent, isNodeVisited)
         case NodeType.INFO_NODE:
             return getInfoMapPoint(node, index, isNodeCurrent, isNodeVisited)
+        case NodeType.CHALLENGE_NODE:
+            return (node.node.data as ChallengeNodeData).isStart
+                ? getChallengeStartMapPoint(node, index, isNodeCurrent, isNodeVisited)
+                : getChallengeEndMapPoint(node, index, isNodeCurrent, isNodeVisited)
         default:
             return <></>
     }
@@ -92,4 +96,22 @@ function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boole
         borderRadius: "10px",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>{ "Info" }</div>
+}
+
+function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
+    return <div id={node.node.id + index} style={{
+        height: 30,
+        width: 120,
+        borderRadius: "10px",
+        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+    }}>{ "Challenge Start" }</div>
+}
+
+function getChallengeEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
+    return <div id={node.node.id + index} style={{
+        height: 30,
+        width: 120,
+        borderRadius: "10px",
+        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+    }}>{ "Challenge End" }</div>
 }

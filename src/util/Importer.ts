@@ -19,7 +19,6 @@ export const loadBpmnDiagramFromXml = (changeEvent: any): Promise<BpmnDiagram> =
             if (progressEvent.target !== null) {
 
                 const x2js = new X2JS()
-                console.log(x2js.xml2js(String(progressEvent.target.result)))
                 const jsonObj = removeUnderscoreFromAttributeNamesAndUnescapeXML(
                     x2js.xml2js(String(progressEvent.target.result))
                 ) as XMLBpmnDto
@@ -27,8 +26,6 @@ export const loadBpmnDiagramFromXml = (changeEvent: any): Promise<BpmnDiagram> =
                     ["dataObject", "dataObjectReference", "endEvent", "exclusiveGateway", "intermediateThrowEvent",
                     "sequenceFlow", "startEvent", "task", "outgoing", "incoming"]
                 ) as XMLBpmnDto;
-
-                console.log("cleaned", cleanedJsonObj)
 
                 const process = cleanedJsonObj.definitions.process
 
@@ -56,11 +53,8 @@ export const loadBpmnDiagramFromXml = (changeEvent: any): Promise<BpmnDiagram> =
 function getNodesFromBpmnProcess(process: XMLBpmnDtoProcess): BpmnNode[] {
 
     const activityNodes: BpmnNode[] = (process.task || []).filter(task => task["dataInputAssociation"] !== undefined).map(task => {
-        console.log("task", task.name)
         const dataString = process.dataObjectReference.find(reference => reference.id === task.dataInputAssociation?.sourceRef)?.name || ""
-        console.log("datastring", dataString)
         const data = JSON.parse(dataString)
-        console.log("data", data)
         return {
             id: task.id,
             type: NodeType.ACTIVITY_NODE,
@@ -79,7 +73,6 @@ function getNodesFromBpmnProcess(process: XMLBpmnDtoProcess): BpmnNode[] {
     const eventNodes: BpmnNode[] = (process.intermediateThrowEvent || []).map(event => {
         const dataString = process.dataObjectReference.find(reference => reference.id === event.dataInputAssociation?.sourceRef)?.name || ""
         const data = JSON.parse(dataString)
-        console.log("data of " + event.name, data)
         if (data["isStart"] === undefined) {
             // Gamification event
             return {
@@ -98,7 +91,6 @@ function getNodesFromBpmnProcess(process: XMLBpmnDtoProcess): BpmnNode[] {
     })
 
     const startNodes: BpmnNode[] = process.startEvent.map(start => {
-        console.log("Start node")
         return {
             id: start.id,
             type: NodeType.START_NODE,
