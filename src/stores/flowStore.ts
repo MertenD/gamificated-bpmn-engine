@@ -1,7 +1,6 @@
 import create from "zustand";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {NodeMap, NodeMapValue} from "../components/Engine";
-import {useChallengeStore} from "./challengeStore";
 import {NodeType} from "../model/NodeType";
 import {useVariablesStore} from "./variablesStore";
 
@@ -59,9 +58,6 @@ export const useFlowStore = create<FlowRFState>((set, get) => ({
         if (nextNode !== null && nextNode !== undefined) {
             const newNode = get().nodeMap.get(nextNode[nextNodeKey])
             if (newNode) {
-                // Everytime a new node is loaded the system will check if a challenge should start or end and will
-                // evaluate its results when it ended
-                useChallengeStore.getState().handleChallengeStartAndStop(newNode.node.challenge)
 
                 if (!useVariablesStore.getState().isBadgeDialogOpen) {
                     get().setCurrentNode(newNode)

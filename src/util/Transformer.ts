@@ -19,6 +19,7 @@ import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {NodeMapKey, NodeMapValue} from "../components/Engine";
 import {GamificationEventNode} from "../nodes/GamificationEventNode";
+import {ChallengeNode} from "../nodes/ChallengeNode";
 
 /**
  * Gibt eine Liste mit folgenden Elementen zurück:
@@ -33,16 +34,15 @@ import {GamificationEventNode} from "../nodes/GamificationEventNode";
 export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> {
     const nodes = diagram.nodes
     const edges = diagram.edges
-    const runnableMap = new Map<NodeMapKey, NodeMapValue>()
+    const nodeMap = new Map<NodeMapKey, NodeMapValue>()
 
-    // Loop through all nodes except challenge nodes. They are handles separately in the getChallenges() method
-    nodes.filter((node: BpmnNode) => node.type !== NodeType.CHALLENGE_NODE).forEach((node: BpmnNode) => {
-        const { id, type, challenge, data } = node
-        const basicNode = getNodeFromType(type, id, challenge, data)
+    nodes.forEach((node: BpmnNode) => {
+        const { id, type, data } = node
+        const basicNode = getNodeFromType(type, id, data)
         if (basicNode === null) {
             return
         }
-        runnableMap.set(id, {
+        nodeMap.set(id, {
             node: basicNode,
             next: edges.filter((edge: BpmnEdge) => edge.source === id).reduce<Record<NextNodeKey, NodeMapKey>>((accumulator, edge: BpmnEdge) => {
                 // sourceHandle is "True" or "False" when dealing with gateway nodes
@@ -60,31 +60,29 @@ export function getNodeMap(diagram: BpmnDiagram): Map<NodeMapKey, NodeMapValue> 
         })
     })
 
-    return runnableMap
+    return nodeMap
 }
 
 export function getChallenges(diagram: BpmnDiagram): BpmnNode[] {
     return diagram.nodes.filter((node: BpmnNode) => node.type === NodeType.CHALLENGE_NODE)
 }
 
-function getNodeFromType(type: NodeType, id: string, challenge: string | undefined, data: NodeData | undefined): BasicNode | null {
+function getNodeFromType(type: NodeType, id: string, data: NodeData | undefined): BasicNode | null {
     switch (type) {
         case NodeType.ACTIVITY_NODE:
-            return new ActivityNode(id, challenge, data as ActivityNodeData)
+            return new ActivityNode(id,data as ActivityNodeData)
         case NodeType.GATEWAY_NODE:
-            return new GatewayNode(id, challenge, data as GatewayNodeData)
+            return new GatewayNode(id, data as GatewayNodeData)
         case NodeType.INFO_NODE:
-            return new InfoNode(id, challenge, data as InfoNodeData)
+            return new InfoNode(id, data as InfoNodeData)
         case NodeType.GAMIFICATION_EVENT_NODE:
-            return new GamificationEventNode(id, challenge, data as GamificationEventNodeData)
+            return new GamificationEventNode(id, data as GamificationEventNodeData)
         case NodeType.START_NODE:
-            return new StartNode(id, challenge)
+            return new StartNode(id)
         case NodeType.END_NODE:
-            return new EndNode(id, challenge)
+            return new EndNode(id)
         case NodeType.CHALLENGE_NODE:
-            // Challenge node is handled separately in the challengeStore and is retrieved with the getChallenges() method
-            // It has no Class that implements BasicNode like the rest of the nodes
-            return null
+            return new ChallengeNode(id, data as ChallengeNodeData)
     }
 }
 

@@ -2,7 +2,7 @@ import React, {useRef} from "react";
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 import {BpmnDiagram} from "../../model/Bpmn";
-import {parseBpmnDiagramFromJson} from "../../util/Importer";
+import {loadBpmnDiagramFromXml} from "../../util/Importer";
 
 export interface ProcessUploadButtonProps {
     onProcessUploaded: (processName: string, bpmnDiagram: BpmnDiagram) => void
@@ -14,7 +14,7 @@ export default function ProcessUploadButton(props: ProcessUploadButtonProps) {
 
     const onUploaded = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files !== null && event.target.files.length > 0) {
-            const bpmnDiagram = await parseBpmnDiagramFromJson(event)
+            const bpmnDiagram = await loadBpmnDiagramFromXml(event)
             const processName = event.target.files[0].name.split(".")[0]
             props.onProcessUploaded(processName, bpmnDiagram)
         }
@@ -40,7 +40,7 @@ export default function ProcessUploadButton(props: ProcessUploadButtonProps) {
                 console.warn("Error while uploading")
             }
         }}>
-            <input type='file' id='file' ref={inputFile} hidden onChange={(event) => {
+            <input accept={".bpmn"} type='file' id='file' ref={inputFile} hidden onChange={(event) => {
                 onUploaded(event)
             }}/>
             Upload a new Process<br />+

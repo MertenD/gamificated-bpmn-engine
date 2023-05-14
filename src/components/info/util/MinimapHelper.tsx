@@ -43,12 +43,11 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
     // @ts-ignore
     const hasGamificationEventNext = Object.values(node.next).map(next => nodeMap.get(next).node.nodeType).includes(NodeType.GAMIFICATION_EVENT_NODE)
     const hasGamification = hasOwnGamification || hasGamificationEventNext
-    const isPartOfChallenge = node.node.challenge !== undefined
 
     return <div
         style={{
             width: "100%",
-            backgroundColor: isPartOfChallenge ? "tomato" : "transparent",
+            backgroundColor: "transparent",
             display: "flex",
             justifyContent: "center"
         }}

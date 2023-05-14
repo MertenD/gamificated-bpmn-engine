@@ -8,13 +8,11 @@ import {NodeData} from "../model/NodeData";
 export class StartNode implements BasicNode {
     id: string;
     nodeType: NodeType
-    challenge: string | undefined
     data: NodeData
 
-    constructor(id: string, challenge: string | undefined = undefined) {
+    constructor(id: string) {
         this.id = id
         this.nodeType = NodeType.START_NODE
-        this.challenge = challenge
         this.data = {}
     }
 

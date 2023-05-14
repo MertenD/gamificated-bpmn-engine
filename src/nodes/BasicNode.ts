@@ -5,7 +5,6 @@ import {NodeData} from "../model/NodeData";
 export interface BasicNode {
     id: string
     nodeType: NodeType,
-    challenge: string | undefined
     data: NodeData
     run: () => React.ReactNode | void
 }

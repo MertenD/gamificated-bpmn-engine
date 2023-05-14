@@ -1,4 +1,3 @@
-import {BpmnNode} from "../model/Bpmn";
 import {ChallengeNodeData} from "../model/NodeData";
 import create from "zustand";
 import {GamificationType} from "../model/GamificationType";
@@ -7,10 +6,7 @@ import {useVariablesStore} from "./variablesStore";
 import {evaluateCondition} from "../util/ConditionHelper";
 import {substituteVariables} from "../util/Parser";
 
-// TODO Condition für Challenge
-
 export type ChallengeRFState = {
-    challenges: BpmnNode[]
     isChallengeRunning: boolean
     runningChallengeData: ChallengeNodeData | null
     startMillis: number | null
@@ -19,10 +15,7 @@ export type ChallengeRFState = {
     isChallengePaused: boolean
     totalPausedMillis: number
     resetStoreValues: () => void
-    setChallenges: (challenges: BpmnNode[]) => void
-    getChallengeData: (id: string) => ChallengeNodeData | null
-    handleChallengeStartAndStop: (challengeId: string | undefined) => void
-    startChallenge: (challengeId: string) => void
+    startChallenge: (challengeData: ChallengeNodeData) => void
     stopChallenge: () => void
     startUpdateChallengeStateInterval: () => void
     pauseChallenge: () => void
@@ -30,7 +23,6 @@ export type ChallengeRFState = {
 }
 
 export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
-    challenges: [],
     isChallengeRunning: false,
     runningChallengeData: null,
     startMillis: null,
@@ -40,7 +32,6 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     totalPausedMillis: 0,
     resetStoreValues: () => {
         set({
-            challenges: [],
             isChallengeRunning: false,
             runningChallengeData: null,
             startMillis: null,
@@ -50,26 +41,10 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             totalPausedMillis: 0,
         })
     },
-    setChallenges: (challenges: BpmnNode[]) => {
-        set({
-            challenges: challenges
-        })
-    },
-    getChallengeData: (id: string): ChallengeNodeData | null => {
-        return get().challenges.find((challenge) => challenge.id === id)?.data as ChallengeNodeData || null
-    },
-    handleChallengeStartAndStop: (challengeId: string | undefined) => {
-        const isChallenge = challengeId !== undefined
-        if (challengeId !== undefined && !get().isChallengeRunning) {
-            get().startChallenge(challengeId)
-        } else if (!isChallenge && get().isChallengeRunning) {
-            get().stopChallenge()
-        }
-    },
-    startChallenge: (id: string) => {
+    startChallenge: (challengeData: ChallengeNodeData) => {
         set({
             isChallengeRunning: true,
-            runningChallengeData: get().getChallengeData(id),
+            runningChallengeData: challengeData,
             startMillis: Date.now()
         })
         get().startUpdateChallengeStateInterval()

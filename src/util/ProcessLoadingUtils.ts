@@ -1,5 +1,5 @@
 import {BpmnDiagram} from "../model/Bpmn";
-import {getBadgeTypes, getChallenges, getNodeMap, getPointTypes} from "./Transformer";
+import {getBadgeTypes, getNodeMap, getPointTypes} from "./Transformer";
 import {useChallengeStore} from "../stores/challengeStore";
 import {useFlowStore} from "../stores/flowStore";
 import {useVariablesStore} from "../stores/variablesStore";
@@ -10,7 +10,6 @@ const resetVariableStore = useVariablesStore.getState().resetStoreValues
 const setIsProcessUploaded = useFlowStore.getState().setIsProcessReady
 const setVariable = useVariablesStore.getState().setVariable
 const setNodeMap = useFlowStore.getState().setNodeMap
-const setChallenges = useChallengeStore.getState().setChallenges
 
 export const loadProcess = async (bpmnDiagram: BpmnDiagram) => {
     setIsProcessUploaded(false)
@@ -19,7 +18,6 @@ export const loadProcess = async (bpmnDiagram: BpmnDiagram) => {
         resetFlowStore()
         resetVariableStore()
         loadNodeMapIntoStore(bpmnDiagram)
-        loadChallengesIntoStore(bpmnDiagram)
         loadPointTypesIntoStore(bpmnDiagram)
         loadBadgeTypesIntoStore(bpmnDiagram)
         setIsProcessUploaded(true)
@@ -31,11 +29,6 @@ export const loadProcess = async (bpmnDiagram: BpmnDiagram) => {
 const loadNodeMapIntoStore = (bpmnDiagram: BpmnDiagram) => {
     const nodeMap = getNodeMap(bpmnDiagram)
     setNodeMap(nodeMap)
-}
-
-const loadChallengesIntoStore = (bpmnDiagram: BpmnDiagram) => {
-    const challenges = getChallenges(bpmnDiagram)
-    setChallenges(challenges)
 }
 
 const loadPointTypesIntoStore = (bpmnDiagram: BpmnDiagram) => {

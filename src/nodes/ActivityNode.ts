@@ -13,13 +13,11 @@ import {applyGamification} from "./util/ApplyGamificationHelper";
 export class ActivityNode implements BasicNode {
     id: string
     nodeType: NodeType
-    challenge: string | undefined
     data: ActivityNodeData
 
-    constructor(id: string, challenge: string | undefined, data: ActivityNodeData) {
+    constructor(id: string, data: ActivityNodeData) {
         this.id = id
         this.nodeType = NodeType.ACTIVITY_NODE
-        this.challenge = challenge
         this.data = data
     }
 

@@ -20,7 +20,7 @@ export default function BadgeInfo() {
         marginLeft: 30
     }}>
         { badges.map((badge) => {
-            return <div style={{
+            return <div key={badge.name} style={{
                 padding: 10,
                 borderRadius: 10,
                 backgroundColor: badge.isUnlocked ? "green" : "gray",

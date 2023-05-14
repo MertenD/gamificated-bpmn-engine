@@ -8,13 +8,11 @@ import {useFlowStore} from "../stores/flowStore";
 export class InfoNode implements BasicNode {
     id: string;
     nodeType: NodeType
-    challenge: string | undefined
     data: InfoNodeData
 
-    constructor(id: string, challenge: string | undefined, data: InfoNodeData) {
+    constructor(id: string, data: InfoNodeData) {
         this.id = id
         this.nodeType = NodeType.INFO_NODE
-        this.challenge = challenge
         this.data = data
     }
 

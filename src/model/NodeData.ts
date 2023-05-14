@@ -24,6 +24,7 @@ export interface GatewayNodeData extends NodeData {
 }
 
 export interface ChallengeNodeData extends NodeData {
+    isStart: boolean
     challengeType: ChallengeType
     secondsToComplete: number
     rewardType: GamificationType

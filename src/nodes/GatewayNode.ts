@@ -8,13 +8,11 @@ import {evaluateCondition} from "../util/ConditionHelper";
 export class GatewayNode implements BasicNode {
     id: string;
     nodeType: NodeType
-    challenge: string | undefined
     data: GatewayNodeData
 
-    constructor(id: string, challenge: string | undefined, data: GatewayNodeData) {
+    constructor(id: string, data: GatewayNodeData) {
         this.id = id
         this.nodeType = NodeType.GATEWAY_NODE
-        this.challenge = challenge
         this.data = data
     }
 

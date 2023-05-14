@@ -53,6 +53,7 @@ export function parseGatewayNodeData(data: any): GatewayNodeData {
 
 export function parseChallengeNodeData(data: any): ChallengeNodeData {
     return {
+        isStart: data.isStart,
         challengeType: data.challengeType as ChallengeType,
         secondsToComplete: data.secondsToComplete,
         rewardType: data.rewardType as GamificationType,
