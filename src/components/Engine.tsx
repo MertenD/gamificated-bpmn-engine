@@ -3,7 +3,7 @@ import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
 import Minimap from "./info/Minimap";
-import BadgesInfo from "./info/BadgeInfo";
+import BadgesInfo from "./info/badges/BadgeInfo";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {LevelProgressBar} from "./info/LevelProgressBar";
 import CoinsInfo from "./info/CoinsInfo";
