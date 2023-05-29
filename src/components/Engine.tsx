@@ -3,7 +3,7 @@ import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
 import Minimap from "./info/Minimap";
-import BadgesInfo from "./info/badges/BadgeInfo";
+import BadgesInfo from "./info/BadgeInfo";
 import {NextNodeKey} from "../model/NextNodeKey";
 import {LevelProgressBar} from "./info/LevelProgressBar";
 import CoinsInfo from "./info/CoinsInfo";
@@ -31,6 +31,7 @@ export default function Engine() {
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                marginBottom: 15
                             }}>
                                 <div style={{
                                     display: "flex",
@@ -38,7 +39,12 @@ export default function Engine() {
                                     justifyContent: "space-between",
                                 }}>
                                     <BadgesInfo />
-                                    <CoinsInfo />
+                                    <div style={{ marginBottom: 15 }}/>
+                                    <div style={{
+                                        marginLeft: 10
+                                    }}>
+                                        <CoinsInfo />
+                                    </div>
                                 </div>
                                 <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
                             </div>

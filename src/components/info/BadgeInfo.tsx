@@ -1,4 +1,4 @@
-import {useVariablesStore} from "../../../stores/variablesStore";
+import {useVariablesStore} from "../../stores/variablesStore";
 import {useEffect, useState} from "react";
 import {SvgIcon, Tooltip} from "@mui/material";
 
@@ -15,18 +15,14 @@ export default function BadgeInfo() {
     return <div style={{
         display: "flex",
         flexDirection: "row",
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 5,
-        paddingRight: 5,
         overflow: "visible"
     }}>
         { badges.map((badge) => {
             const iconPath = badge.isUnlocked ? "/icons/unlockedBadgeIcon.png" : "/icons/lockedBadgeIcon.png";
-            const toolTipLock = badge.isUnlocked ? "🔓" : "🔒"
+            const tooltip = badge.isUnlocked ? "Unlocked: " + badge.name : "Locked: " + badge.name
             return (
-                <Tooltip title={toolTipLock + " " + badge.name}>
-                    <SvgIcon style={{ width: 50, height: "auto", marginLeft: 5, marginRight: 5 }}>
+                <Tooltip title={tooltip}>
+                    <SvgIcon style={{ width: 50, height: "auto", marginRight: 5, marginLeft: 5 }}>
                         <image xlinkHref={iconPath} width="100%" height="100%" />
                     </SvgIcon>
                 </Tooltip>

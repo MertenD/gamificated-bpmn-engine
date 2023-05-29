@@ -1,39 +1,29 @@
 import {useVariablesStore} from "../../stores/variablesStore";
+import {SvgIcon, Tooltip, Typography} from "@mui/material";
 
 export default function CoinsInfo() {
 
     const coins = useVariablesStore((state) => state.getVariable("Coins"))
-
-    const textStyle = {
-        color: "white"
-    }
-
-    const coinStyle = {
-        width: 25,
-        height: 25,
-        backgroundColor: "gold",
-        borderRadius: "50%",
-    }
+    const coinsIconPath = "/icons/coinsIcon.png"
 
     return (
         <div style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "flex-start",
-            alignItems: "center",
+            alignItems: "center"
         }}>
+            <Tooltip title={"Earned coins"}>
+                <SvgIcon style={{ width: 40, height: "auto"}}>
+                    <image xlinkHref={coinsIconPath} width="100%" height="100%" />
+                </SvgIcon>
+            </Tooltip>
             <div style={{
-                ...textStyle,
-                marginRight: 10
+                marginLeft: 10
             }}>
-                { (coins || 0).toLocaleString() }
-            </div>
-            <div style={{
-                ...coinStyle,
-                color: "black",
-                fontWeight: "bolder"
-            }}>
-                $
+                <Typography variant="h4">
+                    { (coins || 0).toLocaleString() }
+                </Typography>
             </div>
         </div>
     )
