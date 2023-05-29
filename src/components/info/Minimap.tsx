@@ -85,11 +85,12 @@ export default function Minimap() {
     return (
         <div onScroll={updateXArrow} ref={minimapDivRef} id={"border2"} style={{
             display: "flex",
+            flexShrink: 0,
             flexDirection: "column",
             justifyContent: "top",
             alignItems: "center",
-            width: 370,
-            height: 300,
+            width: 400,
+            height: 500,
             overflowY: "scroll",
             overflowX: "hidden",
             border: "3px solid #616163",

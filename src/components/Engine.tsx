@@ -2,10 +2,11 @@ import React from "react"
 import {BasicNode} from "../nodes/BasicNode";
 import {useFlowStore} from "../stores/flowStore";
 import ChallengeInfo from "./info/ChallengeInfo";
-import PointsInfo from "./info/PointsInfo";
 import Minimap from "./info/Minimap";
 import BadgesInfo from "./info/BadgeInfo";
 import {NextNodeKey} from "../model/NextNodeKey";
+import {LevelProgressBar} from "./info/LevelProgressBar";
+import CoinsInfo from "./info/CoinsInfo";
 
 export type NodeMap = Map<NodeMapKey, NodeMapValue>
 export type NodeMapKey = string // Id of flow element
@@ -25,17 +26,33 @@ export default function Engine() {
                         display: "flex",
                         flexDirection: "row"
                     }}>
-                        <div style={{
-                            marginTop: 142
-                        }}>
-                            <Minimap />
-                        </div>
                         <div style={{ zIndex: 10, marginLeft: 30, marginRight: 30, flex: 1 }}>
-                            <PointsInfo />
-                            <BadgesInfo />
-                            { currentNode !== null && (
-                                currentNode.node.run() || <></>
-                            ) }
+                            <div style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                            }}>
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between",
+                                }}>
+                                    <BadgesInfo />
+                                    <CoinsInfo />
+                                </div>
+                                <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
+                            </div>
+                            <div style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                width: "100%",
+                            }}>
+                                { currentNode !== null && (
+                                    currentNode.node.run() || <></>
+                                ) }
+                                <Minimap />
+                            </div>
                             <ChallengeInfo />
                         </div>
                     </div>

@@ -29,7 +29,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
             <div style={{
-                margin: 10,
+                flexGrow: 1,
                 borderRadius: 10,
                 padding: 16,
                 background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",

@@ -15,9 +15,6 @@ export default function BadgeInfo() {
     return <div style={{
         display: "flex",
         flexDirection: "row",
-        marginBottom: 50,
-        marginRight: 30,
-        marginLeft: 30
     }}>
         { badges.map((badge) => {
             return <div key={badge.name} style={{
