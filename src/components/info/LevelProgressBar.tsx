@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useVariablesStore} from "../../stores/variablesStore";
 import {ProgressBar} from "./ProgressBar";
+import {XPIcon} from "./icons/XPIcon";
+import {Typography} from "@mui/material";
 
 export interface LevelProgressBarProps {
     color: string,
@@ -34,6 +36,7 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
                 }, 1100)
             } else {
                 setExperience(newExperience)
+                setLevel((Math.floor(newExperience / 100) || 0) + 1)
             }
         }
     }, [variables])
@@ -42,15 +45,40 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
         <>
             { experience !== undefined && (<div style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 justifyContent: "start",
-                alignItems: "center",
+                alignItems: "center"
             }}>
                 <div style={{
-                    marginRight: 10,
-                    color: "white"
+                    marginBottom: 15,
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}>
-                    Level {level}
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "start",
+                        alignItems: "center",
+                    }}>
+                        <XPIcon />
+                        <div style={{
+                            marginLeft: 10
+                        }}>
+                            <Typography variant="h5">
+                                {experience}
+                            </Typography>
+                        </div>
+                    </div>
+                    <div style={{
+                        marginRight: 2
+                    }}>
+                        <Typography variant="h5">
+                            Level {level}
+                        </Typography>
+                    </div>
                 </div>
                 <div style={{width: 300}}>
                     <ProgressBar
@@ -60,18 +88,6 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
                             experience === 100 ? 100 : experience % 100
                         }
                     />
-                </div>
-                <div style={{
-                    marginLeft: 13,
-                    color: "white"
-                }}>
-                    Level {level + 1}
-                </div>
-                <div style={{
-                    marginLeft: 20,
-                    color: "white"
-                }}>
-                    (Total experience: {experience})
                 </div>
             </div> )}
         </>

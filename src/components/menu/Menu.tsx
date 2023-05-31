@@ -49,7 +49,7 @@ export default function Menu(props: MenuProps) {
                         backgroundColor: "gray",
                         userSelect: "none"
                     }} onClick={() => {
-                        loadProcess(process.bpmnDiagram).then(() => {
+                        loadProcess(process).then(() => {
                             props.onProcessStarted()
                         })
                     }}>

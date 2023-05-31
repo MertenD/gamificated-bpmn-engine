@@ -1,6 +1,7 @@
 import {useVariablesStore} from "../../stores/variablesStore";
 import {useEffect, useState} from "react";
-import {SvgIcon, Tooltip} from "@mui/material";
+import {UnlockedBadgeIcon} from "./icons/UnlockedBadgeIcon";
+import {LockedBadgeIcon} from "./icons/LockedBadgeIcon";
 
 export default function BadgeInfo() {
 
@@ -17,16 +18,10 @@ export default function BadgeInfo() {
         flexDirection: "row",
         overflow: "visible"
     }}>
-        { badges.map((badge) => {
-            const iconPath = badge.isUnlocked ? "/icons/unlockedBadgeIcon.png" : "/icons/lockedBadgeIcon.png";
-            const tooltip = badge.isUnlocked ? "Unlocked: " + badge.name : "Locked: " + badge.name
-            return (
-                <Tooltip title={tooltip}>
-                    <SvgIcon style={{ width: 50, height: "auto", marginRight: 5, marginLeft: 5 }}>
-                        <image xlinkHref={iconPath} width="100%" height="100%" />
-                    </SvgIcon>
-                </Tooltip>
-            );
+        { badges.length !== 0 && badges.map((badge) => {
+            return badge.isUnlocked ?
+                <UnlockedBadgeIcon badgeName={badge.name} svgIconProps={{ width: 50, marginRight: 5, marginLeft: 5 }} />
+                : <LockedBadgeIcon badgeName={badge.name} svgIconProps={{ width: 50, marginRight: 5, marginLeft: 5 }} />
         }) }
     </div>
 }

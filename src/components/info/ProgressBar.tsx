@@ -9,9 +9,9 @@ export function ProgressBar(props: ProgressBarProps) {
     const containerStyle = {
         height: 20,
         width: "100%",
-        backgroundColor: "#363638",
+        backgroundColor: "#d9d9d9",
         borderRadius: 50,
-        border: "3px solid #616163"
+        border: "2px solid #616163"
     }
 
     const fillerStyle = {
@@ -24,7 +24,7 @@ export function ProgressBar(props: ProgressBarProps) {
 
     const labelStyle = {
         padding: 5,
-        color: "white",
+        color: "#616163",
         fontWeight: "bold"
     }
 

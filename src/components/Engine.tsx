@@ -31,6 +31,7 @@ export default function Engine() {
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                alignItems: "flex-end",
                                 marginBottom: 15
                             }}>
                                 <div style={{
@@ -46,7 +47,7 @@ export default function Engine() {
                                         <CoinsInfo />
                                     </div>
                                 </div>
-                                <LevelProgressBar color={"tomato"} /> { /* Will only be shown when the user can gain experience in the process */ }
+                                <LevelProgressBar color={"#7ed957"} /> { /* Will only be shown when the user can gain experience in the process */ }
                             </div>
                             <div style={{
                                 display: "flex",

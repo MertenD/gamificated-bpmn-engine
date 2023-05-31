@@ -3,6 +3,9 @@ import './App.css';
 import Engine from "./components/Engine";
 import {BadgeDialog} from "./components/info/BadgeDialog";
 import Menu from "./components/menu/Menu";
+import {AppBar, createTheme, IconButton, ThemeProvider, Toolbar, Typography} from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {useFlowStore} from "./stores/flowStore";
 
 // TODO Bug: Wenn man direkt nach dem Start in eine Challenge startet gibt es einen Promise Fehler
 // TODO Es wäre bestimmt sinnvoll bei einer Aufgabe bereits im Vorfeld anzuzeigen, welche Belohnung auf den User wartet
@@ -11,24 +14,31 @@ import Menu from "./components/menu/Menu";
 function App() {
 
     const [isProcessRunning, setIsProcessRunning] = useState(false)
+    const processName = useFlowStore((state) => state.processName)
 
     return (
-        <>
+        <ThemeProvider theme={appTheme}>
             <div className="App">
-                <div style={{ margin: 20, height: "100vh"}}>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "left",
+                    margin: 20,
+                    height: "100vh"
+                }}>
                     { isProcessRunning ? (
                         <>
-                            <div style={{
-                                width: 100,
-                                height: 20,
-                                userSelect: "none",
-                                cursor: "pointer",
-                                color: "white"
-                            }} onClick={() => {
-                                setIsProcessRunning(false)
-                            }}>
-                                Back to menu
-                            </div>
+                            <AppBar position="static">
+                                <Toolbar color={"#38b6ff"}>
+                                    <IconButton color="inherit" onClick={() => setIsProcessRunning(false)}>
+                                        <ArrowBackIcon />
+                                    </IconButton>
+                                    <Typography style={{ marginLeft: 10 }} variant="h5">
+                                        { processName }
+                                    </Typography>
+                                </Toolbar>
+                            </AppBar>
+                            <div style={{ marginBottom: 20 }} />
                             <Engine />
                             <BadgeDialog />
                         </>
@@ -39,8 +49,18 @@ function App() {
                     )}
                 </div>
             </div>
-        </>
+        </ThemeProvider>
     );
 }
+
+export const appTheme = createTheme({
+    palette: {
+        mode: 'light',
+        primary: {
+            main: '#5271ff',
+        },
+
+    },
+});
 
 export default App;

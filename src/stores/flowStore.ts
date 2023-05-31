@@ -5,10 +5,12 @@ import {NodeType} from "../model/NodeType";
 import {useVariablesStore} from "./variablesStore";
 
 export type FlowRFState = {
+    processName: string
     isProcessReady: boolean
     nodeMap: NodeMap
     currentNode: NodeMapValue | null
     resetStoreValues: () => void
+    setProcessName: (name: string) => void
     setIsProcessReady: (isReady: boolean) => void
     setNodeMap: (nodeMap: NodeMap) => void
     getFirstNode: () => NodeMapValue | null
@@ -17,6 +19,7 @@ export type FlowRFState = {
 }
 
 export const useFlowStore = create<FlowRFState>((set, get) => ({
+    processName: "",
     isProcessReady: false,
     nodeMap: new Map(),
     currentNode: null,
@@ -24,6 +27,11 @@ export const useFlowStore = create<FlowRFState>((set, get) => ({
         set({
             nodeMap: new Map(),
             currentNode: null,
+        })
+    },
+    setProcessName: (name: string) => {
+        set({
+            processName: name
         })
     },
     setIsProcessReady: (isReady: boolean) => {
