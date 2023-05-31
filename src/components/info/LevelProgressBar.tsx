@@ -63,7 +63,7 @@ export function LevelProgressBar(props: LevelProgressBarProps) {
                         justifyContent: "start",
                         alignItems: "center",
                     }}>
-                        <XPIcon />
+                        <XPIcon isUnlocked={true} />
                         <div style={{
                             marginLeft: 10
                         }}>

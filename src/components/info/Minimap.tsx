@@ -1,9 +1,10 @@
 import {useFlowStore} from "../../stores/flowStore";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import {NodeMapValue} from "../Engine";
 import {NodeType} from "../../model/NodeType";
 import Xarrow, {useXarrow, Xwrapper} from "react-xarrows";
 import {getMapPoint} from "./util/MinimapHelper";
+import {useMinimapStore} from "../../stores/MinimapStore";
 
 export default function Minimap() {
 
@@ -12,19 +13,23 @@ export default function Minimap() {
     const updateXArrow = useXarrow()
     const minimapDivRef = useRef<HTMLDivElement | null>(null);
 
-    const [steps, setSteps] = useState<NodeMapValue[][]>([])
-    const [visitedNodes, setVisitedNodes] = useState<NodeMapValue[]>([])
+    // TODO Minimap soll auch die Belohnungen der zukünftigen Gamification Events anzeigen
+    const steps = useMinimapStore(state => state.steps)
+    const visitedNodes = useMinimapStore(state => state.visitedNodes)
+
+    const addStep = useMinimapStore(state => state.addStep)
+    const addVisitedNode = useMinimapStore(state => state.addVisitedNode)
 
     useEffect(() => {
         if (currentNode !== null) {
-            addStep([currentNode])
+            addStep([{nodeMapValue: currentNode, isRewardUnlocked: false}])
         }
     }, [])
 
     useEffect(() => {
         if (currentNode?.node.nodeType !== NodeType.GATEWAY_NODE && currentNode?.node.nodeType !== NodeType.GAMIFICATION_EVENT_NODE) {
             if (currentNode !== null) {
-                addStep(getNextActivityNodes(currentNode))
+                addStep(getNextActivityNodes(currentNode).map(next => { return {nodeMapValue: next, isRewardUnlocked: false} }))
                 addVisitedNode(currentNode)
                 updateXArrow()
             }
@@ -36,16 +41,6 @@ export default function Minimap() {
             smoothScrollToBottom(minimapDivRef.current, minimapDivRef.current.scrollHeight, 500);
         }
     }, [steps])
-
-    function addVisitedNode(newVisitedNode: NodeMapValue) {
-        setVisitedNodes(prevVisitedNodes => [...prevVisitedNodes, newVisitedNode])
-    }
-
-    function addStep(newStep: NodeMapValue[]) {
-        setSteps(steps => {
-            return [...steps, newStep]
-        })
-    }
 
     function smoothScrollToBottom(element: HTMLElement, target: number, duration: number) {
         const startTime = Date.now()
@@ -93,10 +88,9 @@ export default function Minimap() {
             height: 500,
             overflowY: "scroll",
             overflowX: "hidden",
-            border: "3px solid #616163",
-            borderRadius: 10,
+            border: "3px solid #d9d9d9",
+            borderRadius: "0 10 10 0",
             padding: 30,
-            backgroundColor: "#363638"
         }}>
             { /* Die div hier wird gebraucht, damit die Pfeile nicht außerhalb der oberen div gezeichnet werden */}
             <div style={{
@@ -105,28 +99,28 @@ export default function Minimap() {
                 height: "100%",
             }}>
                 <Xwrapper>
-                    { steps.map((step: NodeMapValue[], index: number) => {
+                    { steps.map((step: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[], index: number) => {
                         return <div style={{
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "space-evenly"
                         }}>
-                            { step.map((node: NodeMapValue) => {
-                                const isNodeCurrent = index === steps.length - 2 && visitedNodes[visitedNodes.length - 1] === node
+                            { step.map((node: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}) => {
+                                const isNodeCurrent = index === steps.length - 2 && visitedNodes[visitedNodes.length - 1] === node.nodeMapValue
                                 return <>
-                                    { getMapPoint(node, index, isNodeCurrent, visitedNodes.includes(node)) }
+                                    { getMapPoint(node.nodeMapValue, index, isNodeCurrent, visitedNodes.includes(node.nodeMapValue), node.isRewardUnlocked) }
                                     { index !== 0 && (
                                         step.map((node) => {
                                             return <Xarrow
                                                 start={visitedNodes[index-1].node.id + (index-1)}
-                                                end={node.node.id + index}
+                                                end={node.nodeMapValue.node.id + index}
                                                 startAnchor={"bottom"}
                                                 endAnchor={"top"}
                                                 curveness={0.5}
-                                                color={visitedNodes.includes(node) ? "green" : "gray"}
+                                                color={visitedNodes.includes(node.nodeMapValue) ? "#7ed957" : "gray"}
                                                 headSize={4}
-                                                dashness={visitedNodes[index] !== node}
-                                                zIndex={visitedNodes[index] !== node ? 0 : 1}
+                                                dashness={visitedNodes[index] !== node.nodeMapValue}
+                                                zIndex={visitedNodes[index] !== node.nodeMapValue ? 0 : 1}
                                             />
                                         })
                                     )}

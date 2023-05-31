@@ -31,8 +31,8 @@ export default function Engine() {
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "space-between",
-                                alignItems: "flex-end",
-                                marginBottom: 15
+                                alignItems: "center",
+                                marginBottom: 20
                             }}>
                                 <div style={{
                                     display: "flex",

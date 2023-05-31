@@ -13,7 +13,7 @@ export default function CoinsInfo() {
             justifyContent: "flex-start",
             alignItems: "center"
         }}>
-            <CoinsIcon svgIconProps={{ width: 40 }} />
+            <CoinsIcon isUnlocked={true} svgIconProps={{ width: 40 }} />
             <div style={{
                 marginLeft: 10
             }}>

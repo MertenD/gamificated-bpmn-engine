@@ -1,11 +1,12 @@
 import {Comparison} from "./Comparison";
 import {PointsApplicationMethod} from "./PointsApplicationMethod";
+import {PointType} from "./PointType";
 
 export interface GamificationOptions {
 }
 
 export interface PointsGamificationOptions extends GamificationOptions {
-    pointType: string,
+    pointType: PointType,
     pointsApplicationMethod: PointsApplicationMethod
     pointsForSuccess: string,
     hasCondition: boolean

@@ -1,5 +1,6 @@
 import create from 'zustand';
 import {useChallengeStore} from "./challengeStore";
+import {useMinimapStore} from "./MinimapStore";
 
 export type VariablesRFState = {
     variables: Record<string, any>
@@ -47,6 +48,7 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
         get().setVariable(name, (get().getVariable(name) || 0) + value)
     },
     unlockBadge: (name: string) => {
+        useMinimapStore.getState().setCurrentNodeRewardUnlocked()
         if (get().getVariable(name) !== undefined && get().getVariable(name) !== true) {
             get().setVariable(name, true)
             set({

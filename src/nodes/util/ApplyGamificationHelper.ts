@@ -8,6 +8,7 @@ import {
 import {evaluateCondition} from "../../util/ConditionHelper";
 import {PointsApplicationMethod} from "../../model/PointsApplicationMethod";
 import {substituteVariables} from "../../util/Parser";
+import {useMinimapStore} from "../../stores/MinimapStore";
 
 export const applyGamification = (gamificationType: GamificationType, gamificationOptions: GamificationOptions) => {
     switch (gamificationType) {
@@ -29,6 +30,7 @@ const applyPointsGamification = (gamificationOptions: GamificationOptions) => {
     } = gamificationOptions as PointsGamificationOptions
 
     const addPoints = () => {
+        useMinimapStore.getState().setCurrentNodeRewardUnlocked()
         switch (pointsApplicationMethod) {
             case PointsApplicationMethod.INCREMENT_BY:
                 variablesState.addToVariable(pointType, Number(substituteVariables(pointsForSuccess)))

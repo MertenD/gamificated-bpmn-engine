@@ -12,6 +12,7 @@ import {Comparison} from "../model/Comparison";
 import {ChallengeType} from "../model/ChallengeType";
 import {BadgeGamificationOptions, GamificationOptions, PointsGamificationOptions} from "../model/GamificationOptions";
 import {useVariablesStore} from "../stores/variablesStore";
+import {PointType} from "../model/PointType";
 
 export function parseNodeData(type: NodeType, data: any): NodeData {
     switch (type) {
@@ -87,7 +88,7 @@ export function parseGamificationOptions(type: GamificationType, options: any): 
 
 export function parsePointsGamificationOptions(options: any): PointsGamificationOptions {
     return {
-        pointType: options.pointType,
+        pointType: options.pointType as PointType,
         pointsApplicationMethod: options.pointsApplicationMethod,
         pointsForSuccess: options.pointsForSuccess,
         hasCondition: options.hasCondition,

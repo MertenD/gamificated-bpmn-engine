@@ -1,7 +1,6 @@
 import {useVariablesStore} from "../../stores/variablesStore";
 import {useEffect, useState} from "react";
-import {UnlockedBadgeIcon} from "./icons/UnlockedBadgeIcon";
-import {LockedBadgeIcon} from "./icons/LockedBadgeIcon";
+import {BadgeIcon} from "./icons/BadgeIcon";
 
 export default function BadgeInfo() {
 
@@ -19,9 +18,9 @@ export default function BadgeInfo() {
         overflow: "visible"
     }}>
         { badges.length !== 0 && badges.map((badge) => {
-            return badge.isUnlocked ?
-                <UnlockedBadgeIcon badgeName={badge.name} svgIconProps={{ width: 50, marginRight: 5, marginLeft: 5 }} />
-                : <LockedBadgeIcon badgeName={badge.name} svgIconProps={{ width: 50, marginRight: 5, marginLeft: 5 }} />
+            return <BadgeIcon badgeName={badge.name} isUnlocked={badge.isUnlocked} svgIconProps={{
+                width: 50, marginRight: 5, marginLeft: 5
+            }} />
         }) }
     </div>
 }

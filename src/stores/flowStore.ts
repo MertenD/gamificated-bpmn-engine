@@ -9,6 +9,7 @@ export type FlowRFState = {
     isProcessReady: boolean
     nodeMap: NodeMap
     currentNode: NodeMapValue | null
+
     resetStoreValues: () => void
     setProcessName: (name: string) => void
     setIsProcessReady: (isReady: boolean) => void

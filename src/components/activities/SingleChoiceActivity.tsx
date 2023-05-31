@@ -4,6 +4,7 @@ import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
+import {getOuterDivStyle} from "./ActivityStyleHelper";
 
 export interface SingleChoiceActivityProps {
     data: ActivityNodeData
@@ -28,18 +29,8 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
 
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
-            <div style={{
-                flexGrow: 1,
-                borderRadius: 10,
-                padding: 16,
-                background: isChallenge ? (isChallengeFailed ? "tomato" : "#22935B44") : "#363638",
-                border: "3px solid #616163",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div style={{ margin: 20, color: "white", fontSize: 30 }}>
+            <div style={getOuterDivStyle(isChallenge, isChallengeFailed)}>
+                <div style={{ margin: 20, fontSize: 30 }}>
                     { substituteVariables(props.data.task) }
                 </div>
                 <div style={{
