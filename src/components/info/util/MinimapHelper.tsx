@@ -1,10 +1,10 @@
 import {NodeMapValue} from "../../Engine";
 import {NodeType} from "../../../model/NodeType";
 import {ActivityNodeData, ChallengeNodeData} from "../../../model/NodeData";
-import {GamificationType} from "../../../model/GamificationType";
-import {useFlowStore} from "../../../stores/flowStore";
 import React from "react";
 import RewardHint from "../RewardHint";
+import {SvgIcon} from "@mui/material";
+import {ActivityType} from "../../../model/ActivityType";
 
 const commonMapPointStyle = (isNodeCurrent: boolean, isNodeVisited: boolean) => {
     return {
@@ -38,79 +38,91 @@ export function getMapPoint(node: NodeMapValue, index: number, isNodeCurrent: bo
             return (node.node.data as ChallengeNodeData).isStart
                 ? getChallengeStartMapPoint(node, index, isNodeCurrent, isNodeVisited)
                 : getChallengeEndMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked)
+        case NodeType.GAMIFICATION_EVENT_NODE:
+            return getGamificationEventMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked)
         default:
             return <></>
     }
 }
 
 function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
-    const nodeMap = useFlowStore.getState().nodeMap
-    const hasOwnGamification = (node.node.data as ActivityNodeData).gamificationType !== GamificationType.NONE
-    // @ts-ignore
-    const hasGamificationEventNext = Object.values(node.next).map(next => nodeMap.get(next).node.nodeType).includes(NodeType.GAMIFICATION_EVENT_NODE)
-
-    // TODO Alle nachfolgenden Gamification Events einbinden
-
-    console.log("Neu gerendert für " + index + " mit " + isRewardUnlocked)
+    const activityNodeData = node.node.data as ActivityNodeData
+    let iconPath = ""
+    switch (activityNodeData.activityType) {
+        case ActivityType.TEXT_INPUT:
+            iconPath = "/icons/textInputIcon.png"
+            break
+        case ActivityType.SINGLE_CHOICE:
+            iconPath = "/icons/singleChoiceIcon.png"
+            break
+        case ActivityType.MULTIPLE_CHOICE:
+            iconPath = "/icons/multipleChoiceIcon.png"
+    }
 
     return <div id={node.node.id + index} style={{
         position: "relative",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>
-        <span style={{ position: "absolute" }}>Activity</span>
+        <SvgIcon style={{ width: 60, height: "auto", position: "absolute" }}>
+            <image xlinkHref={iconPath} width="100%" height="100%" />
+        </SvgIcon>
         <div style={{ position: "relative", bottom: 40, left: 40 }}>
             <RewardHint
-                gamificationType={(node.node.data as ActivityNodeData).gamificationType}
-                gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}
+                gamificationType={activityNodeData.gamificationType}
+                gamificationOptions={activityNodeData.gamificationOptions}
                 isUnlocked={isRewardUnlocked}
             />
         </div>
     </div>
 }
 
+function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
+    return <div id={node.node.id + index} style={{
+        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+    }}>
+        <RewardHint
+            gamificationType={(node.node.data as ActivityNodeData).gamificationType}
+            gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}
+            isUnlocked={isRewardUnlocked}
+        />
+    </div>
+}
+
 function getStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
-        height: 40,
-        width: 40,
-        borderRadius: "50%",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>{ "Start" }</div>
 }
 
 function getEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
-        height: 40,
-        width: 40,
-        borderRadius: "50%",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>{ "End" }</div>
 }
 
 function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
-        height: 30,
-        width: 100,
-        borderRadius: "10px",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>{ "Info" }</div>
 }
 
 function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
-        height: 30,
-        width: 120,
-        borderRadius: "10px",
-        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+        ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
+        width: 180,
+        height: 45
     }}>{ "Challenge Start" }</div>
 }
 
 function getChallengeEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
+        ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
         position: "relative",
-        ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
+        width: 180,
+        height: 46
     }}>
         <span style={{ position: "absolute" }}>Challenge End</span>
-        <div style={{ position: "relative", bottom: 40, left: 40 }}>
+        <div style={{ position: "relative", bottom: 18, left: 85 }}>
             <RewardHint
                 gamificationType={(node.node.data as ChallengeNodeData).rewardType}
                 gamificationOptions={(node.node.data as ChallengeNodeData).gamificationOptions}

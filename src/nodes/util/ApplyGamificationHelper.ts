@@ -66,3 +66,18 @@ const applyBadgeGamification = (gamificationOptions: GamificationOptions) => {
         variablesState.unlockBadge(badgeType)
     }
 }
+
+export const getGamificationConditionResult = (gamificationType: GamificationType, gamificationOptions: GamificationOptions): boolean => {
+    switch (gamificationType) {
+        case GamificationType.NONE:
+            return false
+        case GamificationType.POINTS:
+        case GamificationType.BADGES:
+            const { hasCondition, value1, value2, comparison } = gamificationOptions
+            if (hasCondition as boolean) {
+                return evaluateCondition(value1, comparison, value2)
+            } else {
+                return true
+            }
+    }
+}

@@ -3,10 +3,12 @@ import {getBadgeTypes, getNodeMap, getPointTypes} from "./Transformer";
 import {useChallengeStore} from "../stores/challengeStore";
 import {useFlowStore} from "../stores/flowStore";
 import {useVariablesStore} from "../stores/variablesStore";
+import {useMinimapStore} from "../stores/MinimapStore";
 
 const resetChallengeStore = useChallengeStore.getState().resetStoreValues
 const resetFlowStore = useFlowStore.getState().resetStoreValues
 const resetVariableStore = useVariablesStore.getState().resetStoreValues
+const resetMinimapStore = useMinimapStore.getState().resetStoreValues
 const setProcessName = useFlowStore.getState().setProcessName
 const setIsProcessUploaded = useFlowStore.getState().setIsProcessReady
 const setVariable = useVariablesStore.getState().setVariable
@@ -18,6 +20,7 @@ export const loadProcess = async (process: {name: string, bpmnDiagram: BpmnDiagr
         resetChallengeStore()
         resetFlowStore()
         resetVariableStore()
+        resetMinimapStore()
         loadNodeMapIntoStore(process.bpmnDiagram)
         loadPointTypesIntoStore(process.bpmnDiagram)
         loadBadgeTypesIntoStore(process.bpmnDiagram)

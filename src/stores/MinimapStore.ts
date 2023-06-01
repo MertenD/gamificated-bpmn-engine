@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {NodeMapValue} from "../components/Engine";
 import {NodeType} from "../model/NodeType";
-import {ActivityNodeData, ChallengeNodeData} from "../model/NodeData";
+import {ActivityNodeData, ChallengeNodeData, GamificationEventNodeData} from "../model/NodeData";
 import {GamificationType} from "../model/GamificationType";
 import {BadgeGamificationOptions} from "../model/GamificationOptions";
 import {useVariablesStore} from "./variablesStore";
@@ -11,6 +11,7 @@ import {useVariablesStore} from "./variablesStore";
 export type MinimapRFState = {
     steps: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[][]
     visitedNodes: NodeMapValue[]
+    resetStoreValues: () => void
     addStep: (newStep: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[]) => void
     addVisitedNode: (newVisitedNode: NodeMapValue) => void
     setCurrentNodeRewardUnlocked: () => void
@@ -20,6 +21,12 @@ export type MinimapRFState = {
 export const useMinimapStore = create<MinimapRFState>((set, get) => ({
     steps: [],
     visitedNodes: [],
+    resetStoreValues: () => {
+        set({
+            steps: [],
+            visitedNodes: []
+        })
+    },
     addStep: (newStep: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[]) => {
         set({
             steps: [...get().steps, newStep]
@@ -48,7 +55,6 @@ export const useMinimapStore = create<MinimapRFState>((set, get) => ({
                 })
             })
         })
-        console.log(get().steps)
     },
     updateBadgeUnlockedState: () => {
         set({
@@ -67,7 +73,12 @@ export const useMinimapStore = create<MinimapRFState>((set, get) => ({
                             if (challengeNodeData.rewardType === GamificationType.BADGES) {
                                 badgeType = (challengeNodeData.gamificationOptions as BadgeGamificationOptions).badgeType
                             }
-                        // TODO implement rest when gamification event nodes forwarding is supported
+                            break
+                        case NodeType.GAMIFICATION_EVENT_NODE:
+                            const gamificationEventNodeData = node.nodeMapValue.node.data as GamificationEventNodeData
+                            if (gamificationEventNodeData.gamificationType === GamificationType.BADGES) {
+                                badgeType = (gamificationEventNodeData.gamificationOptions as BadgeGamificationOptions).badgeType
+                            }
                     }
                     const badges = useVariablesStore.getState().getAllBadges()
                     if (badgeType !== null && badges.find(badge => badge.name === badgeType)?.isUnlocked) {

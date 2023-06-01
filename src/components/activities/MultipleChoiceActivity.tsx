@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import {substituteVariables} from "../../util/Parser";
-import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
@@ -14,8 +13,6 @@ export interface MultipleChoiceActivityProps {
 export default function MultipleChoiceActivity(props: MultipleChoiceActivityProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
-    const isChallenge = useChallengeStore((state) => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -37,7 +34,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
 
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
-            <div style={getOuterDivStyle(isChallenge, isChallengeFailed)}>
+            <div style={getOuterDivStyle()}>
                 <div style={{ margin: 20, fontSize: 30 }}>
                     { substituteVariables(props.data.task) }
                 </div>

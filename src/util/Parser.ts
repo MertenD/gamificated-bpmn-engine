@@ -82,7 +82,7 @@ export function parseGamificationOptions(type: GamificationType, options: any): 
         case GamificationType.BADGES:
             return parseBadgeGamificationOptions(options)
         case GamificationType.NONE:
-            return {}
+            return {} as GamificationOptions
     }
 }
 

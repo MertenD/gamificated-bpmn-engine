@@ -54,7 +54,6 @@ export default function RewardHint(props: RewardHintProps) {
                         setHint(<CoinsIcon isUnlocked={props.isUnlocked} tooltip={tooltip} />)
                         return
                     case PointType.EXPERIENCE:
-                        console.log("Hier ist XP: " + props.isUnlocked)
                         setHint(<XPIcon isUnlocked={props.isUnlocked} tooltip={tooltip} />)
                         return
                 }

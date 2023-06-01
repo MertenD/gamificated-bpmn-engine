@@ -12,8 +12,12 @@ export default function ChallengeInfo() {
             { challengeState.isChallengeRunning && (
                 (() => {
                     if (challengeState.isChallengeFailed) {
-                        return <div style={{ marginTop: 30, color: "tomato", fontWeight: "bold" }}>
+                        return <div style={{marginTop: 30, color: "tomato", fontWeight: "bold"}}>
                             Challenge failed
+                        </div>
+                    } else if (challengeState.isChallengePaused) {
+                        return <div style={{marginTop: 30, color: "orange", fontWeight: "bold"}}>
+                            Challenge paused
                         </div>
                     } else {
                         return <div style={{ marginTop: 30, color: "#22935B", fontWeight: "bold" }}>

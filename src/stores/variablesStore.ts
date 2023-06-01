@@ -54,7 +54,7 @@ export const useVariablesStore = create<VariablesRFState>((set, get) => ({
             set({
                 unlockedBadgeName: name
             })
-            get().openBadgeDialog(name)
+            //get().openBadgeDialog(name)
         }
     },
     getAllBadges: (): {name: string, isUnlocked: boolean}[] => {

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react"
 import {substituteVariables} from "../../util/Parser";
-import {useChallengeStore} from "../../stores/challengeStore";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
@@ -16,8 +15,6 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     const [input, setInput] = useState("")
     const [isInputNumber, setIsInputNumber] = useState(false)
     const [showRegexHint, setShowRegexHint] = useState(false)
-    const isChallenge = useChallengeStore((state) => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore((state) => state.isChallengeFailed)
 
     useEffect(() => {
         setIsInputNumber(
@@ -43,7 +40,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
-            <div style={getOuterDivStyle(isChallenge, isChallengeFailed)}>
+            <div style={getOuterDivStyle()}>
                 <span style={{
                     flexWrap: "wrap",
                     width: "100%",

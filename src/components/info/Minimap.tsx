@@ -27,7 +27,7 @@ export default function Minimap() {
     }, [])
 
     useEffect(() => {
-        if (currentNode?.node.nodeType !== NodeType.GATEWAY_NODE && currentNode?.node.nodeType !== NodeType.GAMIFICATION_EVENT_NODE) {
+        if (currentNode?.node.nodeType !== NodeType.GATEWAY_NODE) {
             if (currentNode !== null) {
                 addStep(getNextActivityNodes(currentNode).map(next => { return {nodeMapValue: next, isRewardUnlocked: false} }))
                 addVisitedNode(currentNode)
@@ -35,6 +35,10 @@ export default function Minimap() {
             }
         }
     }, [currentNode])
+
+    useEffect(() => {
+        console.log("Visited nodes", visitedNodes)
+    }, [visitedNodes])
 
     useEffect(() => {
         if (minimapDivRef.current) {
@@ -67,8 +71,6 @@ export default function Minimap() {
             const nextNode = nodeMap.get(next)
             if (nextNode !== undefined) {
                 if (nextNode.node.nodeType === NodeType.GATEWAY_NODE) {
-                    return getNextActivityNodes(nextNode)
-                } else if (nextNode.node.nodeType === NodeType.GAMIFICATION_EVENT_NODE) {
                     return getNextActivityNodes(nextNode)
                 } else {
                     return nextNode

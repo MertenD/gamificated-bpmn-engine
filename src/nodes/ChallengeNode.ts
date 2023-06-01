@@ -5,6 +5,7 @@ import React from "react";
 import InfoActivity from "../components/activities/InfoActivity";
 import {useFlowStore} from "../stores/flowStore";
 import {useChallengeStore} from "../stores/challengeStore";
+import CollectRewardActivity from "../components/activities/CollectRewardActivity";
 
 export class ChallengeNode implements BasicNode {
     id: string
@@ -29,12 +30,24 @@ export class ChallengeNode implements BasicNode {
                 }
             })
         } else {
+
+            // TODO Hier noch überprüfen, ob badge bspw schon gesammelt wurde. Dann soll es auch geskippt werden
+
             // Challenge End
             useChallengeStore.getState().stopChallenge()
-            return React.createElement(InfoActivity, {
+            if (useChallengeStore.getState().isChallengeFailed) {
+                return React.createElement(InfoActivity, {
+                    key: this.id,
+                    infoText: "You did not complete all tasks in time or don't satisfy another condition.",
+                    onConfirm: () => { useFlowStore.getState().nextNode() }
+                })
+            }
+            return React.createElement(CollectRewardActivity, {
                 key: this.id,
-                infoText: "Challenge ended",
-                onConfirm: () => { useFlowStore.getState().nextNode() }
+                onCollect: () => {
+                    useChallengeStore.getState().evaluateChallenge()
+                    useFlowStore.getState().nextNode()
+                }
             })
         }
     }

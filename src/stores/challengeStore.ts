@@ -10,6 +10,7 @@ export type ChallengeRFState = {
     isChallengeRunning: boolean
     runningChallengeData: ChallengeNodeData | null
     startMillis: number | null
+    pauseStartMillis: number | null
     remainingSeconds: number | null
     isChallengeFailed: boolean
     isChallengePaused: boolean
@@ -17,6 +18,7 @@ export type ChallengeRFState = {
     resetStoreValues: () => void
     startChallenge: (challengeData: ChallengeNodeData) => void
     stopChallenge: () => void
+    evaluateChallenge: () => void
     startUpdateChallengeStateInterval: () => void
     pauseChallenge: () => void
     resumeChallenge: () => void
@@ -26,6 +28,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     isChallengeRunning: false,
     runningChallengeData: null,
     startMillis: null,
+    pauseStartMillis: null,
     remainingSeconds: null,
     isChallengeFailed: false,
     isChallengePaused: false,
@@ -50,6 +53,14 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
         get().startUpdateChallengeStateInterval()
     },
     stopChallenge: () => {
+        set({
+            isChallengeRunning: false,
+            startMillis: null,
+            isChallengePaused: false,
+            totalPausedMillis: 0
+        })
+    },
+    evaluateChallenge: () => {
         const variablesState = useVariablesStore.getState()
         const challengeData = get().runningChallengeData
 
@@ -73,46 +84,45 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
         }
 
         set({
-            isChallengeRunning: false,
-            runningChallengeData: null,
-            startMillis: null,
-            isChallengePaused: false,
-            totalPausedMillis: 0
+            isChallengeFailed: false,
+            runningChallengeData: null
         })
     },
     startUpdateChallengeStateInterval: () => {
         const interval = setInterval(() => {
-            const secondsToComplete = get().runningChallengeData?.secondsToComplete || 0
-            const millisecondsToComplete = secondsToComplete * 1000
-            const deltaTimeInMilliseconds = (Date.now() - (get().startMillis || 0))
-            const remainingMilliseconds = (millisecondsToComplete - deltaTimeInMilliseconds)
+            if (!get().isChallengePaused) {
+                const secondsToComplete = get().runningChallengeData?.secondsToComplete || 0
+                const millisecondsToComplete = secondsToComplete * 1000
+                const deltaTimeInMilliseconds = (Date.now() - (get().startMillis || 0))
+                const remainingMilliseconds = (millisecondsToComplete - deltaTimeInMilliseconds)
+                const remainingSeconds = remainingMilliseconds / 1000
 
-            if (get().isChallengePaused) {
                 set({
-                    totalPausedMillis: get().totalPausedMillis + 10
+                    remainingSeconds: remainingSeconds,
+                    isChallengeFailed: get().isChallengeRunning && remainingSeconds < 0
                 })
-            }
-
-            const remainingMillisecondsIncludingPause = remainingMilliseconds + get().totalPausedMillis
-            const remainingSeconds = remainingMillisecondsIncludingPause / 1000
-
-            set({
-                remainingSeconds: remainingSeconds,
-                isChallengeFailed: get().isChallengeRunning && remainingSeconds < 0
-            })
-            if (!get().isChallengeRunning || get().isChallengeFailed) {
-                clearInterval(interval)
+                if (!get().isChallengeRunning || get().isChallengeFailed) {
+                    clearInterval(interval)
+                }
             }
         }, 10)
     },
     pauseChallenge: () => {
         set({
-            isChallengePaused: true
+            isChallengePaused: true,
+            pauseStartMillis: Date.now()
         })
     },
     resumeChallenge: () => {
         set({
-            isChallengePaused: false
+            isChallengePaused: false,
         })
+        const startMillis = get().startMillis
+        const pauseStartMillis = get().pauseStartMillis
+        if (startMillis !== null && pauseStartMillis !== null) {
+            set({
+                startMillis: startMillis + (Date.now() - pauseStartMillis)
+            })
+        }
     }
 }))
