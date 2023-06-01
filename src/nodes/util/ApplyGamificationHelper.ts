@@ -81,3 +81,10 @@ export const getGamificationConditionResult = (gamificationType: GamificationTyp
             }
     }
 }
+
+export function isBadgeAlreadyUnlocked(gamificationType: GamificationType, gamificationOptions: GamificationOptions): boolean {
+    return gamificationType === GamificationType.BADGES &&
+        useVariablesStore.getState().getAllBadges().find(badge =>
+            badge.name === (gamificationOptions as BadgeGamificationOptions).badgeType
+        )?.isUnlocked === true
+}

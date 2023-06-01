@@ -20,32 +20,44 @@ const commonMapPointStyle = (isNodeCurrent: boolean, isNodeVisited: boolean) => 
         marginTop: 25,
         borderRadius: "10px",
         border: isNodeCurrent ? "2px solid #5271ff" : "2px solid black",
-        backgroundColor: isNodeCurrent ? "#5271ff33" : isNodeVisited ? "#7ed957aa" : "#d9d9d9"
+        backgroundColor: isNodeCurrent ? "#DCE2FF" : isNodeVisited ? "#A9E58F" : "#d9d9d9"
     } as React.CSSProperties
 }
 
-export function getMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
+const commonChallengeStyle = () => {
+    return {
+        width: 180,
+        height: 140,
+        backgroundColor: "#D9C5FF",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    } as React.CSSProperties
+}
+
+export function getMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean, isNodeInChallenge: boolean): JSX.Element {
     switch (node.node.nodeType) {
         case NodeType.ACTIVITY_NODE:
-            return getActivityMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked)
+            return getActivityMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked, isNodeInChallenge)
         case NodeType.START_NODE:
             return getStartMapPoint(node, index, isNodeCurrent, isNodeVisited)
         case NodeType.END_NODE:
             return getEndMapPoint(node, index, isNodeCurrent, isNodeVisited)
         case NodeType.INFO_NODE:
-            return getInfoMapPoint(node, index, isNodeCurrent, isNodeVisited)
+            return getInfoMapPoint(node, index, isNodeCurrent, isNodeVisited, isNodeInChallenge)
         case NodeType.CHALLENGE_NODE:
             return (node.node.data as ChallengeNodeData).isStart
                 ? getChallengeStartMapPoint(node, index, isNodeCurrent, isNodeVisited)
                 : getChallengeEndMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked)
         case NodeType.GAMIFICATION_EVENT_NODE:
-            return getGamificationEventMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked)
+            return getGamificationEventMapPoint(node, index, isNodeCurrent, isNodeVisited, isRewardUnlocked, isNodeInChallenge)
         default:
             return <></>
     }
 }
 
-function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
+function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean, isNodeInChallenge: boolean): JSX.Element {
     const activityNodeData = node.node.data as ActivityNodeData
     let iconPath = ""
     switch (activityNodeData.activityType) {
@@ -59,7 +71,7 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
             iconPath = "/icons/multipleChoiceIcon.png"
     }
 
-    return <div id={node.node.id + index} style={{
+    const mapPoint = <div id={node.node.id + index} style={{
         position: "relative",
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>
@@ -74,10 +86,19 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
             />
         </div>
     </div>
+
+    if (isNodeInChallenge) {
+        return <div style={ commonChallengeStyle() }>
+            { mapPoint }
+        </div>
+    } else {
+        return mapPoint
+    }
 }
 
-function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
-    return <div id={node.node.id + index} style={{
+function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean, isNodeInChallenge: boolean): JSX.Element {
+
+    const mapPoint = <div id={node.node.id + index} style={{
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>
         <RewardHint
@@ -86,6 +107,14 @@ function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeC
             isUnlocked={isRewardUnlocked}
         />
     </div>
+
+    if (isNodeInChallenge) {
+        return <div style={ commonChallengeStyle() }>
+            { mapPoint }
+        </div>
+    } else {
+        return mapPoint
+    }
 }
 
 function getStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
@@ -100,34 +129,75 @@ function getEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolea
     }}>{ "End" }</div>
 }
 
-function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
-    return <div id={node.node.id + index} style={{
+function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isNodeInChallenge: boolean): JSX.Element {
+
+    const mapPoint = <div id={node.node.id + index} style={{
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>{ "Info" }</div>
+
+    if (isNodeInChallenge) {
+        return <div style={ commonChallengeStyle() }>
+            { mapPoint }
+        </div>
+    } else {
+        return mapPoint
+    }
 }
 
 function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
-    return <div id={node.node.id + index} style={{
-        ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
+    return <div style={{
+        backgroundColor: isNodeVisited ? "#D9C5FF" : "transparent",
+        height: 115,
         width: 180,
-        height: 45
-    }}>{ "Challenge Start" }</div>
+        top: 40,
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        borderRadius: "0px 0px 10px 10px"
+    }}>
+        <div id={node.node.id + index} style={{
+            ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
+            width: 180,
+            height: 45,
+            position: "relative",
+            bottom: 40,
+            marginLeft: 0,
+            marginRight: 0
+        }}>{ "Challenge Start" }</div>
+    </div>
 }
 
 function getChallengeEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isRewardUnlocked: boolean): JSX.Element {
-    return <div id={node.node.id + index} style={{
-        ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
-        position: "relative",
+    return <div style={{
+        backgroundColor: "#D9C5FF",
+        height: 40,
         width: 180,
-        height: 46
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        marginBottom: 60,
+        borderRadius: "10px 10px 0px 0px",
+        bottom: 10
     }}>
-        <span style={{ position: "absolute" }}>Challenge End</span>
-        <div style={{ position: "relative", bottom: 18, left: 85 }}>
-            <RewardHint
-                gamificationType={(node.node.data as ChallengeNodeData).rewardType}
-                gamificationOptions={(node.node.data as ChallengeNodeData).gamificationOptions}
-                isUnlocked={isRewardUnlocked}
-            />
+        <div id={node.node.id + index} style={{
+            ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
+            position: "relative",
+            width: 180,
+            height: 46,
+            marginLeft: 0,
+            marginRight: 0,
+            top: 10
+        }}>
+            <span style={{ position: "absolute" }}>Challenge End</span>
+            <div style={{ position: "relative", bottom: 18, left: 85 }}>
+                <RewardHint
+                    gamificationType={(node.node.data as ChallengeNodeData).rewardType}
+                    gamificationOptions={(node.node.data as ChallengeNodeData).gamificationOptions}
+                    isUnlocked={isRewardUnlocked}
+                />
+            </div>
         </div>
     </div>
 }

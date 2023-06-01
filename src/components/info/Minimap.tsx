@@ -4,7 +4,8 @@ import {NodeMapValue} from "../Engine";
 import {NodeType} from "../../model/NodeType";
 import Xarrow, {useXarrow, Xwrapper} from "react-xarrows";
 import {getMapPoint} from "./util/MinimapHelper";
-import {useMinimapStore} from "../../stores/MinimapStore";
+import {StepType, useMinimapStore} from "../../stores/MinimapStore";
+import {ChallengeNodeData} from "../../model/NodeData";
 
 export default function Minimap() {
 
@@ -20,17 +21,19 @@ export default function Minimap() {
     const addStep = useMinimapStore(state => state.addStep)
     const addVisitedNode = useMinimapStore(state => state.addVisitedNode)
 
+    let isNodeInChallenge = false
+
     useEffect(() => {
         if (currentNode !== null) {
-            addStep([{nodeMapValue: currentNode, isRewardUnlocked: false}])
+            addStep([currentNode])
         }
     }, [])
 
     useEffect(() => {
         if (currentNode?.node.nodeType !== NodeType.GATEWAY_NODE) {
             if (currentNode !== null) {
-                addStep(getNextActivityNodes(currentNode).map(next => { return {nodeMapValue: next, isRewardUnlocked: false} }))
                 addVisitedNode(currentNode)
+                addStep(getNextActivityNodes(currentNode))
                 updateXArrow()
             }
         }
@@ -101,16 +104,27 @@ export default function Minimap() {
                 height: "100%",
             }}>
                 <Xwrapper>
-                    { steps.map((step: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[], index: number) => {
+                    { steps.map((step: StepType[], index: number) => {
                         return <div style={{
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "space-evenly"
                         }}>
-                            { step.map((node: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}) => {
+                            { step.map((node: StepType) => {
                                 const isNodeCurrent = index === steps.length - 2 && visitedNodes[visitedNodes.length - 1] === node.nodeMapValue
+                                if (node.nodeMapValue.node.nodeType === NodeType.CHALLENGE_NODE) {
+                                    isNodeInChallenge = (node.nodeMapValue.node.data as ChallengeNodeData).isStart;
+                                    console.log("In Challenge", isNodeInChallenge)
+                                }
                                 return <>
-                                    { getMapPoint(node.nodeMapValue, index, isNodeCurrent, visitedNodes.includes(node.nodeMapValue), node.isRewardUnlocked) }
+                                    { getMapPoint(
+                                        node.nodeMapValue,
+                                        index,
+                                        isNodeCurrent,
+                                        visitedNodes.includes(node.nodeMapValue),
+                                        node.isRewardUnlocked,
+                                        node.isPartOfChallenge
+                                    )}
                                     { index !== 0 && (
                                         step.map((node) => {
                                             return <Xarrow
@@ -122,7 +136,7 @@ export default function Minimap() {
                                                 color={visitedNodes.includes(node.nodeMapValue) ? "#7ed957" : "gray"}
                                                 headSize={4}
                                                 dashness={visitedNodes[index] !== node.nodeMapValue}
-                                                zIndex={visitedNodes[index] !== node.nodeMapValue ? 0 : 1}
+                                                zIndex={visitedNodes[index] !== node.nodeMapValue ? 4 : 5}
                                             />
                                         })
                                     )}

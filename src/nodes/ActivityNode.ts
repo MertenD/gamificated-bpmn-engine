@@ -8,8 +8,12 @@ import MultipleChoiceActivity from "../components/activities/MultipleChoiceActiv
 import {NodeType} from "../model/NodeType";
 import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";
-import {applyGamification, getGamificationConditionResult} from "./util/ApplyGamificationHelper";
-import CollectRewardActivity from "../components/activities/CollectRewardActivity";
+import {
+    applyGamification,
+    getGamificationConditionResult,
+    isBadgeAlreadyUnlocked
+} from "./util/ApplyGamificationHelper";
+import CollectRewardActivity from "../components/activities/reward/CollectRewardActivity";
 
 export class ActivityNode implements BasicNode {
     id: string
@@ -24,6 +28,7 @@ export class ActivityNode implements BasicNode {
 
     run(): React.ReactNode {
 
+        // Two steps activity
         const ActivityComponent: React.FC<{ data: ActivityNodeData }> = ({ data}) => {
             const [confirmed, setConfirmed] = useState(false);
 
@@ -34,8 +39,8 @@ export class ActivityNode implements BasicNode {
                     variablesState.setVariable(this.data.variableName, input)
                 }
 
-                // TODO Hier noch überprüfen, ob badge bspw schon gesammelt wurde. Dann soll es auch geskippt werden
-                if (getGamificationConditionResult(this.data.gamificationType, this.data.gamificationOptions)) {
+                if (getGamificationConditionResult(this.data.gamificationType, this.data.gamificationOptions) &&
+                    !isBadgeAlreadyUnlocked(this.data.gamificationType, this.data.gamificationOptions)) {
                     setConfirmed(true);
                 } else {
                     useFlowStore.getState().nextNode()
@@ -45,7 +50,9 @@ export class ActivityNode implements BasicNode {
             if (confirmed) {
                 return React.createElement(CollectRewardActivity, {
                     key: this.id + "collect",
-                    onCollect: () => {
+                    gamificationType: this.data.gamificationType,
+                    gamificationOptions: this.data.gamificationOptions,
+                    onCollectClicked: () => {
                         applyGamification(this.data.gamificationType, this.data.gamificationOptions)
                         useFlowStore.getState().nextNode()
                     }

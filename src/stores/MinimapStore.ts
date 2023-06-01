@@ -8,11 +8,17 @@ import {useVariablesStore} from "./variablesStore";
 
 // TODO Das ganze Zeug mit dem isUnlocked kann auch direkt in die NodeMap eingebaut werden
 
+export type StepType = {
+    nodeMapValue: NodeMapValue,
+    isRewardUnlocked: boolean,
+    isPartOfChallenge: boolean
+}
+
 export type MinimapRFState = {
-    steps: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[][]
+    steps: StepType[][]
     visitedNodes: NodeMapValue[]
     resetStoreValues: () => void
-    addStep: (newStep: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[]) => void
+    addStep: (nodes: NodeMapValue[]) => void
     addVisitedNode: (newVisitedNode: NodeMapValue) => void
     setCurrentNodeRewardUnlocked: () => void
     updateBadgeUnlockedState: () => void
@@ -27,9 +33,27 @@ export const useMinimapStore = create<MinimapRFState>((set, get) => ({
             visitedNodes: []
         })
     },
-    addStep: (newStep: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[]) => {
+    addStep: (nodes: NodeMapValue[]) => {
         set({
-            steps: [...get().steps, newStep]
+            steps: [...get().steps, nodes.map(node => {
+                const prevStep = get().steps[get().steps.length - 1]
+                let isPartOfChallenge = false
+
+                if (prevStep !== undefined && prevStep.find(prevNode => {
+                    const isVisited = get().visitedNodes.includes(prevNode.nodeMapValue)
+                    const isChallengeStart = prevNode.nodeMapValue.node.nodeType === NodeType.CHALLENGE_NODE && (prevNode.nodeMapValue.node.data as ChallengeNodeData).isStart
+                    const isChallengeEnd = prevNode.nodeMapValue.node.nodeType === NodeType.CHALLENGE_NODE && !(prevNode.nodeMapValue.node.data as ChallengeNodeData).isStart
+                    return isVisited && !isChallengeEnd && (prevNode.isPartOfChallenge || isChallengeStart)
+                })) {
+                    isPartOfChallenge = true
+                }
+
+                return {
+                    nodeMapValue: node,
+                    isRewardUnlocked: false,
+                    isPartOfChallenge: isPartOfChallenge
+                } as StepType
+            })]
         })
         get().updateBadgeUnlockedState()
     },
@@ -40,10 +64,9 @@ export const useMinimapStore = create<MinimapRFState>((set, get) => ({
     },
     setCurrentNodeRewardUnlocked: () => {
         set({
-            steps: get().steps.map((step: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[], index) => {
-                return step.map((node: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}) => {
+            steps: get().steps.map((step: StepType[], index) => {
+                return step.map((node: StepType) => {
                     const isNodeCurrent = index === get().steps.length - 2 && get().visitedNodes[get().visitedNodes.length - 1] === node.nodeMapValue
-                    console.log(isNodeCurrent)
                     if (isNodeCurrent) {
                         return {
                             ...node,
@@ -58,8 +81,8 @@ export const useMinimapStore = create<MinimapRFState>((set, get) => ({
     },
     updateBadgeUnlockedState: () => {
         set({
-            steps: get().steps.map((step: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}[]) => {
-                return step.map((node: {nodeMapValue: NodeMapValue, isRewardUnlocked: boolean}) => {
+            steps: get().steps.map((step: StepType[]) => {
+                return step.map((node: StepType) => {
                     let badgeType: null | string = null
                     switch (node.nodeMapValue.node.nodeType) {
                         case NodeType.ACTIVITY_NODE:

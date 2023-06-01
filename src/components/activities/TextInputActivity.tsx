@@ -3,7 +3,8 @@ import {substituteVariables} from "../../util/Parser";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
-import {getOuterDivStyle} from "./ActivityStyleHelper";
+import {getOuterDivStyle} from "./style/ActivityStyleHelper";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export interface TextInputActivityProps {
     data: ActivityNodeData,
@@ -15,6 +16,8 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     const [input, setInput] = useState("")
     const [isInputNumber, setIsInputNumber] = useState(false)
     const [showRegexHint, setShowRegexHint] = useState(false)
+    const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
 
     useEffect(() => {
         setIsInputNumber(
@@ -40,7 +43,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
 
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
-            <div style={getOuterDivStyle()}>
+            <div style={getOuterDivStyle(isChallengeRunning, isChallengeFailed)}>
                 <span style={{
                     flexWrap: "wrap",
                     width: "100%",

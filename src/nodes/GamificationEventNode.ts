@@ -2,10 +2,14 @@ import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
 import {GamificationEventNodeData} from "../model/NodeData";
 import {useFlowStore} from "../stores/flowStore";
-import {applyGamification, getGamificationConditionResult} from "./util/ApplyGamificationHelper";
+import {
+    applyGamification,
+    getGamificationConditionResult,
+    isBadgeAlreadyUnlocked
+} from "./util/ApplyGamificationHelper";
 import React, {ReactNode} from "react";
-import InfoActivity from "../components/activities/InfoActivity";
-import CollectRewardActivity from "../components/activities/CollectRewardActivity";
+import CollectRewardActivity from "../components/activities/reward/CollectRewardActivity";
+import {AlreadyCollectedRewardActivity} from "../components/activities/reward/AlreadyCollectedRewardActivity";
 
 export class GamificationEventNode implements BasicNode {
     id: string
@@ -18,25 +22,20 @@ export class GamificationEventNode implements BasicNode {
         this.data = data
     }
 
-    run(): ReactNode | void {
-        // TODO Hier noch überprüfen, ob badge bspw schon gesammelt wurde. Dann soll es auch geskippt werden
-        if (getGamificationConditionResult(this.data.gamificationType, this.data.gamificationOptions)) {
+    run(): ReactNode {
+        if (getGamificationConditionResult(this.data.gamificationType, this.data.gamificationOptions) &&
+            !isBadgeAlreadyUnlocked(this.data.gamificationType, this.data.gamificationOptions)) {
             return React.createElement(CollectRewardActivity, {
                 key: this.id,
-                onCollect: () => {
+                gamificationType: this.data.gamificationType,
+                gamificationOptions: this.data.gamificationOptions,
+                onCollectClicked: () => {
                     applyGamification(this.data.gamificationType, this.data.gamificationOptions)
                     useFlowStore.getState().nextNode()
                 }
             })
         } else {
-            return React.createElement(InfoActivity, {
-                key: this.id,
-                infoText: this.data.gamificationType + " No Gamification",
-                onConfirm: () => {
-                    applyGamification(this.data.gamificationType, this.data.gamificationOptions)
-                    useFlowStore.getState().nextNode()
-                }
-            })
+            return React.createElement(AlreadyCollectedRewardActivity, {})
         }
     }
 }

@@ -3,7 +3,8 @@ import {substituteVariables} from "../../util/Parser";
 import ConfirmButton from "../controls/ConfirmButton";
 import {Slide} from "@mui/material";
 import {ActivityNodeData} from "../../model/NodeData";
-import {getOuterDivStyle} from "./ActivityStyleHelper";
+import {getOuterDivStyle} from "./style/ActivityStyleHelper";
+import {useChallengeStore} from "../../stores/challengeStore";
 
 export interface MultipleChoiceActivityProps {
     data: ActivityNodeData
@@ -13,6 +14,8 @@ export interface MultipleChoiceActivityProps {
 export default function MultipleChoiceActivity(props: MultipleChoiceActivityProps) {
 
     const [selected, setSelected] = useState<string[]>([]);
+    const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
@@ -34,7 +37,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
 
     return (
         <Slide direction={"up"} in mountOnEnter unmountOnExit timeout={0}>
-            <div style={getOuterDivStyle()}>
+            <div style={getOuterDivStyle(isChallengeRunning, isChallengeFailed)}>
                 <div style={{ margin: 20, fontSize: 30 }}>
                     { substituteVariables(props.data.task) }
                 </div>
