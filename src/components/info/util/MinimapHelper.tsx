@@ -24,7 +24,7 @@ const commonMapPointStyle = (isNodeCurrent: boolean, isNodeVisited: boolean) => 
     } as React.CSSProperties
 }
 
-const commonChallengeStyle = () => {
+const commonChallengeStyle = (isNodeLast: boolean) => {
     return {
         width: 180,
         height: 140,
@@ -32,7 +32,32 @@ const commonChallengeStyle = () => {
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: isNodeLast ? 25 : 0,
+        borderRadius: 10,
+    } as React.CSSProperties
+}
+
+const commonChallengeBorderStyle = (isNodeLast: boolean) => {
+    return {
+        ...commonChallengeStyle(false),
+        position: "absolute",
+        backgroundColor: "#D9C5FF",
+        zIndex: -2,
+        boxShadow: isNodeLast ? "-2px -2px 0px 0px #000000, 2px -2px 0px 0px #000000" : "0px 0px 0px 2px #000000",
+        height: 175,
+        borderRadius: 10
+    } as React.CSSProperties
+}
+
+const commonChallengeBackgroundStyle = () => {
+    return {
+        ...commonChallengeStyle(false),
+        position: "absolute",
+        backgroundColor: "#D9C5FF",
+        zIndex: -1,
+        height: 175,
+        borderRadius: 10
     } as React.CSSProperties
 }
 
@@ -73,12 +98,13 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
 
     const mapPoint = <div id={node.node.id + index} style={{
         position: "relative",
+        zIndex: 2,
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
     }}>
         <SvgIcon style={{ width: 60, height: "auto", position: "absolute" }}>
             <image xlinkHref={iconPath} width="100%" height="100%" />
         </SvgIcon>
-        <div style={{ position: "relative", bottom: 40, left: 40 }}>
+        <div style={{ position: "relative", bottom: 40, left: 40, zIndex: 10 }}>
             <RewardHint
                 gamificationType={activityNodeData.gamificationType}
                 gamificationOptions={activityNodeData.gamificationOptions}
@@ -88,7 +114,9 @@ function getActivityMapPoint(node: NodeMapValue, index: number, isNodeCurrent: b
     </div>
 
     if (isNodeInChallenge) {
-        return <div style={ commonChallengeStyle() }>
+        return<div style={ commonChallengeStyle(!isNodeVisited) }>
+            <div style={commonChallengeBorderStyle(!isNodeVisited)} />
+            <div style={commonChallengeBackgroundStyle()} />
             { mapPoint }
         </div>
     } else {
@@ -109,7 +137,9 @@ function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeC
     </div>
 
     if (isNodeInChallenge) {
-        return <div style={ commonChallengeStyle() }>
+        return<div style={ commonChallengeStyle(!isNodeVisited) }>
+            <div style={commonChallengeBorderStyle(!isNodeVisited)} />
+            <div style={commonChallengeBackgroundStyle()} />
             { mapPoint }
         </div>
     } else {
@@ -136,7 +166,9 @@ function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boole
     }}>{ "Info" }</div>
 
     if (isNodeInChallenge) {
-        return <div style={ commonChallengeStyle() }>
+        return<div style={ commonChallengeStyle(!isNodeVisited) }>
+            <div style={commonChallengeBorderStyle(!isNodeVisited)} />
+            <div style={commonChallengeBackgroundStyle()} />
             { mapPoint }
         </div>
     } else {
@@ -156,14 +188,26 @@ function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurr
         justifyContent: "center",
         borderRadius: "0px 0px 10px 10px"
     }}>
+        <div style={{
+            height: 115,
+            width: 180,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            borderRadius: "0px 0px 10px 10px",
+            position: "absolute",
+            backgroundColor: "transparent",
+            zIndex: -2,
+            boxShadow: isNodeVisited ? "0px 0px 0px 2px #000000" : undefined
+        }} />
         <div id={node.node.id + index} style={{
             ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
             width: 180,
             height: 45,
-            position: "relative",
-            bottom: 40,
+            position: "absolute",
+            top: -40,
             marginLeft: 0,
-            marginRight: 0
+            marginRight: 0,
         }}>{ "Challenge Start" }</div>
     </div>
 }
@@ -181,9 +225,21 @@ function getChallengeEndMapPoint(node: NodeMapValue, index: number, isNodeCurren
         borderRadius: "10px 10px 0px 0px",
         bottom: 10
     }}>
+        <div style={{
+            height: 50,
+            width: 180,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            borderRadius: "10px 10px 0px 0px",
+            position: "absolute",
+            backgroundColor: "transparent",
+            zIndex: -2,
+            boxShadow: "0px 0px 0px 2px #000000"
+        }} />
         <div id={node.node.id + index} style={{
             ...commonMapPointStyle(isNodeCurrent, isNodeVisited),
-            position: "relative",
+            position: "absolute",
             width: 180,
             height: 46,
             marginLeft: 0,

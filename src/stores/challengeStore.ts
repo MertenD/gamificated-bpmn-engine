@@ -5,6 +5,7 @@ import {BadgeGamificationOptions, PointsGamificationOptions} from "../model/Gami
 import {useVariablesStore} from "./variablesStore";
 import {evaluateCondition} from "../util/ConditionHelper";
 import {substituteVariables} from "../util/Parser";
+import {useMinimapStore} from "./MinimapStore";
 
 export type ChallengeRFState = {
     isChallengeRunning: boolean
@@ -12,13 +13,14 @@ export type ChallengeRFState = {
     startMillis: number | null
     pauseStartMillis: number | null
     remainingSeconds: number | null
-    isChallengeFailed: boolean
+    isChallengeTimeFailed: boolean
     isChallengePaused: boolean
     totalPausedMillis: number
     resetStoreValues: () => void
     startChallenge: (challengeData: ChallengeNodeData) => void
     stopChallenge: () => void
-    evaluateChallenge: () => void
+    applyChallengeReward: () => void
+    evaluateRewardCondition: () => boolean
     startUpdateChallengeStateInterval: () => void
     pauseChallenge: () => void
     resumeChallenge: () => void
@@ -30,7 +32,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
     startMillis: null,
     pauseStartMillis: null,
     remainingSeconds: null,
-    isChallengeFailed: false,
+    isChallengeTimeFailed: false,
     isChallengePaused: false,
     totalPausedMillis: 0,
     resetStoreValues: () => {
@@ -39,7 +41,7 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             runningChallengeData: null,
             startMillis: null,
             remainingSeconds: null,
-            isChallengeFailed: false,
+            isChallengeTimeFailed: false,
             isChallengePaused: false,
             totalPausedMillis: 0,
         })
@@ -60,33 +62,37 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
             totalPausedMillis: 0
         })
     },
-    evaluateChallenge: () => {
+    applyChallengeReward: () => {
         const variablesState = useVariablesStore.getState()
-        const challengeData = get().runningChallengeData
 
-        if (challengeData !== null && !get().isChallengeFailed) {
-
+        if (get().evaluateRewardCondition()) {
             if (get().runningChallengeData?.rewardType === GamificationType.POINTS) {
                 const gamificationOptions = get().runningChallengeData?.gamificationOptions as PointsGamificationOptions
+                variablesState.addToVariable(gamificationOptions.pointType, Number(substituteVariables(gamificationOptions.pointsForSuccess)))
+                useMinimapStore.getState().setCurrentNodeRewardUnlocked()
 
-                if (!gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
-                    variablesState.addToVariable(gamificationOptions.pointType, Number(substituteVariables(gamificationOptions.pointsForSuccess)))
-                }
             } else if (get().runningChallengeData?.rewardType === GamificationType.BADGES) {
-                const gamificationOptions = get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions
-
-                if (!gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
-                    variablesState.unlockBadge((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
-                }
+                variablesState.unlockBadge((get().runningChallengeData?.gamificationOptions as BadgeGamificationOptions).badgeType)
             }
         } else {
             console.log("Challenge failed")
         }
 
         set({
-            isChallengeFailed: false,
+            isChallengeTimeFailed: false,
             runningChallengeData: null
         })
+    },
+    evaluateRewardCondition: (): boolean => {
+        const challengeData = get().runningChallengeData
+        if (challengeData !== null && !get().isChallengeTimeFailed) {
+            const gamificationOptions = challengeData.gamificationOptions
+
+            if (get().runningChallengeData !== null && !gamificationOptions.hasCondition || evaluateCondition(gamificationOptions.value1, gamificationOptions.comparison, gamificationOptions.value2)) {
+                return true
+            }
+        }
+        return false
     },
     startUpdateChallengeStateInterval: () => {
         const interval = setInterval(() => {
@@ -99,9 +105,9 @@ export const useChallengeStore = create<ChallengeRFState>((set, get) => ({
 
                 set({
                     remainingSeconds: remainingSeconds,
-                    isChallengeFailed: get().isChallengeRunning && remainingSeconds < 0
+                    isChallengeTimeFailed: get().isChallengeRunning && remainingSeconds < 0
                 })
-                if (!get().isChallengeRunning || get().isChallengeFailed) {
+                if (!get().isChallengeRunning || get().isChallengeTimeFailed) {
                     clearInterval(interval)
                 }
             }

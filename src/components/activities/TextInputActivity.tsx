@@ -17,7 +17,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
     const [isInputNumber, setIsInputNumber] = useState(false)
     const [showRegexHint, setShowRegexHint] = useState(false)
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     useEffect(() => {
         setIsInputNumber(

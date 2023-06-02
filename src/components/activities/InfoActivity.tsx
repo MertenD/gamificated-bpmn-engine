@@ -13,7 +13,7 @@ export interface InfoActivityProps {
 export default function InfoActivity(props: InfoActivityProps) {
 
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     return (
         <Slide direction={"up"}  in mountOnEnter unmountOnExit timeout={0}>

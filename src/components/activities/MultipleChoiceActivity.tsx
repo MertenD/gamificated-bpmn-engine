@@ -15,7 +15,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
 
     const [selected, setSelected] = useState<string[]>([]);
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {

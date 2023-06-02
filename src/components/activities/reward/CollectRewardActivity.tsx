@@ -14,7 +14,7 @@ export interface CollectRewardActivityProps {
 export default function CollectRewardActivity(props: CollectRewardActivityProps) {
 
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     useEffect(() => {
         if (useChallengeStore.getState().isChallengeRunning) {

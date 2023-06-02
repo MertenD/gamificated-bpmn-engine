@@ -11,7 +11,7 @@ export default function ChallengeInfo() {
         <div>
             { challengeState.isChallengeRunning && (
                 (() => {
-                    if (challengeState.isChallengeFailed) {
+                    if (challengeState.isChallengeTimeFailed) {
                         return <div style={{marginTop: 30, color: "tomato", fontWeight: "bold"}}>
                             Challenge failed
                         </div>

@@ -21,9 +21,6 @@ export class ChallengeNode implements BasicNode {
 
     run(): React.ReactNode {
         // Challenge start
-
-        // TODO Wenn man die Belohnung ohne Bedingung (XP) erhält, wird das Icon oben rehcts nicht grün angezeigt. (127)
-
         if (this.data.isStart) {
             return React.createElement(InfoActivity, {
                 key: this.id,
@@ -38,7 +35,7 @@ export class ChallengeNode implements BasicNode {
         // Challenge End
         useChallengeStore.getState().stopChallenge()
 
-        if (useChallengeStore.getState().isChallengeFailed) {
+        if (!useChallengeStore.getState().evaluateRewardCondition()) {
             return React.createElement(InfoActivity, {
                 key: this.id,
                 infoText: "You did not complete all tasks in time or don't satisfy another condition.",
@@ -59,7 +56,7 @@ export class ChallengeNode implements BasicNode {
             gamificationType: this.data.rewardType,
             gamificationOptions: this.data.gamificationOptions,
             onCollectClicked: () => {
-                useChallengeStore.getState().evaluateChallenge()
+                useChallengeStore.getState().applyChallengeReward()
                 useFlowStore.getState().nextNode()
             }
         })

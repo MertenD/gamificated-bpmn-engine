@@ -15,7 +15,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
 
     const [selected, setSelected] = useState('');
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     const handleClick = (event: any) => {
         const input = event.currentTarget.querySelector("input");

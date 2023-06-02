@@ -8,7 +8,7 @@ export function AlreadyCollectedRewardActivity() {
     // TODO Überlegen, ob ich dem benutzer hier etwas anzeigen möchte, oder ob ich es hier leer lasse
 
     const isChallengeRunning = useChallengeStore(state => state.isChallengeRunning)
-    const isChallengeFailed = useChallengeStore(state => state.isChallengeFailed)
+    const isChallengeFailed = useChallengeStore(state => state.isChallengeTimeFailed)
 
     useEffect(() => {
         useFlowStore.getState().nextNode()
