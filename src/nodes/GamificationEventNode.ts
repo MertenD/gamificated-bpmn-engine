@@ -35,7 +35,7 @@ export class GamificationEventNode implements BasicNode {
                 }
             })
         } else {
-            return React.createElement(AlreadyCollectedRewardActivity, {})
+            return React.createElement(AlreadyCollectedRewardActivity, { key: this.id })
         }
     }
 }
