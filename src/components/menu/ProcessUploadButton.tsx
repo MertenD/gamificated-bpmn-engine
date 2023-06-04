@@ -3,6 +3,7 @@ import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 import {BpmnDiagram} from "../../model/Bpmn";
 import {loadBpmnDiagramFromXml} from "../../util/Importer";
+import {Typography} from "@mui/material";
 
 export interface ProcessUploadButtonProps {
     onProcessUploaded: (processName: string, bpmnDiagram: BpmnDiagram) => void
@@ -43,7 +44,9 @@ export default function ProcessUploadButton(props: ProcessUploadButtonProps) {
             <input accept={".bpmn"} type='file' id='file' ref={inputFile} hidden onChange={(event) => {
                 onUploaded(event)
             }}/>
-            Upload a new Process<br />+
+            <Typography variant="h5" >
+                +  Upload a new Process
+            </Typography>
         </div>
     )
 }

@@ -21,9 +21,12 @@ export default function ChallengeStartActivity(props: ChallengeStartProps) {
             leadingIcon={<AlarmOutlinedIcon style={{ width: 40, height: 40 }} />}
             onConfirm={props.onConfirm}
         >
-            <Typography variant="h5" style={{ margin: 20, display: "flex", alignItems: "center" }}>
+            <Typography variant="h5" style={{ marginLeft: 20, marginRight: 20, display: "flex", alignItems: "center" }}>
                 A time challenge is about to start.<br/> You have to complete the following tasks in { props.data.secondsToComplete } seconds
                 in order to receive a reward:
+            </Typography>
+            <Typography variant="caption" style={{ marginLeft: 20, marginRight: 20, marginBottom: 20, marginTop: 10 }} >
+                (You can see the remaining in the bottom once the challenge started)
             </Typography>
             <RewardHint
                 gamificationType={props.data.rewardType}

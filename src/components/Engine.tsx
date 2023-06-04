@@ -60,7 +60,9 @@ export default function Engine() {
                                 ) }
                                 <Minimap />
                             </div>
-                            <ChallengeInfo />
+                            <div style={{ marginRight: 430 }}>
+                                <ChallengeInfo />
+                            </div>
                         </div>
                     </div>
                 </div>

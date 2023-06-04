@@ -1,6 +1,7 @@
 import ProcessUploadButton from "./ProcessUploadButton";
 import {loadProcess} from "../../util/ProcessLoadingUtils";
 import {useMenuStore} from "../../stores/menuStore";
+import {Typography} from "@mui/material";
 
 export interface MenuProps {
     onProcessStarted: () => void
@@ -20,12 +21,9 @@ export default function Menu(props: MenuProps) {
             alignItems: "center",
             height: "100%",
         }}>
-            <div style={{
-                fontSize: 60,
-                marginBottom: 100
-            }}>
+            <Typography variant="h2" style={{ margin: 100 }} >
                 Gamificated BPMN Engine
-            </div>
+            </Typography>
             { uploadedProcesses.map((process) => {
                 return <div style={{
                     display: "flex",
@@ -38,7 +36,7 @@ export default function Menu(props: MenuProps) {
                         width: 500,
                         height: 80,
                         borderRadius: 20,
-                        border: "3px solid black",
+                        border: "3px solid #5271ff",
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "center",
@@ -46,14 +44,16 @@ export default function Menu(props: MenuProps) {
                         fontSize: 20,
                         cursor: "pointer",
                         marginBottom: 20,
-                        backgroundColor: "gray",
+                        backgroundColor: "#DCE2FF",
                         userSelect: "none"
                     }} onClick={() => {
                         loadProcess(process).then(() => {
                             props.onProcessStarted()
                         })
                     }}>
-                        { process.name }
+                        <Typography variant="h5" >
+                            { process.name }
+                        </Typography>
                     </div>
                     <div style={{
                         marginLeft: 20,
@@ -71,7 +71,9 @@ export default function Menu(props: MenuProps) {
                     }} onClick={() => {
                         removeUploadedProcess(process.name)
                     }}>
-                        x
+                        <Typography variant="h3" >
+                            x
+                        </Typography>
                     </div>
                 </div>
             }) }
