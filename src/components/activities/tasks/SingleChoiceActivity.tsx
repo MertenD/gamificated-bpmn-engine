@@ -32,7 +32,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
             isConfirmButtonDisabled={selected === "" || selected === undefined || selected === null}
             onConfirm={ () => props.onConfirm(selected) }
         >
-            <Typography variant="h2" style={{ margin: 20, fontSize: 30 }}>
+            <Typography variant="h5" style={{ margin: 20 }}>
                 { substituteVariables(props.data.task) }
             </Typography>
             <div style={{
@@ -54,7 +54,7 @@ export default function SingleChoiceActivity(props: SingleChoiceActivityProps) {
                             paddingTop: 15,
                             paddingBottom: 15,
                             borderRadius: 10,
-                            backgroundColor: "#22935B",
+                            backgroundColor: "#5271ff",
                             display: "flex",
                             flexDirection: "row",
                             cursor: "pointer"

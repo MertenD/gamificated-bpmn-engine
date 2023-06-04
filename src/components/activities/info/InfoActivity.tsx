@@ -16,7 +16,7 @@ export default function InfoActivity(props: InfoActivityProps) {
             leadingIcon={<InfoOutlinedIcon style={{ width: 40, height: 40 }} />}
             onConfirm={props.onConfirm}
         >
-            <Typography variant="body1" style={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="h5" style={{ marginLeft: 20, marginRight: 20, display: "flex", alignItems: "center" }}>
                 { substituteVariables(props.infoText) }
             </Typography>
         </ActivityContainer>

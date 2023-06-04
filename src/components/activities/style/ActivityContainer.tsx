@@ -7,6 +7,7 @@ export interface ActivityContainerProps {
     leadingIcon: React.ReactNode
     confirmButtonLabel?: string
     isConfirmButtonDisabled? : boolean
+    isConfirmationButtonRemoved? : boolean
     onConfirm: () => void
     children: React.ReactNode
 }
@@ -23,14 +24,14 @@ export default function ActivityContainer(props: ActivityContainerProps) {
             </div>
             <div style={getInnerDivStyle()} >
                 { props.children }
-                <Button
+                { !props.isConfirmationButtonRemoved && <Button
                     variant="contained"
                     style={{ marginTop: 20 }}
                     disabled={props.isConfirmButtonDisabled ? props.isConfirmButtonDisabled : false}
                     onClick={() => {
                         props.onConfirm()
                     }}
-                >{ props.confirmButtonLabel ? props.confirmButtonLabel : "Confirm" }</Button>
+                >{ props.confirmButtonLabel ? props.confirmButtonLabel : "Confirm" }</Button> }
             </div>
         </div>
     )

@@ -41,7 +41,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
             leadingIcon={<MultipleChoiceIcon />}
             onConfirm={() => props.onConfirm(selected)}
         >
-            <Typography variant="h2" style={{ margin: 20, fontSize: 30 }}>
+            <Typography variant="h5" style={{ margin: 20 }}>
                 { substituteVariables(props.data.task) }
             </Typography>
             <div style={{
@@ -63,7 +63,7 @@ export default function MultipleChoiceActivity(props: MultipleChoiceActivityProp
                             paddingTop: 15,
                             paddingBottom: 15,
                             borderRadius: 10,
-                            backgroundColor: "#22935B",
+                            backgroundColor: "#5271ff",
                             display: "flex",
                             flexDirection: "row",
                             cursor: "pointer"

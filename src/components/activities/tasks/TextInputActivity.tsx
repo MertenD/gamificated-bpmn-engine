@@ -49,7 +49,7 @@ export default function TextInputActivity(props: TextInputActivityProps) {
                 }
             }}
         >
-            <Typography variant="h2" style={{ margin: 20, fontSize: 30 }}>
+            <Typography variant="h5" style={{ margin: 20 }}>
                 { substituteVariables(props.data.task) }
             </Typography>
             <TextField

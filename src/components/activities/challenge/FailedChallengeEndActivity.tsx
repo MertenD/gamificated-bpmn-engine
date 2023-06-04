@@ -16,8 +16,9 @@ export default function FailedChallengeEndActivity(props: FailedChallengeEndActi
             leadingIcon={<AlarmOffOutlinedIcon style={{ width: 40, height: 40 }} />}
             onConfirm={props.onConfirm}
         >
-            <Typography variant="body1" style={{ display: "flex", alignItems: "center" }}>
-                You did not complete all tasks in time or don't satisfy another condition.
+            <Typography variant="h5" style={{ marginLeft: 20, marginRight: 20, display: "flex", alignItems: "center" }}>
+                The Challenge is over. <br />
+                You did not complete all tasks in time or don't satisfy another condition for the reward.
             </Typography>
         </ActivityContainer>
     )

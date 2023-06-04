@@ -11,6 +11,7 @@ import {
 import {PointType} from "../../../model/PointType";
 import {XPIcon} from "../../info/icons/XPIcon";
 import {BadgeIcon} from "../../info/icons/BadgeIcon";
+import RewardHint from "../../info/RewardHint";
 
 export interface CollectChallengeRewardActivityProps {
     gamificationType: GamificationType
@@ -27,16 +28,16 @@ export default function CollectChallengeRewardActivity(props: CollectChallengeRe
             case GamificationType.POINTS:
                 switch ((props.gamificationOptions as PointsGamificationOptions).pointType) {
                     case PointType.EXPERIENCE:
-                        setLeadingIcon(<XPIcon isUnlocked={false} />)
+                        setLeadingIcon(<XPIcon isUnlocked={true} />)
                         return
                     case PointType.COINS:
-                        setLeadingIcon(<XPIcon isUnlocked={false} />)
+                        setLeadingIcon(<XPIcon isUnlocked={true} />)
                 }
                 return
             case GamificationType.BADGES:
                 setLeadingIcon(<BadgeIcon
                     badgeName={(props.gamificationOptions as BadgeGamificationOptions).badgeType}
-                    isUnlocked={false}
+                    isUnlocked={true}
                 />)
         }
     }, [])
@@ -50,9 +51,16 @@ export default function CollectChallengeRewardActivity(props: CollectChallengeRe
             onConfirm={props.onCollect}
             confirmButtonLabel={"Collect"}
         >
-            <Typography variant="body1" style={{ display: "flex", alignItems: "center" }}>
-                Challenge successfully completed! Collect Reward: {props.gamificationType}
-            </Typography>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+                <Typography variant="h5" style={{ margin: 20, display: "flex", alignItems: "center" }}>
+                    Challenge completed successfully! You earned a reward:
+                </Typography>
+                <RewardHint
+                    gamificationType={props.gamificationType}
+                    gamificationOptions={props.gamificationOptions}
+                    isUnlocked={true}
+                />
+            </div>
         </ActivityContainer>
     )
 }

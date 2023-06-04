@@ -17,6 +17,7 @@ export function getOuterDivStyle(isChallengeRunning: boolean, isChallengeFailed:
 
 export function getInnerDivStyle(): CSSProperties {
     return {
+        margin: 20,
         width: "100%",
         height: "100%",
         display: "flex",
