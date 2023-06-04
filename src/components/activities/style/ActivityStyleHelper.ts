@@ -10,7 +10,18 @@ export function getOuterDivStyle(isChallengeRunning: boolean, isChallengeFailed:
         boxShadow: "inset 0 0 0 3px #5271ff",
         display: "flex",
         flexDirection: "column",
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+    };
+}
+
+export function getInnerDivStyle(): CSSProperties {
+    return {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'center',
-    };
+    }
 }

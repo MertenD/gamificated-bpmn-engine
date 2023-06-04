@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {useChallengeStore} from "../../../stores/challengeStore";
+import React, {useEffect, useState} from "react"
 import {Typography} from "@mui/material";
+import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
+import ActivityContainer from "../style/ActivityContainer";
 import {GamificationType} from "../../../model/GamificationType";
 import {
     BadgeGamificationOptions,
     GamificationOptions,
     PointsGamificationOptions
 } from "../../../model/GamificationOptions";
-import ActivityContainer from "../style/ActivityContainer";
-import {XPIcon} from "../../info/icons/XPIcon";
 import {PointType} from "../../../model/PointType";
+import {XPIcon} from "../../info/icons/XPIcon";
 import {BadgeIcon} from "../../info/icons/BadgeIcon";
 
-export interface CollectRewardActivityProps {
-    onCollectClicked: () => void
+export interface CollectChallengeRewardActivityProps {
     gamificationType: GamificationType
     gamificationOptions: GamificationOptions
+    onCollect: () => void
 }
 
-export default function CollectRewardActivity(props: CollectRewardActivityProps) {
+export default function CollectChallengeRewardActivity(props: CollectChallengeRewardActivityProps) {
 
     const [leadingIcon, setLeadingIcon] = useState(<></>)
 
@@ -41,23 +41,17 @@ export default function CollectRewardActivity(props: CollectRewardActivityProps)
         }
     }, [])
 
-    useEffect(() => {
-        if (useChallengeStore.getState().isChallengeRunning) {
-            useChallengeStore.getState().pauseChallenge()
-            return () => {
-                useChallengeStore.getState().resumeChallenge()
-            }
-        }
-    }, [])
-
     return (
         <ActivityContainer
-            leadingIcon={leadingIcon}
-            onConfirm={props.onCollectClicked}
+            leadingIcon={<>
+                <AlarmOnOutlinedIcon style={{ width: 40, height: 40 }} />
+                { leadingIcon }
+            </>}
+            onConfirm={props.onCollect}
             confirmButtonLabel={"Collect"}
         >
-            <Typography variant="body1" style={{ margin: 10 }}>
-                Collect Reward: {props.gamificationType}
+            <Typography variant="body1" style={{ display: "flex", alignItems: "center" }}>
+                Challenge successfully completed! Collect Reward: {props.gamificationType}
             </Typography>
         </ActivityContainer>
     )

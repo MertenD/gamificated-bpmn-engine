@@ -2,11 +2,14 @@ import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
 import {ChallengeNodeData} from "../model/NodeData";
 import React from "react";
-import InfoActivity from "../components/activities/InfoActivity";
+import InfoActivity from "../components/activities/info/InfoActivity";
 import {useFlowStore} from "../stores/flowStore";
 import {useChallengeStore} from "../stores/challengeStore";
 import {isBadgeAlreadyUnlocked} from "./util/ApplyGamificationHelper";
-import CollectRewardAfterChallengeActivity from "../components/activities/reward/CollectRewardAfterChallengeActivity";
+import ChallengeStartActivity from "../components/activities/challenge/ChallengeStartActivity";
+import CollectChallengeRewardActivity from "../components/activities/challenge/CollectChallengeRewardActivity";
+import AlreadyUnlockedChallengeActivity from "../components/activities/challenge/AlreadyUnlockedChallengeActivity";
+import FailedChallengeEndActivity from "../components/activities/challenge/FailedChallengeEndActivity";
 
 export class ChallengeNode implements BasicNode {
     id: string
@@ -22,9 +25,9 @@ export class ChallengeNode implements BasicNode {
     run(): React.ReactNode {
         // Challenge start
         if (this.data.isStart) {
-            return React.createElement(InfoActivity, {
+            return React.createElement(ChallengeStartActivity, {
                 key: this.id,
-                infoText: "Challenge is about so start",
+                data: this.data,
                 onConfirm: () => {
                     useChallengeStore.getState().startChallenge(this.data)
                     useFlowStore.getState().nextNode()
@@ -36,26 +39,26 @@ export class ChallengeNode implements BasicNode {
         useChallengeStore.getState().stopChallenge()
 
         if (!useChallengeStore.getState().evaluateRewardCondition()) {
-            return React.createElement(InfoActivity, {
+            return React.createElement(FailedChallengeEndActivity, {
                 key: this.id,
-                infoText: "You did not complete all tasks in time or don't satisfy another condition.",
+                data: this.data,
                 onConfirm: () => { useFlowStore.getState().nextNode() }
             })
         }
 
         if (isBadgeAlreadyUnlocked(this.data.rewardType, this.data.gamificationOptions)) {
-            return React.createElement(InfoActivity, {
+            return React.createElement(AlreadyUnlockedChallengeActivity, {
                 key: this.id,
-                infoText: "Challenge successfully completed, but reward is already unlocked",
+                data: this.data,
                 onConfirm: () => { useFlowStore.getState().nextNode() }
             })
         }
 
-        return React.createElement(CollectRewardAfterChallengeActivity, {
+        return React.createElement(CollectChallengeRewardActivity, {
             key: this.id,
             gamificationType: this.data.rewardType,
             gamificationOptions: this.data.gamificationOptions,
-            onCollectClicked: () => {
+            onCollect: () => {
                 useChallengeStore.getState().applyChallengeReward()
                 useFlowStore.getState().nextNode()
             }

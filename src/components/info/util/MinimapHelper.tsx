@@ -33,7 +33,7 @@ const commonChallengeStyle = (isNodeLast: boolean) => {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: isNodeLast ? 25 : 0,
+        marginBottom: isNodeLast ? 35 : 0,
         borderRadius: 10,
     } as React.CSSProperties
 }
@@ -178,7 +178,7 @@ function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boole
 
 function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div style={{
-        backgroundColor: isNodeVisited ? "#D9C5FF" : "transparent",
+        backgroundColor: isNodeVisited ? "#D9C5FF" : "transparent", // TODO Wenn die Challenge Start die letzte Node ist soll auch transparent sein
         height: 115,
         width: 180,
         top: 40,

@@ -1,9 +1,8 @@
 import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
-import {useFlowStore} from "../stores/flowStore";
 import React from "react";
-import InfoActivity from "../components/activities/InfoActivity";
 import {NodeData} from "../model/NodeData";
+import EndActivity from "../components/activities/info/EndActivity";
 
 export class EndNode implements BasicNode {
     id: string;
@@ -17,9 +16,6 @@ export class EndNode implements BasicNode {
     }
 
     run(): React.ReactNode {
-        return React.createElement(InfoActivity, {
-            infoText: "This is the end of the process",
-            onConfirm: () => useFlowStore.getState().nextNode()
-        })
+        return React.createElement(EndActivity, {})
     }
 }

@@ -1,10 +1,10 @@
 import {BasicNode} from "./BasicNode";
 import {ActivityNodeData} from "../model/NodeData";
 import React, {useState} from "react";
-import TextInputActivity from "../components/activities/TextInputActivity";
+import TextInputActivity from "../components/activities/tasks/TextInputActivity";
 import {ActivityType} from "../model/ActivityType";
-import SingleChoiceActivity from "../components/activities/SingleChoiceActivity";
-import MultipleChoiceActivity from "../components/activities/MultipleChoiceActivity";
+import SingleChoiceActivity from "../components/activities/tasks/SingleChoiceActivity";
+import MultipleChoiceActivity from "../components/activities/tasks/MultipleChoiceActivity";
 import {NodeType} from "../model/NodeType";
 import {useVariablesStore} from "../stores/variablesStore";
 import {useFlowStore} from "../stores/flowStore";

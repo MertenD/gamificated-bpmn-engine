@@ -1,8 +1,7 @@
 import Dialog from '@mui/material/Dialog';
 import {useVariablesStore} from "../../stores/variablesStore";
-import {DialogContent, DialogTitle, Zoom} from "@mui/material";
+import {Button, DialogContent, DialogTitle, Zoom} from "@mui/material";
 import React from "react";
-import ConfirmButton from "../controls/ConfirmButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom timeout={500} ref={ref} {...props} />;
@@ -48,7 +47,9 @@ export function BadgeDialog() {
                             }}>
                                 { variableState.unlockedBadgeName }
                             </div>
-                            <ConfirmButton onConfirm={() => variableState.closeBadgeDialog()} />
+                            <Button variant="contained" onClick={() => {
+                                variableState.closeBadgeDialog()
+                            }}>Confirm</Button>
                         </div>
                     </DialogContent>
                 </div>
