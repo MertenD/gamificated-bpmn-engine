@@ -1,7 +1,5 @@
 import React from "react";
 import {useChallengeStore} from "../../stores/challengeStore";
-import {GamificationType} from "../../model/GamificationType";
-import {BadgeGamificationOptions, PointsGamificationOptions} from "../../model/GamificationOptions";
 import {Typography} from "@mui/material";
 
 export default function ChallengeInfo() {
@@ -22,7 +20,7 @@ export default function ChallengeInfo() {
                         </Typography>
                     } else {
                         return <Typography variant="h5" style={{ marginTop: 30, color: "#D9C5FF", fontWeight: "bold" }}>
-                            You are currently in a time challenge. You have { challengeState.remainingSeconds?.toFixed(2) } seconds to complete the tasks.
+                            You have { challengeState.remainingSeconds?.toFixed(2) } seconds left.
                         </Typography>
                     }
                 })()
