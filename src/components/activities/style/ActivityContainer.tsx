@@ -19,7 +19,7 @@ export default function ActivityContainer(props: ActivityContainerProps) {
 
     return (
         <div style={getOuterDivStyle(isChallengeRunning, isChallengeFailed)}>
-            <div style={{ color: "#5271ff" }}>
+            <div style={{ width: 40, height: 40, color: "#5271ff" }}>
                 { props.leadingIcon }
             </div>
             <div style={getInnerDivStyle()} >

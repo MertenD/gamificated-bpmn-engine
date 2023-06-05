@@ -7,20 +7,22 @@ export default function CoinsInfo() {
     const coins = useVariablesStore((state) => state.getVariable("Coins"))
 
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center"
-        }}>
-            <CoinsIcon isUnlocked={true} svgIconProps={{ width: 40 }} />
-            <div style={{
-                marginLeft: 10
+        <>
+            { coins !== undefined  && <div style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center"
             }}>
-                <Typography variant="h5">
-                    { (coins || 0).toLocaleString() }
-                </Typography>
-            </div>
-        </div>
+                <CoinsIcon isUnlocked={true} svgIconProps={{ width: 40 }} />
+                <div style={{
+                    marginLeft: 10
+                }}>
+                    <Typography variant="h5">
+                        { (coins || 0).toLocaleString() }
+                    </Typography>
+                </div>
+            </div> }
+        </>
     )
 }

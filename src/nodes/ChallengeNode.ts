@@ -2,7 +2,6 @@ import {BasicNode} from "./BasicNode";
 import {NodeType} from "../model/NodeType";
 import {ChallengeNodeData} from "../model/NodeData";
 import React from "react";
-import InfoActivity from "../components/activities/info/InfoActivity";
 import {useFlowStore} from "../stores/flowStore";
 import {useChallengeStore} from "../stores/challengeStore";
 import {isBadgeAlreadyUnlocked} from "./util/ApplyGamificationHelper";

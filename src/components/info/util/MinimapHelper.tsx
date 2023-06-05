@@ -3,7 +3,7 @@ import {NodeType} from "../../../model/NodeType";
 import {ActivityNodeData, ChallengeNodeData} from "../../../model/NodeData";
 import React from "react";
 import RewardHint from "../RewardHint";
-import {SvgIcon} from "@mui/material";
+import {SvgIcon, Typography} from "@mui/material";
 import {ActivityType} from "../../../model/ActivityType";
 
 const commonMapPointStyle = (isNodeCurrent: boolean, isNodeVisited: boolean) => {
@@ -134,6 +134,9 @@ function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeC
             gamificationOptions={(node.node.data as ActivityNodeData).gamificationOptions}
             isUnlocked={isRewardUnlocked}
         />
+        { isNodeVisited && !isNodeCurrent && !isRewardUnlocked && <Typography variant="caption">
+            (missed)
+        </Typography> }
     </div>
 
     if (isNodeInChallenge) {
@@ -150,20 +153,22 @@ function getGamificationEventMapPoint(node: NodeMapValue, index: number, isNodeC
 function getStartMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
-    }}>{ "Start" }</div>
+    }}><Typography variant="body1">Start</Typography></div>
 }
 
 function getEndMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean): JSX.Element {
     return <div id={node.node.id + index} style={{
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
-    }}>{ "End" }</div>
+    }}><Typography variant="body1">End</Typography></div>
 }
 
 function getInfoMapPoint(node: NodeMapValue, index: number, isNodeCurrent: boolean, isNodeVisited: boolean, isNodeInChallenge: boolean): JSX.Element {
 
     const mapPoint = <div id={node.node.id + index} style={{
         ...commonMapPointStyle(isNodeCurrent, isNodeVisited)
-    }}>{ "Info" }</div>
+    }}>
+        <Typography variant="body1">Info</Typography>
+    </div>
 
     if (isNodeInChallenge) {
         return<div style={ commonChallengeStyle(!isNodeVisited) }>
@@ -208,7 +213,9 @@ function getChallengeStartMapPoint(node: NodeMapValue, index: number, isNodeCurr
             top: -40,
             marginLeft: 0,
             marginRight: 0,
-        }}>{ "Challenge Start" }</div>
+        }}>
+            <Typography variant="body1">Challenge Start</Typography>
+        </div>
     </div>
 }
 
@@ -246,7 +253,7 @@ function getChallengeEndMapPoint(node: NodeMapValue, index: number, isNodeCurren
             marginRight: 0,
             top: 10
         }}>
-            <span style={{ position: "absolute" }}>Challenge End</span>
+            <Typography variant="body1" style={{ position: "absolute" }}>Challenge End</Typography>
             <div style={{ position: "relative", bottom: 18, left: 85 }}>
                 <RewardHint
                     gamificationType={(node.node.data as ChallengeNodeData).rewardType}

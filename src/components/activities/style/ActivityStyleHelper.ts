@@ -9,7 +9,7 @@ export function getOuterDivStyle(isChallengeRunning: boolean, isChallengeFailed:
         border: isChallengeRunning && !isChallengeFailed ? "30px solid #D9C5FF" : undefined,
         boxShadow: "inset 0 0 0 3px #5271ff",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     };
@@ -17,12 +17,11 @@ export function getOuterDivStyle(isChallengeRunning: boolean, isChallengeFailed:
 
 export function getInnerDivStyle(): CSSProperties {
     return {
-        margin: 20,
         width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     }
 }

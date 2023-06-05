@@ -3,8 +3,6 @@ import {Typography} from "@mui/material";
 import AlarmOutlinedIcon from '@mui/icons-material/AlarmOutlined';
 import ActivityContainer from "../style/ActivityContainer";
 import {ChallengeNodeData} from "../../../model/NodeData";
-import {GamificationType} from "../../../model/GamificationType";
-import {PointsGamificationOptions} from "../../../model/GamificationOptions";
 import RewardHint from "../../info/RewardHint";
 
 export interface ChallengeStartProps {
@@ -25,9 +23,7 @@ export default function ChallengeStartActivity(props: ChallengeStartProps) {
                 A time challenge is about to start.<br/> You have to complete the following tasks in { props.data.secondsToComplete } seconds
                 in order to receive a reward:
             </Typography>
-            <Typography variant="caption" style={{ marginLeft: 20, marginRight: 20, marginBottom: 20, marginTop: 10 }} >
-                (You can see the remaining in the bottom once the challenge started)
-            </Typography>
+            <div style={{ marginBottom: 20 }} />
             <RewardHint
                 gamificationType={props.data.rewardType}
                 gamificationOptions={props.data.gamificationOptions}

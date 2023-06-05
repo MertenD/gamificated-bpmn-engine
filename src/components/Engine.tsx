@@ -42,11 +42,12 @@ export default function Engine() {
                                     <BadgesInfo />
                                     <div style={{ marginBottom: 15 }}/>
                                     <div style={{
-                                        marginLeft: 10
+                                        marginLeft: 10,
                                     }}>
                                         <CoinsInfo />
                                     </div>
                                 </div>
+                                <ChallengeInfo />
                                 <LevelProgressBar color={"#7ed957"} /> { /* Will only be shown when the user can gain experience in the process */ }
                             </div>
                             <div style={{
@@ -59,9 +60,6 @@ export default function Engine() {
                                     currentNode.node.run() || <></>
                                 ) }
                                 <Minimap />
-                            </div>
-                            <div style={{ marginRight: 430 }}>
-                                <ChallengeInfo />
                             </div>
                         </div>
                     </div>
