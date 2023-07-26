@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# Gamificated BPMN Engine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains a gamified implementation of a BPMN (Business Process Model and Notation) engine. It is built using React and TypeScript.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+The main entry point of the application is `src/App.tsx`, which sets up the React application and includes the main components.
 
-### `npm start`
+The application's core functionality is encapsulated in the `Engine` component (`src/components/Engine.tsx`), which manages the game engine's state and behavior.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The structure of a BPMN process is represented using the `Bpmn` model (`src/model/Bpmn.ts`).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Nodes
 
-### `npm test`
+The application includes several types of nodes, each represented by a class:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `ActivityNode` (`src/nodes/ActivityNode.ts`): Represents an activity node in the BPMN process.
+- `ChallengeNode` (`src/nodes/ChallengeNode.ts`): Represents a challenge node in the BPMN process.
+- `EndNode` (`src/nodes/EndNode.ts`): Represents an end node in the BPMN process.
+- `GatewayNode` (`src/nodes/GatewayNode.ts`): Represents a gateway node in the BPMN process.
+- `GamificationEventNode` (`src/nodes/GamificationEventNode.ts`): Represents a gamification event node in the BPMN process.
+- `InfoNode` (`src/nodes/InfoNode.ts`): Represents an info node in the BPMN process.
+- `StartNode` (`src/nodes/StartNode.ts`): Represents a start node in the BPMN process.
 
-### `npm run build`
+## State Management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The state of the BPMN process is managed using the `flowStore` (`src/stores/flowStore.ts`).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Utilities
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The application includes utility functions for importing and parsing BPMN files (`src/util/Importer.ts` and `src/util/Parser.ts`).
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To get started with this project, clone the repository and install the dependencies:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/MertenD/gamificated-bpmn-engine.git
+cd gamificated-bpmn-engine
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Then, you can start the application:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+The application will be available at http://localhost:3000.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
