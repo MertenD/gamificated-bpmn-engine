@@ -6,29 +6,37 @@ This repository contains a gamified implementation of a BPMN (Business Process M
 
 The main entry point of the application is `src/App.tsx`, which sets up the React application and includes the main components.
 
-The application's core functionality is encapsulated in the `Engine` component (`src/components/Engine.tsx`), which manages the game engine's state and behavior.
+The application's core functionality is encapsulated in the `Engine` component (`src/components/Engine.tsx`). The engine manages the game engine's state and behavior, and it uses a `NodeMap` to keep track of the nodes in the BPMN process.
 
-The structure of a BPMN process is represented using the `Bpmn` model (`src/model/Bpmn.ts`).
+The `NodeMap` is a map where the keys are strings (IDs of flow elements) and the values are objects containing a `node` and `next` properties. The `node` is an instance of `BasicNode`, which represents a node in the BPMN process. The `next` is a record that maps `NextNodeKey` to `NodeMapKey`, which is used to determine the next node in the process based on the outcome of the current node.
+
+When the engine runs, it starts at the `StartNode` and follows the `next` links in the `NodeMap` until it reaches an `EndNode`. Along the way, it executes the `run` method of each node, which can perform various actions such as presenting a challenge to the user, providing information, or applying a gamification event.
 
 ## Nodes
 
-The application includes several types of nodes, each represented by a class:
+The application includes several types of nodes, each represented by a class which can be found in the `src/nodes/` directory:
 
-- `ActivityNode` (`src/nodes/ActivityNode.ts`): Represents an activity node in the BPMN process.
-- `ChallengeNode` (`src/nodes/ChallengeNode.ts`): Represents a challenge node in the BPMN process.
-- `EndNode` (`src/nodes/EndNode.ts`): Represents an end node in the BPMN process.
-- `GatewayNode` (`src/nodes/GatewayNode.ts`): Represents a gateway node in the BPMN process.
-- `GamificationEventNode` (`src/nodes/GamificationEventNode.ts`): Represents a gamification event node in the BPMN process.
-- `InfoNode` (`src/nodes/InfoNode.ts`): Represents an info node in the BPMN process.
-- `StartNode` (`src/nodes/StartNode.ts`): Represents a start node in the BPMN process.
+- `ActivityNode`: Represents an activity node in the BPMN process. Activity nodes are the primary type of node and represent tasks that are performed in the process.
+
+- `ChallengeNode`: Represents a challenge node in the BPMN process. Challenge nodes are a special type of activity node that include a gamification element.
+
+- `EndNode`: Represents an end node in the BPMN process. End nodes signify the end of a process or a path within a process.
+
+- `GatewayNode`: Represents a gateway node in the BPMN process. Gateway nodes are used to control the flow of the process, typically through decision making.
+
+- `GamificationEventNode`: Represents a gamification event node in the BPMN process. Gamification event nodes are used to apply gamification elements to the process.
+
+- `InfoNode`: Represents an info node in the BPMN process. Info nodes are used to provide information to the user.
+
+- `StartNode`: Represents a start node in the BPMN process. Start nodes signify the start of a process.
 
 ## State Management
 
-The state of the BPMN process is managed using the `flowStore` (`src/stores/flowStore.ts`).
+The state of the BPMN process is managed using the `flowStore` (`src/stores/flowStore.ts`). The flow store keeps track of the current state of the process and provides functions for moving to the next node.
 
 ## Utilities
 
-The application includes utility functions for importing and parsing BPMN files (`src/util/Importer.ts` and `src/util/Parser.ts`).
+The application includes utility functions for importing and parsing BPMN files (`src/util/Importer.ts` and `src/util/Parser.ts`). These utilities are used to load BPMN files into the application and parse them into a format that the application can use.
 
 ## Getting Started
 
