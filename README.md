@@ -4,6 +4,8 @@ This repository contains a gamified implementation of a BPMN (Business Process M
 
 The project aims to provide a unique approach to visualizing and interacting with BPMN processes by introducing gamification elements. This is achieved by extending the traditional BPMN elements with game mechanics, such as challenges, rewards and a minimap. The goal is to make the process more engaging and enjoyable for the user.
 
+You can try the engine at [http://gbpmnengine.mertendieckmann.de/](http://gbpmnengine.mertendieckmann.de/).
+
 To create the gamificated bpmn processes for this engine, there is a separate editor available. You can access the editor at [http://gbpmneditor.mertendieckmann.de/](http://gbpmneditor.mertendieckmann.de/) or you can view the [editor github repository](https://github.com/MertenD/bpmn-editor).
 
 ## Overview
