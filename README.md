@@ -20,6 +20,8 @@ The `NodeMap` is a map where the keys are strings (IDs of flow elements) and the
 
 When the engine runs, it starts at the `StartNode` and follows the `next` links in the `NodeMap` until it reaches an `EndNode`. Along the way, it executes the `run` method of each node, which can perform various actions such as presenting a challenge to the user, providing information, or applying a gamification event.
 
+![Process](./public/Prozessablauf_v2.png)
+
 ## Nodes
 
 The application includes several types of nodes, each represented by a class which can be found in the `src/nodes/` directory:
@@ -37,6 +39,8 @@ The application includes several types of nodes, each represented by a class whi
 - `InfoNode`: Represents an info node in the BPMN process. Info nodes are used to provide information to the user.
 
 - `StartNode`: Represents a start node in the BPMN process. Start nodes signify the start of a process.
+
+![Architecture](./public/Nodes_Architektur_v2.png)
 
 ## State Management
 
