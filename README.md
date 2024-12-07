@@ -8,6 +8,8 @@ You can try the engine at [http://gbpmnengine.mertendieckmann.de/](http://gbpmne
 
 To create the gamificated bpmn processes for this engine, there is a separate editor available. You can access the editor at [http://gbpmneditor.mertendieckmann.de/](http://gbpmneditor.mertendieckmann.de/) or you can view the [editor github repository](https://github.com/MertenD/bpmn-editor).
 
+![Engine Overview](./public/engine_overview.png)
+
 ## Overview
 
 The main entry point of the application is `src/App.tsx`, which sets up the React application and includes the main components.
